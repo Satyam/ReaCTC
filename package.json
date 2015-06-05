@@ -1,0 +1,64 @@
+{
+  "name": "ReaCTC",
+  "version": "1.0.0",
+  "description": "Control de Tráfico Centralizado",
+  "main": "src/main.jsx",
+  "scripts": {
+    "postinstall": "npm run build",
+    "server": "node server.js",
+    "build": "webpack -p --config webpack.production.config.js",
+    "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
+    "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
+    "coveralls": "cat coverage/lcov.info | coveralls",
+    "clean": "rm build/*"
+  },
+  "devDependencies": {
+    "classnames": "^2.1.1",
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.7",
+    "istanbul-instrumenter-loader": "^0.1.2",
+    "karma": "^0.12.31",
+    "karma-coverage": "^0.2.7",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sauce-launcher": "^0.2.10",
+    "karma-sinon-chai": "^0.3.0",
+    "karma-webpack": "^1.5.0",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
+    "lodash": "^3.9.3",
+    "phantomjs": "^1.9.16",
+    "q": "^1.4.1",
+    "q-io": "^1.13.0",
+    "react-bootstrap": "^0.22.6",
+    "react-hot-loader": "^1.2.3",
+    "react-router-bootstrap": "^0.15.0",
+    "reflux": "^0.2.7",
+    "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "babel-core": "^5.4.3",
+    "babel-loader": "^5.1.2",
+    "express": "^4.12.3",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "webpack": "^1.9.6",
+    "xhr": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Satyam/ReaCTC.git"
+  },
+  "keywords": [
+    "CTC",
+    "mímico",
+    "control",
+    "ferroviario"
+  ],
+  "author": "Daniel Barreiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Satyam/ReaCTC/issues"
+  },
+  "homepage": "https://github.com/Satyam/ReaCTC"
+}
