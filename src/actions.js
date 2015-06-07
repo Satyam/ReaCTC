@@ -6,9 +6,8 @@ const SYNC = {},
 
 export default Reflux.createActions({
 	loadSectores: ASYNC,
-	loadSector: ASYNC,
 	setLocalConfig: SYNC,
 	closeTabSector: SYNC,
-	openTabSector: SYNC
-
+	newTabSector: ASYNC,
+	activeTabSector: ASYNC
 });
