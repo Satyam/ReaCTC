@@ -1,7 +1,6 @@
 import Reflux from 'reflux';
 import http from '../common/http.js';
 import actions from '../actions.js';
-
 var sectores = {};
 
 export default Reflux.createStore({

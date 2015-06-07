@@ -3,37 +3,50 @@ var Reflux = require('reflux');
 import http from '../common/http.js';
 import actions from '../actions.js';
 
-
-actions.loadSector.listen(function (nombre) {
-	http.get('/data/sector/' + nombre)
-		.then(function (response) {
-			actions.loadSector.completed({
-				status: 'ok',
-				data: response.body
-			});
-		})
-		.catch(function (response) {
-			actions.loadSector.failed({
-				status: 'fail',
-				message: response.message || (response.statusCode + ': ' + response.body)
-			});
-		});
-});
+var cache = {},
+	sector = {};
 
 export default Reflux.createStore({
 	listenables: actions,
+	load: function (nombre, action) {
+		if (nombre in cache) {
+			sector = cache[nombre];
+			action.completed(sector);
+		} else {
+			http.get('/data/sector/' + nombre)
+				.then(function (response) {
+					sector = cache[nombre] = response.body;
+					action.completed(sector);
+				})
+				.catch(function (response) {
+					sector = {};
+					action.failed(
+						response.message || (response.statusCode + ': ' + response.body)
+					);
+				});
+		}
+	},
 	getInitialState: function () {
-		this.sector = {};
-		actions.loadStore();
 		return {};
 	},
-	onLoadSector: function (nombre) {
-		console.log('Loading sector ' + nombre);
+	onNewTabSector: function (nombre) {
+		this.load(nombre, actions.newTabSector);
 	},
-	onLoadSectorCompleted: function (res) {
-		this.trigger(res);
+	onNewTabSectorCompleted: function () {
+		this.trigger(sector);
 	},
-	onLoadSectorFailed: function (res) {
-		this.trigger(res);
+	onNewTabSectorFailed: function (err) {
+		actions.error(err);
+		this.trigger(sector);
+	},
+	onActiveTabSector: function (nombre) {
+		this.load(nombre, actions.activeTabSector);
+	},
+	onActiveTabSectorCompleted: function () {
+		this.trigger(sector);
+	},
+	onActiveTabSectorFailed: function (err) {
+		actions.error(err);
+		this.trigger(sector);
 	}
 });
