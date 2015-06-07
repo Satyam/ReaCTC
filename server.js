@@ -22,6 +22,10 @@ app.get('/data/sectores', function (req, res) {
 	res.json(listaSectores);
 });
 
+app.get('/data/sector/:nombre', function (req, res) {
+	res.sendFile(path.join(__dirname, 'data/sectores', req.params.nombre) + '.json');
+});
+
 // Serve index page
 app.get('*', function (req, res) {
 	res.sendFile(path.join(__dirname, 'src/index.html'));
