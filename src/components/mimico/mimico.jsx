@@ -35,15 +35,16 @@ export default React.createClass({
 		while (a && a.tagName !== 'A') {
 			a = a.parentElement;
 		}
-		tabId = a.dataset.tabId;
-		if (target.tagName === 'I') {
-			actions.closeTabSector(tabId);
-			if (target.dataset.tabId === this.state.localConfig.selected) {
-				this.gotoFirstTab(tabId);
-			}
-			return;
-		}
 		if (a) {
+			tabId = a.dataset.tabId;
+			if (target.tagName === 'I') {
+				actions.closeTabSector(tabId);
+				if (target.dataset.tabId === this.state.localConfig.selected) {
+					this.gotoFirstTab(tabId);
+				}
+				return;
+			}
+			actions.activeTabSector(tabId);
 			this.transitionTo('sector', {sector: tabId});
 		}
 	},
@@ -66,7 +67,7 @@ export default React.createClass({
 		if (!this.leftClick(ev)) return;
 		this.toggleDropdown();
 		this.transitionTo('sector', {sector: ev.target.dataset.sectorId});
-		actions.openTabSector(ev.target.dataset.sectorId);
+		actions.newTabSector(ev.target.dataset.sectorId);
 	},
 	onDropdownClick: function (ev) {
 		if (!this.leftClick(ev)) return;
@@ -101,8 +102,8 @@ export default React.createClass({
 						);
 					})}
 					<li role="presentation" className="dropdown">
- 						<a className="dropdown-toggle" data-toggle="dropdown" href="#" onClick={this.onDropdownClick}>
- 							Otros Sectores <span className="caret"></span>
+ 						<a className="dropdown-toggle btn-info" data-toggle="dropdown" href="#" onClick={this.onDropdownClick}>
+							<i className="fa fa-plus"></i>
  						</a>
 						<ul className="dropdown-menu" role="menu" style={{
 							display: this.state.dropdownDisplay
