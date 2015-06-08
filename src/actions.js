@@ -8,6 +8,6 @@ export default Reflux.createActions({
 	loadSectores: ASYNC,
 	setLocalConfig: SYNC,
 	closeTabSector: SYNC,
-	newTabSector: ASYNC,
-	activeTabSector: ASYNC
+	openTabSector: ASYNC,
+	error: SYNC
 });

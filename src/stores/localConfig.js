@@ -28,12 +28,6 @@ export default Reflux.createStore({
 		console.log('onSetLocalConfig', path, value);
 		var oldValue = _.get(config, path);
 		if (value !== oldValue) {
-			// Change to a switch or multiple function calls if others come up.
-			if (value && path === 'selected') {
-				if (config.sectores.indexOf(value) === -1) {
-					config.sectores.push(value);
-				}
-			}
 			_.set(config, path, value);
 			this.save();
 		}
@@ -50,11 +44,12 @@ export default Reflux.createStore({
 		}
 	},
 	onOpenTabSector: function (nombre) {
+		if (nombre === config.selected) return;
 		if (config.sectores.indexOf(nombre) === -1) {
 			config.sectores.push(nombre);
-			config.selected = nombre;
-			this.save();
 		}
+		config.selected = nombre;
+		this.save();
 	},
 	save: function (quiet) {
 		console.log('saving new config', config, quiet);

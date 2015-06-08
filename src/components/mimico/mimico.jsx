@@ -23,7 +23,7 @@ export default React.createClass({
 		if (selected) selected = selected[1];
 		else this.gotoFirstTab();
 
-		actions.setLocalConfig('selected', selected);
+		actions.openTabSector(selected);
 	},
 	onTabClick: function (ev) {
 		if (!this.leftClick(ev)) return;
@@ -44,7 +44,7 @@ export default React.createClass({
 				}
 				return;
 			}
-			actions.activeTabSector(tabId);
+			actions.openTabSector(tabId);
 			this.transitionTo('sector', {sector: tabId});
 		}
 	},
@@ -53,6 +53,7 @@ export default React.createClass({
 		if (selected === skip) selected = this.state.localConfig.sectores[1];
 		if (selected) {
 			this.replaceWith('sector', {sector: selected});
+			actions.openTabSector(selected);
 		} else {
 			this.replaceWith('teletipo');
 		}
@@ -67,7 +68,7 @@ export default React.createClass({
 		if (!this.leftClick(ev)) return;
 		this.toggleDropdown();
 		this.transitionTo('sector', {sector: ev.target.dataset.sectorId});
-		actions.newTabSector(ev.target.dataset.sectorId);
+		actions.openTabSector(ev.target.dataset.sectorId);
 	},
 	onDropdownClick: function (ev) {
 		if (!this.leftClick(ev)) return;
@@ -78,7 +79,7 @@ export default React.createClass({
 	},
 	openTeletipo: function (ev) {
 		if (!this.leftClick(ev)) return;
-		actions.setLocalConfig('selected', null);
+		actions.openTabSector(null);
 		this.transitionTo('teletipo');
 	},
 	render: function () {

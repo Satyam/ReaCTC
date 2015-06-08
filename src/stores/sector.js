@@ -8,45 +8,43 @@ var cache = {},
 
 export default Reflux.createStore({
 	listenables: actions,
-	load: function (nombre, action) {
-		if (nombre in cache) {
+	getInitialState: function () {
+		return {};
+	},
+	onOpenTabSector: function (nombre) {
+		if (!nombre) {
+			sector = null;
+			return;
+		}
+		if (cache[nombre]) {
 			sector = cache[nombre];
-			action.completed(sector);
+			actions.openTabSector.completed(sector);
 		} else {
 			http.get('/data/sector/' + nombre)
 				.then(function (response) {
 					sector = cache[nombre] = response.body;
-					action.completed(sector);
+					actions.openTabSector.completed(sector);
 				})
 				.catch(function (response) {
 					sector = {};
-					action.failed(
+					actions.openTabSector.failed(
 						response.message || (response.statusCode + ': ' + response.body)
 					);
 				});
 		}
 	},
-	getInitialState: function () {
-		return {};
-	},
-	onNewTabSector: function (nombre) {
-		this.load(nombre, actions.newTabSector);
-	},
-	onNewTabSectorCompleted: function () {
+	onOpenTabSectorCompleted: function () {
 		this.trigger(sector);
 	},
-	onNewTabSectorFailed: function (err) {
+	onOpenTabSectorFailed: function (err) {
 		actions.error(err);
 		this.trigger(sector);
 	},
-	onActiveTabSector: function (nombre) {
-		this.load(nombre, actions.activeTabSector);
-	},
-	onActiveTabSectorCompleted: function () {
-		this.trigger(sector);
-	},
-	onActiveTabSectorFailed: function (err) {
-		actions.error(err);
-		this.trigger(sector);
+	onCloseTabSector: function (nombre) {
+		if (sector === cache[nombre]) {
+			sector = {};
+			this.trigger(sector);
+		}
+		cache[nombre] = null;
 	}
 });
