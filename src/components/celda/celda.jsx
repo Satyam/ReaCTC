@@ -25,17 +25,54 @@ export default React.createClass({
 			x = parseInt(coords[0], 10),
 			y = parseInt(coords[1], 10),
 			celda = this.props.celda,
-			tipo = celda.tipo,
 			label = celda.descr || `[${x},${y}]`,
-			seleccionada = this.props.seleccionada ? 'seleccionada' : 'oculta';
+			seleccionada = this.props.seleccionada ? 'seleccionada' : 'oculta',
+			renderer = this[celda.tipo];
 
 		return (
 			<g transform={`translate(${x * ANCHO_CELDA}, ${y * ANCHO_CELDA})`}>
 				<rect x='0' y='0' width={ANCHO_CELDA} height={ANCHO_CELDA} className={seleccionada} />
-				{tipo === 'linea' ? (<Linea dest={celda.desde.dir} />) : null}
-				{tipo === 'linea' ? (<Linea dest={celda.hacia.dir} />) : null}
+				{ renderer && renderer.call(this, celda) }
 				<text x="5" y="95">{label}</text>
 			</g>
 		);
+	},
+	linea: function (celda) {
+		return (<g>
+			<Linea dest={celda.desde.dir} />
+			<Linea dest={celda.hacia.dir} />
+		</g>);
+	},
+	cambio: function (celda) {
+		return (<g>
+			<Linea dest={celda.punta.dir} />
+			<Linea dest={celda.normal.dir} estilo={celda._desviado ? 'off' : null} />
+			<Linea dest={celda.invertido.dir} estilo={!celda._desviado ? 'off' : null} />
+		</g>);
+	},
+	paragolpe: function (celda) {
+		return (<g>
+			<Linea dest={celda.desde.dir} />
+			<circle cx={CENTRO_CELDA}
+					cy={CENTRO_CELDA}
+					r={ANCHO_CELDA / 10}
+			/>
+		</g>);
+	},
+	triple: function (celda) {
+		return (<g>
+			<Linea dest={celda.punta.dir} />
+			<Linea dest={celda.centro.dir} estilo={celda._posicion ? 'off' : null} />
+			<Linea dest={celda.izq.dir} estilo={celda._posicion != -1 ? 'off' : null} />
+			<Linea dest={celda.der.dir} estilo={celda._posicion != 1 ? 'off' : null} />
+		</g>);
+	},
+	cruce: function (celda) {
+		return (<g>
+			<Linea dest={celda.l1.desde.dir} />
+			<Linea dest={celda.l1.hacia.dir} />
+			<Linea dest={celda.l2.desde.dir} />
+			<Linea dest={celda.l2.hacia.dir} />
+		</g>);
 	}
 });
