@@ -24,6 +24,15 @@ export default React.createClass({
 		else this.gotoFirstTab();
 
 		actions.openTabSector(selected);
+
+		actions.error.listen(msg => {
+			this.setState({errorMsg: msg});
+			global.setTimeout(() => this.setState({errorMsg: null}), 10000);
+		});
+
+	},
+	closeErrorMsg: function () {
+		this.setState({errorMsg: null});
 	},
 	onTabClick: function (ev) {
 		if (!this.leftClick(ev)) return;
@@ -90,11 +99,25 @@ export default React.createClass({
 
 		return (
 			<div className="mimico">
+				{this.state.errorMsg && (
+					<div onClick={this.closeErrorMsg} className="panel panel-warning error-msg">
+						<div className="panel-heading">
+							<i className="fa fa-close"/><h3 className="panel-title">Atención</h3>
+						</div>
+						<div className="panel-body">
+							{this.state.errorMsg}
+						</div>
+					</div>
+				)}
 				<ul className="nav nav-tabs">
 					{ sectores.map(sector => {
 						return (
 							(visibles.indexOf(sector.nombre) > -1 ? (
-								<li key={sector.nombre} role="presentation" className={selected === sector.nombre ? 'active' : ''}>
+								<li
+									key={sector.nombre}
+									role="presentation"
+									className={selected === sector.nombre ? 'active' : ''}
+								>
 									<a data-tab-id={sector.nombre} onClick={this.onTabClick}>{sector.label}
 										<i className="fa fa-close"/>
 									</a>
@@ -103,15 +126,25 @@ export default React.createClass({
 						);
 					})}
 					<li role="presentation" className="dropdown">
- 						<a className="dropdown-toggle btn-info" data-toggle="dropdown" href="#" onClick={this.onDropdownClick}>
+						<a
+							className="dropdown-toggle btn-info"
+							data-toggle="dropdown"
+							href="#"
+							onClick={this.onDropdownClick}
+						>
 							<i className="fa fa-plus"></i>
- 						</a>
+						</a>
 						<ul className="dropdown-menu" role="menu" style={{
 							display: this.state.dropdownDisplay
 						}}>
 						{sectores.map(sector => {
 							return (visibles.indexOf(sector.nombre) === -1 ?
-								(<li key={sector.nombre} title={sector.descr} data-sector-id={sector.nombre} onClick={this.onDropdownItemClick}>
+								(<li
+									key={sector.nombre}
+									title={sector.descr}
+									data-sector-id={sector.nombre}
+									onClick={this.onDropdownItemClick}
+								>
 									{sector.label}
 								</li>) :
 								null);
@@ -119,7 +152,7 @@ export default React.createClass({
 							}
 					</ul>
 					</li>
-					<li className={"navbar-right" + (!selected ? ' active' : '')}>
+					<li className={'navbar-right' + (!selected ? ' active' : '')}>
 						<a href="teletipo" onClick={this.openTeletipo}>Teletipo</a>
 					</li>
 				</ul>
