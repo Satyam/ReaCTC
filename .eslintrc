@@ -16,6 +16,7 @@
     "globals": {
     },
     "plugins": [
+		"react"
     ],
     "rules": {
         // Possible Errors
