@@ -3,6 +3,8 @@ var Reflux = require('reflux');
 import http from '../common/http.js';
 import actions from '../actions.js';
 
+import _ from 'lodash';
+
 var cache = {},
 	sector = {};
 
@@ -23,6 +25,7 @@ export default Reflux.createStore({
 			http.get('/data/sector/' + nombre)
 				.then(function (response) {
 					sector = cache[nombre] = response.body;
+					_.each(sector.celdas, (celda, coords) => celda.coords = coords);
 					actions.openTabSector.completed(sector);
 				})
 				.catch(function (response) {
@@ -46,5 +49,17 @@ export default Reflux.createStore({
 			this.trigger(sector);
 		}
 		cache[nombre] = null;
+	},
+	onCambio: function (estado) {
+		sector.celdas[estado.coords].desviado = estado.desviado;
+		this.trigger(sector);
+	},
+	onTriple: function (estado) {
+		sector.celdas[estado.coords].posicion = estado.posicion;
+		this.trigger(sector);
+	},
+	onManual: function (estado) {
+		sector.celdas[estado.coords].manual = estado.manual;
+		this.trigger(sector);
 	}
 });

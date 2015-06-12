@@ -9,5 +9,11 @@ export default Reflux.createActions({
 	setLocalConfig: SYNC,
 	closeTabSector: SYNC,
 	openTabSector: ASYNC,
-	error: SYNC
+	error: SYNC,
+	clickCelda: SYNC,
+	sectorUpdated: SYNC,
+	closeEstado: SYNC,
+	cambio: SYNC,
+	triple: SYNC,
+	manual: SYNC
 });
