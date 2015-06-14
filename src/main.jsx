@@ -15,6 +15,8 @@ import Mimico from './components/mimico/mimico.jsx';
 import Sector from './components/sector/sector.jsx';
 import Teletipo from './components/teletipo/teletipo.jsx';
 
+require('./stores/db.js');
+
 var routes = (
 	<Route name='app' path='/' handler={Mimico}>
 		<Route name='sector' path='sector/:sector' handler={Sector} />
