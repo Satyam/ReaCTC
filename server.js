@@ -1,34 +1,29 @@
-/*eslint-disable no-process-env , no-console*/
-var FS = require('q-io/fs'),
+/*eslint-disable no-process-env , no-console, no-mixed-requires*/
+var app = require('express')(),
+	path = require('path'),
 	Q = require('q'),
-	express = require('express'),
-	path = require('path');
+	sqlite3 = require('sqlite3').verbose(),
+	bodyParser = require('body-parser');
 
-var	app = express();
+app.use(bodyParser.json());
 
-// Cached data
-var listaSectores = [];
+console.log(process.env.PRODUCTION ? 'production' : 'development');
 
 // Serve application file depending on environment
 app.get('/app.js', function (req, res) {
 	if (process.env.PRODUCTION) {
+		console.log('get  app.js');
 		res.sendFile(path.join(__dirname, 'build/app.js'));
 	} else {
+		console.log('get  app.js (hot load)');
 		res.redirect('//localhost:9090/build/app.js');
 	}
 });
 
-app.get('/data/sectores', function (req, res) {
-	res.json(listaSectores);
-});
 
 app.get('/data/sector/:nombre', function (req, res) {
+	console.log('get  sector', req.params.nombre);
 	res.sendFile(path.join(__dirname, 'data/sectores', req.params.nombre) + '.json');
-});
-
-// Serve index page
-app.get('*', function (req, res) {
-	res.sendFile(path.join(__dirname, 'src/index.html'));
 });
 
 /*************************************************************
@@ -56,29 +51,35 @@ if (!process.env.PRODUCTION) {
 	});
 }
 
+var db = new sqlite3.Database(
+	'data/db.db',
+	sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+	function (errMsg) {
+		if (errMsg) {
+			console.error(errMsg);
+		} else {
 
-// Preload cached data
-var SECTORES = './data/sectores';
-FS.list(SECTORES)
-	.then(function (sectores) {
-		return Q.all(sectores.map(function (fileName) {
-			var nombre = fileName.replace('.json', '');
-			FS.read(SECTORES + '/' + fileName)
-				.then(function (content) {
-					var d = JSON.parse(content);
-					listaSectores.push({
-						nombre: nombre,
-						label: d.descrCorta,
-						descr: d.descr
+			Q.all([
+				require('./server/listaSectores.js')(app),
+				require('./server/actions.js')(app, db)
+			])
+				.then(function () {
+					// The catch-all for whatever remains, should be last
+					app.get('*', function (req, res) {
+						console.log('get   *', req.originalUrl);
+						// Serve index page
+						res.sendFile(path.join(__dirname, 'src/index.html'));
 					});
-				});
-		}));
-	})
-	.then(function () {
-		// Launch Express server
-		var port = process.env.PORT || 8080;
-		var server = app.listen(port, function () {
+					// Launch Express server
+					var port = process.env.PORT || 8080;
+					var server = app.listen(port, function () {
 
-			console.log('Essential React listening at http://%s:%s', server.address().address, server.address().port);
-		});
-	});
+						console.log('Listening at http://%s:%s', server.address().address, server.address().port);
+					});
+				})
+				.catch(function (err) {
+					console.error(err);
+				});
+		}
+	}
+);
