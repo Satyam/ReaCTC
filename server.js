@@ -21,6 +21,11 @@ app.get('/app.js', function (req, res) {
 });
 
 
+app.get('/favicon.ico', function (req, res) {
+	res.sendFile(path.join(__dirname, 'favicon.ico'), {'Content-Type': 'image/x-icon'});
+});
+
+
 app.get('/data/sector/:nombre', function (req, res) {
 	console.log('get  sector', req.params.nombre);
 	res.sendFile(path.join(__dirname, 'data/sectores', req.params.nombre) + '.json');
