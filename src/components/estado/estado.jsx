@@ -31,8 +31,8 @@ export default React.createClass({
 			<i className="fa fa-close" onClick={this.close}/>
 			<h3 className="popover-title">{s.celda.tipo}</h3>
 			<div className="popover-content">
-				{s.celda.tipo === 'cambio' && (<Cambio celda={s.celda}/>)}
-				{s.celda.tipo === 'triple' && (<Triple celda={s.celda}/>)}
+				{s.celda.tipo === 'cambio' && (<Cambio celda={s.celda} nombreSector={s.nombreSector}/>)}
+				{s.celda.tipo === 'triple' && (<Triple celda={s.celda} nombreSector={s.nombreSector}/>)}
 				<pre>{JSON.stringify(s.celda, null, 2)}</pre>
 			</div>
 		</div>) : null;
@@ -42,24 +42,28 @@ export default React.createClass({
 var Cambio = React.createClass({
 	cambioNormal: function () {
 		actions.cambio({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			desviado: false
 		});
 	},
 	cambioDesviado: function () {
 		actions.cambio({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			desviado: true
 		});
 	},
 	manualAutomatico: function () {
 		actions.manual({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			manual: false
 		});
 	},
 	manualManual: function () {
 		actions.manual({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			manual: true
 		});
@@ -105,30 +109,35 @@ var Cambio = React.createClass({
 var Triple = React.createClass({
 	cambioIzq: function () {
 		actions.triple({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			posicion: -1
 		});
 	},
 	cambioNormal: function () {
 		actions.triple({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			posicion: 0
 		});
 	},
 	cambioDer: function () {
 		actions.triple({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			posicion: 1
 		});
 	},
 	manualAutomatico: function () {
 		actions.manual({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			manual: false
 		});
 	},
 	manualManual: function () {
 		actions.manual({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.celda.coords,
 			manual: true
 		});

@@ -22,6 +22,7 @@ export default Reflux.createStore({
 		var izq = data.x > ancho / 2;
 
 		estado = {
+			nombreSector: data.nombreSector,
 			side: izq ? 'left' : 'right',
 			// 300 viene de estado/estado.less (eso esta muy mal)
 			left: (data.x + (izq ? 0 : 1)) / ancho * svgNode.offsetWidth + svgNode.offsetLeft - (izq ? 300 : 0),

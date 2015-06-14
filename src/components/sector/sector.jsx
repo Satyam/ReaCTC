@@ -26,9 +26,11 @@ export default React.createClass({
 		if (_.isEmpty(sector)) return (<div className='sector'>cargando ...</div>);
 		return (
 			<div className='sector'>
-				<Estado params={state.popover} />
+				<Estado />
 				<svg ref="svg" viewBox={`0 0 ${sector.ancho * ANCHO_CELDA} ${sector.alto * ANCHO_CELDA}`}>
-					{_.map(sector.celdas, (celda, coords) => <Celda key={coords} coords={coords} celda={celda}/>)}
+					{_.map(sector.celdas, (celda, coords) => (
+						<Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
+					))}
 				</svg>
 			</div>
 		);

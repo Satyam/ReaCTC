@@ -50,6 +50,7 @@ export default React.createClass({
 		ev.stopPropagation();
 
 		actions.clickCelda({
+			nombreSector: this.props.nombreSector,
 			coords: this.props.coords,
 			x: this.x,
 			y: this.y
