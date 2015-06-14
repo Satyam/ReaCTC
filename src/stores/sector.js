@@ -25,6 +25,7 @@ export default Reflux.createStore({
 			http.get('/data/sector/' + nombre)
 				.then(function (response) {
 					sector = cache[nombre] = response.body;
+					sector.nombre = nombre;
 					_.each(sector.celdas, (celda, coords) => celda.coords = coords);
 					actions.openTabSector.completed(sector);
 				})
