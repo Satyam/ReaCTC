@@ -11,7 +11,7 @@ export default Reflux.createStore({
 	listenables: actions,
 	getInitialState: function () {
 		if (!config) {
-			// config = global.localStorage.getItem(CTC);
+			config = global.localStorage.getItem(CTC);
 			if (!config) {
 				config = {
 					sectores: []
