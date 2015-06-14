@@ -108,10 +108,8 @@ The promise can be rejected with a standard JavaScript `Error` object with at le
 http.post = function (url, body, cb) {
 	return http({
 		method: 'POST',
-		json: true,
-		url: url,
-		body: body
-
+		json: body,
+		url: url
 	}, cb);
 };
 /**
@@ -165,10 +163,8 @@ The promise can be rejected with a standard JavaScript `Error` object with at le
 http.put = function (url, body, cb) {
 	return http({
 		method: 'PUT',
-		json: true,
-		url: url,
-		body: body
-
+		json: body,
+		url: url
 	}, cb);
 };
 
