@@ -1,6 +1,9 @@
 /*eslint-disable no-console*/
 
-var Q = require('q');
+var Q = require('q'),
+	FS = require('q-io/fs');
+
+var insertAction, insertClient;
 
 module.exports = function (app, db) {
 	console.log('actions called', db);
@@ -11,8 +14,7 @@ module.exports = function (app, db) {
 				p.coords,
 				p.action,
 				req.body);
-		db.run(
-			'insert into actions (sector, celda, action, data) values (?, ?, ?, ?)',
+		insertAction.run(
 			[
 				p.sector,
 				p.coords,
@@ -33,8 +35,7 @@ module.exports = function (app, db) {
 
 	app.get('/action/id', function (req, res) {
 		console.log('get id', req.ip, req.ips, req.get('user-agent'));
-		db.run(
-			'insert into terminalIds (ip, ua) values (?, ?)',
+		insertClient.run(
 			[
 				req.ip,
 				req.get('user-agent')
@@ -51,32 +52,32 @@ module.exports = function (app, db) {
 		);
 	});
 
-	return Q.all(
-		[
-			Q.ninvoke(
-				db,
-				'run',
-				'create table if not exists actions (' +
-				'	id integer primary key,' +
-				'	timestamp text default CURRENT_TIMESTAMP,' +
-				'	sector text,' +
-				'   celda text,' +
-				'	action text,' +
-				'	data Text' +
-				');',
-				[]
-			),
-			Q.ninvoke(
-				db,
-				'run',
-				'create table if not exists terminalIds (' +
-				'   id integer primary key,' +
-				'	timestamp text default CURRENT_TIMESTAMP,' +
-				'   ip text,' +
-				'   ua text' +
-				');',
-				[]
-			)
-		]
-	);
+	var prepare = function (sql) {
+		var def = Q.defer();
+		var prepared = db.prepare(
+			sql,
+			[],
+			function (err) {
+				if (err) def.reject(err);
+				else def.resolve(prepared);
+			}
+		);
+		return def.promise;
+	};
+	return FS.read('./server/setup.sql')
+		.then(function (sql) {
+			return Q.ninvoke(db, 'run', sql, []);
+		})
+		.then(function() {
+			return prepare('insert into actions (sector, celda, action, data) values (?, ?, ?, ?)')
+				.then(function (prepared) {
+					insertAction = prepared;
+				});
+		})
+		.then(function () {
+			return prepare('insert into terminalIds (ip, ua) values (?, ?)')
+				.then(function (prepared) {
+					insertClient = prepared;
+				});
+		});
 };
