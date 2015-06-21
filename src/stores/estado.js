@@ -38,8 +38,6 @@ export default Reflux.createStore({
 	onTriple: function () {
 		this.trigger(estado);
 	},
-	onManual: function () {
-	},
 	onCloseEstado: function () {
 		estado.visible = false;
 		this.trigger(estado);
