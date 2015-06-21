@@ -15,5 +15,7 @@ export default Reflux.createActions({
 	closeEstado: SYNC,
 	cambio: SYNC,
 	triple: SYNC,
-	manual: SYNC
+	manual: SYNC,
+	teletipo: SYNC,
+	senal: SYNC
 });
