@@ -2,6 +2,9 @@ import React from 'react';
 require('./celda.less');
 import actions from '../../actions.js';
 import {ANCHO_CELDA, CENTRO_CELDA, X, Y} from '../../common/common.js';
+import _ from 'lodash';
+
+import Senal from '../senal/senal.jsx';
 
 var Linea = React.createClass({
 	render: function () {
@@ -26,7 +29,6 @@ export default React.createClass({
 			y = parseInt(coords[1], 10),
 			celda = this.props.celda,
 			label = celda.descr || `[${x},${y}]`,
-			seleccionada = this.props.seleccionada ? 'seleccionada' : 'oculta',
 			renderer = this[celda.tipo];
 
 		this.x = x;
@@ -37,9 +39,10 @@ export default React.createClass({
 				transform={`translate(${x * ANCHO_CELDA}, ${y * ANCHO_CELDA})`}
 				onClick={this.onClick}
 			>
-				<rect x='0' y='0' width={ANCHO_CELDA} height={ANCHO_CELDA} className={seleccionada} />
+				<rect x='0' y='0' width={ANCHO_CELDA} height={ANCHO_CELDA} className={(celda.manual ? 'manual' : '')} />
 				{ renderer && renderer.call(this, celda) }
 				<text x="5" y="95">{label}</text>
+				{_.map(celda.senales, (senal, dir) => (<Senal dir={dir} luces={senal} key={dir}/>))}
 			</g>
 		);
 	},
@@ -48,7 +51,6 @@ export default React.createClass({
 		if (ev.metaKey || ev.altKey || ev.ctrlKey || ev.shiftKey) return false;
 		ev.preventDefault();
 		ev.stopPropagation();
-
 		actions.clickCelda({
 			nombreSector: this.props.nombreSector,
 			coords: this.props.coords,
