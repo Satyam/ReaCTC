@@ -204,7 +204,9 @@ export default Reflux.createStore({
 		this.trigger(sector);
 	},
 	onManual: function (estado) {
-		sector.celdas[estado.coords].manual = estado.manual;
+		var celda = sector.getCelda(estado.coords);
+		celda.manual = estado.manual;
+		_.each(celda.enclavamientos, encl => sector.dispatchEnclavamiento(encl, celda));
 		this.trigger(sector);
 	}
 });
