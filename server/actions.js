@@ -66,7 +66,7 @@ module.exports = function (app, db) {
 	};
 	return FS.read('./server/setup.sql')
 		.then(function (sql) {
-			return Q.ninvoke(db, 'run', sql, []);
+			return Q.ninvoke(db, 'exec', sql);
 		})
 		.then(function() {
 			return prepare('insert into actions (sector, celda, action, data) values (?, ?, ?, ?)')
@@ -79,5 +79,8 @@ module.exports = function (app, db) {
 				.then(function (prepared) {
 					insertClient = prepared;
 				});
+		})
+		.catch(function (err) {
+			console.error(err);
 		});
 };
