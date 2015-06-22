@@ -65,7 +65,8 @@ class Sector {
 				actions.teletipo({
 					sector: this.descr,
 					coords: celdaDest.coords,
-					msg: 'Cambio automático propagado a celda en manual desde ' + celda.coords
+					msg: 'Cambio automático propagado a celda en manual desde ' + celda.coords,
+					nivel: 1
 				});
 				return;
 			}
@@ -74,7 +75,8 @@ class Sector {
 				actions.teletipo({
 					sector: this.descr,
 					coords: celdaDest.coords,
-					msg: 'Lazo infinito de enclavamiento desde ' + celda.coords
+					msg: 'Lazo infinito de enclavamiento desde ' + celda.coords,
+					nivel: 2
 				});
 				return;
 			}
