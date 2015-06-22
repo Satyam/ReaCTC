@@ -23,7 +23,7 @@ export default React.createClass({
 	render: function () {
 		var state = this.state,
 			sector = state.sector;
-		if (_.isEmpty(sector)) return (<div className='sector'>cargando ...</div>);
+		if (_.isEmpty(sector)) return (<div className='sector'><img className="loading" src="/loading.gif" /></div>);
 		return (
 			<div className='sector'>
 				<Estado />
