@@ -32,3 +32,15 @@ export const ANCHO_CELDA = 100,
 	},
 	DIR = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 
+export function splitCoords (coords) {
+	var parts = coords.split(',');
+	return [parseInt(parts[0], 10), parseInt(parts[1], 10)];
+}
+
+export function leftButton (ev) {
+	if (ev.button !== 0) return false;
+	if (ev.metaKey || ev.altKey || ev.ctrlKey || ev.shiftKey) return false;
+	ev.preventDefault();
+	ev.stopPropagation();
+	return true;
+}

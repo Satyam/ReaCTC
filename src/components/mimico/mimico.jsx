@@ -3,6 +3,7 @@ import Reflux from 'reflux';
 import {RouteHandler, Navigation, State} from 'react-router';
 
 import actions from '../../actions.js';
+import {leftButton} from '../../common/common.js';
 
 import _ from 'lodash';
 
@@ -35,7 +36,7 @@ export default React.createClass({
 		this.setState({errorMsg: null});
 	},
 	onTabClick: function (ev) {
-		if (!this.leftClick(ev)) return;
+		if (!leftButton(ev)) return;
 
 		var target = ev.target,
 			a = target,
@@ -67,27 +68,21 @@ export default React.createClass({
 			this.replaceWith('teletipo');
 		}
 	},
-	leftClick: function (ev) {
-		if (ev.button !== 0) return false;
-		if (ev.metaKey || ev.altKey || ev.ctrlKey || ev.shiftKey) return false;
-		ev.preventDefault();
-		return true;
-	},
 	onDropdownItemClick: function (ev) {
-		if (!this.leftClick(ev)) return;
+		if (!leftButton(ev)) return;
 		this.toggleDropdown();
 		this.transitionTo('sector', {sector: ev.target.dataset.sectorId});
 		actions.openTabSector(ev.target.dataset.sectorId);
 	},
 	onDropdownClick: function (ev) {
-		if (!this.leftClick(ev)) return;
+		if (!leftButton(ev)) return;
 		this.toggleDropdown();
 	},
 	toggleDropdown: function() {
 		this.setState({dropdownDisplay: this.state.dropdownDisplay === 'block' ? 'none' : 'block'});
 	},
 	openTeletipo: function (ev) {
-		if (!this.leftClick(ev)) return;
+		if (!leftButton(ev)) return;
 		actions.openTabSector(null);
 		this.transitionTo('teletipo');
 	},
