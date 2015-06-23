@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import Reflux from 'reflux';
 import actions from '../../actions.js';
 import {ANCHO_CELDA} from '../../common/common.js';
@@ -40,6 +40,29 @@ export default React.createClass({
 });
 
 var Cambio = React.createClass({
+	propTypes: {
+		// <Cambio celda={s.celda} nombreSector={s.nombreSector}/>
+		celda: PropTypes.shape({
+			/*
+			"tipo": "cambio",
+			"punta":{"dir":"SE"},
+			"normal":{"dir":"NW"},
+			"invertido":{"dir":"W"},
+			*/
+			tipo: PropTypes.string.isRequired,
+			punta: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+			normal: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+			invertido: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+
+		}),
+		nombreSector: PropTypes.string.isRequired
+	},
 	cambioNormal: function () {
 		actions.cambio({
 			nombreSector: this.props.nombreSector,
@@ -107,6 +130,32 @@ var Cambio = React.createClass({
 });
 
 var Triple = React.createClass({
+	propTypes: {
+		// <Triple celda={s.celda} nombreSector={s.nombreSector}/>
+		celda: PropTypes.shape({
+			/*
+			"tipo": "triple",
+			"punta":{"dir":"W"},
+			"centro":{"dir":"E"},
+			"izq":{"dir":"NE"},
+			"der":{"dir":"SE"},
+			*/
+			tipo: PropTypes.string.isRequired,
+			punta: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+			centro: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+			izq: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+			der: PropTypes.shape({
+				dir:PropTypes.string.isRequired
+			}),
+		}),
+		nombreSector: PropTypes.string.isRequired
+	},
 	cambioIzq: function () {
 		actions.triple({
 			nombreSector: this.props.nombreSector,

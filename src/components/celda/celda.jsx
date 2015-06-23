@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 require('./celda.less');
 import actions from '../../actions.js';
 import {ANCHO_CELDA, CENTRO_CELDA, X, Y} from '../../common/common.js';
@@ -22,6 +22,14 @@ var Linea = React.createClass({
 });
 
 export default React.createClass({
+	propTypes: {
+		// <Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
+		coords: PropTypes.string.isRequired,
+		celda: PropTypes.shape({
+			tipo: PropTypes.string.isRequired
+		}),
+		nombreSector: PropTypes.string.isRequired
+	},
 	render: function () {
 
 		var coords = this.props.coords.split(','),

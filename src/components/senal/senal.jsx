@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 require('./senal.less');
 import {CENTRO_CELDA, ANG} from '../../common/common.js';
 
 export default React.createClass({
+	propTypes: {
+		// <Senal dir={dir} luces={senal} key={dir}/>
+		dir: PropTypes.string.isRequired,
+		luces: PropTypes.object.isRequired
+	},
 	render: function () {
 		/*
 		Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
