@@ -54,7 +54,7 @@
 			"senales": {
 				"E": {
 					"primaria": {
-						"estado": "verde"
+						"estado": "libre"
 					}
 				}
 			}
@@ -77,7 +77,7 @@
 			"senales": {
 				"SE": {
 					"primaria": {
-						"estado": "verde"
+						"estado": "libre"
 					},
 					"izq": {
 						"estado": "alto"
@@ -107,7 +107,7 @@
 						"estado": "alto"
 					},
 					"izq": {
-						"estado": "verde"
+						"estado": "libre"
 					},
 					"der": {
 						"estado": "precaucion"
@@ -226,7 +226,7 @@
 			"senal": "8,3,SE",
 			"celda": "8,3",
 			"normal": {
-				"primaria": "verde",
+				"primaria": "libre",
 				"izq":"alto"
 			},
 			"desviado": {
@@ -239,7 +239,7 @@
 			"senal": "4,4,W",
 			"celda": "4,4",
 			"normal": {
-				"primaria": "verde",
+				"primaria": "libre",
 				"der":"alto"
 			},
 			"desviado": {
@@ -252,19 +252,19 @@
 			"senal": "2,4,W",
 			"celda": "2,4",
 			"izq": {
-				"izq":"verde",
+				"izq":"libre",
 				"primaria": "alto",
 				"der":"alto"
 			},
 			"centro": {
 				"izq":"alto",
-				"primaria": "verde",
+				"primaria": "libre",
 				"der":"alto"
 			},
 			"der": {
 				"izq":"alto",
 				"primaria": "alto",
-				"der":"verde"
+				"der":"libre"
 			}
 		}
 	]
