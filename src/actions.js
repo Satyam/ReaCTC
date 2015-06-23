@@ -11,6 +11,7 @@ export default Reflux.createActions({
 	openTabSector: ASYNC,
 	error: SYNC,
 	clickCelda: SYNC,
+	clickSenal: SYNC,
 	sectorUpdated: SYNC,
 	closeEstado: SYNC,
 	cambio: SYNC,

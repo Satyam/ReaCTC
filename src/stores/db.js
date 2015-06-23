@@ -16,14 +16,12 @@ export default Reflux.createStore({
 		terminalID = localConfigStore.getInitialState().terminalID;
 		if (!terminalID) {
 			http.get('/action/id').then(response => {
-				console.log('terminalID', response.body.id);
 				actions.setLocalConfig('terminalID', response.body.id);
 			});
 		}
 	},
 	onLocalConfigChange: function (data) {
 		terminalID = data.terminalID;
-		console.log('read terminalID', terminalID);
 	},
 
 	onCambio: function (data) {
@@ -33,7 +31,10 @@ export default Reflux.createStore({
 		http.post(path.join('/action', data.nombreSector, data.coords, 'triple'), {posicion: data.posicion});
 	},
 	onManual: function (data) {
-		http.post(path.join('/action', data.nombreSector, data.coords, 'manual'), {manual: data.manual});
+		http.post(path.join('/action', data.nombreSector, data.coords, 'manual'), {
+			manual: data.manual,
+			luz: data.luz
+		});
 	},
 	onSenal: function (data) {
 		http.post(path.join('/action', data.nombreSector, data.coords, 'senal'), {

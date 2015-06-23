@@ -9,10 +9,12 @@ var cache = {},
 	sector = {};
 
 var prioridades = [
-	'verde',
+	'libre',
 	'precaucion',
 	'alto'
 ];
+
+var coordsRX = /(\d+,\d+)(,(.+))?/;
 
 class Sector {
 	constructor (nombre, config) {
@@ -31,16 +33,20 @@ class Sector {
 				_.each(enclavamiento.celdas, celda => agregarEnclavamiento(celda, enclavamiento));
 			});
 			let reintentos = 10;
-			while (reintentos--) {
-				if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
-						return prevVal + this.dispatchEnclavamiento(enclavamiento) ? 1 : 0;
-					}, 0) === 0) break;
-			}
-			if (reintentos === -1) {
-				actions.error({
-					msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
-				});
-			}
+			var interval = global.setInterval(() => {
+				reintentos--;
+				var changes = this.enclavamientos.reduce((prevVal, enclavamiento) => {
+					return prevVal + this.dispatchEnclavamiento(enclavamiento) ? 1 : 0;
+				}, 0);
+				if (changes === 0) {
+					global.clearInterval(interval);
+				} else if (reintentos === 0) {
+					global.clearInterval(interval);
+					actions.error({
+						msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
+					});
+				}
+			}, 0);
 		}
 	}
 	dispatchEnclavamiento (enclavamiento, celda, estado) {
@@ -125,7 +131,6 @@ class Sector {
 			return Math.max(prioridades.indexOf(value), pri);
 		}, 0)];
 		if (nuevoEstado !== l.estado) {
-			l.estado = nuevoEstado;
 			actions.senal({
 				nombreSector: this.nombre,
 				coords: coords,
@@ -136,16 +141,14 @@ class Sector {
 		}
 		return 0;
 	}
-	getCelda(x, y) {
-		var coord = arguments.length === 2 ? x + ',' + y : x;
-		return this.celdas[coord];
+	getCelda(coords) {
+		coords = coords.replace(coordsRX, '$1');
+		return this.celdas[coords];
 	}
-	getSenal(x, y, dir) {
-		if (arguments.length === 1) {
-			[x, y, dir] = x.split(',');
-		}
-		var celda = this.celdas[[x, y].join(',')];
-		if (celda) return celda.senales[dir];
+	getSenal(coords) {
+		var match = coordsRX.exec(coords);
+		var celda = this.celdas[match[1]];
+		if (celda) return celda.senales[match[3]];
 		// otherwise, returns undefined
 	}
 }
@@ -205,8 +208,18 @@ export default Reflux.createStore({
 	},
 	onManual: function (estado) {
 		var celda = sector.getCelda(estado.coords);
-		celda.manual = estado.manual;
+		if (estado.luz) {
+			var senal = sector.getSenal(estado.coords);
+			senal[estado.luz].manual = estado.manual;
+		} else {
+			celda.manual = estado.manual;
+		}
 		_.each(celda.enclavamientos, encl => sector.dispatchEnclavamiento(encl, celda));
+		this.trigger(sector);
+	},
+	onSenal: function (estado) {
+		var senal = sector.getSenal(estado.coords);
+		senal[estado.luz].estado = estado.estado;
 		this.trigger(sector);
 	}
 });

@@ -1,12 +1,23 @@
 import React, {PropTypes} from 'react';
+import actions from '../../actions.js';
 require('./senal.less');
-import {CENTRO_CELDA, ANG} from '../../common/common.js';
+import {CENTRO_CELDA, ANG, leftButton} from '../../common/common.js';
 
 export default React.createClass({
 	propTypes: {
 		// <Senal dir={dir} luces={senal} key={dir}/>
 		dir: PropTypes.string.isRequired,
-		luces: PropTypes.object.isRequired
+		luces: PropTypes.object.isRequired,
+		coords: PropTypes.string.isRequired,
+		nombreSector: PropTypes.string.isRequired
+	},
+	onClick: function (ev) {
+		if (!leftButton(ev)) return;
+		actions.clickSenal({
+			nombreSector: this.props.nombreSector,
+			coords: this.props.coords,
+			dir: this.props.dir
+		});
 	},
 	render: function () {
 		/*
@@ -25,6 +36,7 @@ export default React.createClass({
 			<g
 				className="senal"
 				transform={`rotate(${ANG[this.props.dir]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})`}
+				onClick={this.onClick}
 			>
 				<line x1={xTope} y1={y} x2={x2 + r} y2={y} />
 				<line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />

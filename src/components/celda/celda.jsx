@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 require('./celda.less');
 import actions from '../../actions.js';
-import {ANCHO_CELDA, CENTRO_CELDA, X, Y} from '../../common/common.js';
+import {ANCHO_CELDA, CENTRO_CELDA, X, Y, splitCoords, leftButton} from '../../common/common.js';
 import _ from 'lodash';
 
 import Senal from '../senal/senal.jsx';
@@ -32,15 +32,10 @@ export default React.createClass({
 	},
 	render: function () {
 
-		var coords = this.props.coords.split(','),
-			x = parseInt(coords[0], 10),
-			y = parseInt(coords[1], 10),
+		var [x, y] = splitCoords(this.props.coords),
 			celda = this.props.celda,
 			label = celda.descr || `[${x},${y}]`,
 			renderer = this[celda.tipo];
-
-		this.x = x;
-		this.y = y;
 
 		return (
 			<g
@@ -50,20 +45,21 @@ export default React.createClass({
 				<rect x='0' y='0' width={ANCHO_CELDA} height={ANCHO_CELDA} className={(celda.manual ? 'manual' : '')} />
 				{ renderer && renderer.call(this, celda) }
 				<text x="5" y="95">{label}</text>
-				{_.map(celda.senales, (senal, dir) => (<Senal dir={dir} luces={senal} key={dir}/>))}
+				{_.map(celda.senales, (senal, dir) => (<Senal
+					dir={dir}
+					luces={senal}
+					coords={celda.coords}
+					nombreSector={this.props.nombreSector}
+					key={dir}
+				/>))}
 			</g>
 		);
 	},
 	onClick: function (ev) {
-		if (ev.button !== 0) return false;
-		if (ev.metaKey || ev.altKey || ev.ctrlKey || ev.shiftKey) return false;
-		ev.preventDefault();
-		ev.stopPropagation();
+		if (!leftButton(ev)) return;
 		actions.clickCelda({
 			nombreSector: this.props.nombreSector,
-			coords: this.props.coords,
-			x: this.x,
-			y: this.y
+			coords: this.props.coords
 		});
 	},
 	linea: function (celda) {
