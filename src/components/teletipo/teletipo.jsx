@@ -1,5 +1,5 @@
 import React from 'react';
-import Reflux from 'reflux';
+// import Reflux from 'reflux';
 // import actions from '../../actions.js';
 import _ from 'lodash';
 
@@ -14,9 +14,18 @@ var colores = [
 import teletipoStore from '../../stores/teletipo.js';
 
 export default React.createClass({
-	mixins: [
-		Reflux.connect(teletipoStore, 'teletipo')
-	],
+	getInitialState: function () {
+		return teletipoStore.getState();
+	},
+	componentDidMount: function () {
+		teletipoStore.listen(this.onChange);
+	},
+	componentWillUnmount: function () {
+		teletipoStore.unlisten(this.onChange);
+	},
+	onChange: function (state) {
+		this.setState(state);
+	},
 	render: function () {
 		return (<table className="table table-striped">
 			<thead>
@@ -28,7 +37,7 @@ export default React.createClass({
 				</tr>
 			</thead>
 			<tbody>
-				{_.map(this.state.teletipo, row => {
+				{_.map(this.state.mensajes, row => {
 					return (<tr className={colores[row.nivel]} key={row.fecha.getTime()}>
 						<td>{row.fecha.toLocaleString()}</td>
 						<td>{row.sector}</td>

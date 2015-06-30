@@ -1,5 +1,5 @@
 import React from 'react';
-import Reflux from 'reflux';
+// import Reflux from 'reflux';
 import {RouteHandler, Navigation, State} from 'react-router';
 
 import actions from '../../actions.js';
@@ -14,11 +14,28 @@ import localConfigStore from '../../stores/localConfig.js';
 const sectorPathMatch = /\/sector\/(.+)/;
 export default React.createClass({
 	mixins: [
-		Reflux.connect(sectoresStore, 'sectores'),
-		Reflux.connect(localConfigStore, 'localConfig'),
+		// Reflux.connect(sectoresStore, 'sectores'),
+		// Reflux.connect(localConfigStore, 'localConfig'),
 		Navigation,
 		State
 	],
+	getInitialState: function () {
+		return {localConfig: localConfigStore.getState().config};
+	},
+	componentDidMount: function () {
+		// sectoresStore.load();
+		this.unlisteners = [
+			sectoresStore.listen(state => {
+				this.setState(state);
+			}),
+			localConfigStore.listen(config => {
+				this.setState({localConfig: config});
+			})
+		];
+	},
+	componentWillUnmount: function () {
+		this.unlisteners.forEach(u => u());
+	},
 	componentWillMount: function () {
 		var selected = sectorPathMatch.exec(this.getPathname());
 		if (selected) selected = selected[1];
@@ -26,10 +43,10 @@ export default React.createClass({
 
 		actions.openTabSector(selected);
 
-		actions.error.listen(msg => {
-			this.setState({errorMsg: msg});
-			global.setTimeout(() => this.setState({errorMsg: null}), 10000);
-		});
+//		actions.error.listen(msg => {
+//			this.setState({errorMsg: msg});
+//			global.setTimeout(() => this.setState({errorMsg: null}), 10000);
+//		});
 
 	},
 	closeErrorMsg: function () {
@@ -59,14 +76,14 @@ export default React.createClass({
 		}
 	},
 	gotoFirstTab: function (skip) {
-		var selected = this.state.localConfig.sectores[0];
-		if (selected === skip) selected = this.state.localConfig.sectores[1];
-		if (selected) {
-			this.replaceWith('sector', {sector: selected});
-			actions.openTabSector(selected);
-		} else {
+//		var selected = this.state && this.state.localConfig && this.state.localConfig.sectores[0];
+//		if (selected === skip) selected = this.state.localConfig.sectores[1];
+//		if (selected) {
+//			this.replaceWith('sector', {sector: selected});
+//			actions.openTabSector(selected);
+//		} else {
 			this.replaceWith('teletipo');
-		}
+//		}
 	},
 	onDropdownItemClick: function (ev) {
 		if (!leftButton(ev)) return;
@@ -87,6 +104,7 @@ export default React.createClass({
 		this.transitionTo('teletipo');
 	},
 	render: function () {
+		if (!(this.state && this.state.localConfig && this.state.sectores)) return null;
 		var lc = this.state.localConfig,
 			sectores = _.sortBy(this.state.sectores, 'nombre'),
 			selected = lc.selected,

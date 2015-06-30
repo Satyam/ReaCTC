@@ -1,18 +1,17 @@
-var Reflux = require('reflux');
-
+import alt from '../alt.js';
 import actions from '../actions.js';
 
-var mensajes = [];
 
-export default Reflux.createStore({
-	listenables: actions,
-	getInitialState: function () {
-		return mensajes;
-	},
-	onTeletipo: function (data) {
+class TeletipoStore {
+	constructor() {
+		this.mensajes = [];
+		this.bindAction(actions.teletipo, this.onTeletipo);
+	}
+	onTeletipo (data) {
 		data.fecha = new Date();
 		data.nivel = data.nivel || 0;
-		mensajes.push(data);
-		this.trigger(mensajes);
+		this.mensajes.push(data);
 	}
-});
+}
+
+export default alt.createStore(TeletipoStore, 'TeletipoStore');
