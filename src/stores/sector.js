@@ -1,12 +1,11 @@
-var Reflux = require('reflux');
+import alt from '../alt.js';
 
 import http from '../common/http.js';
 import actions from '../actions.js';
 
 import _ from 'lodash';
 
-var cache = {},
-	sector = {};
+var cache = {};
 
 var prioridades = [
 	'libre',
@@ -21,6 +20,8 @@ class Sector {
 		_.merge(this, config);
 		this.nombre = nombre;
 		_.each(this.celdas, (celda, coords) => celda.coords = coords);
+	}
+	inicializarEnclavamientos () {
 		if (this.enclavamientos) {
 			let agregarEnclavamiento = (coords, enclavamiento) => {
 				let celda = this.getCelda(coords);
@@ -32,21 +33,17 @@ class Sector {
 				if (enclavamiento.celda) agregarEnclavamiento(enclavamiento.celda, enclavamiento);
 				_.each(enclavamiento.celdas, celda => agregarEnclavamiento(celda, enclavamiento));
 			});
-			let reintentos = 10;
-			var interval = global.setInterval(() => {
-				reintentos--;
-				var changes = this.enclavamientos.reduce((prevVal, enclavamiento) => {
+			let reintentos;
+			for (reintentos = 10; reintentos; reintentos--) {
+				if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
 					return prevVal + this.dispatchEnclavamiento(enclavamiento) ? 1 : 0;
-				}, 0);
-				if (changes === 0) {
-					global.clearInterval(interval);
-				} else if (reintentos === 0) {
-					global.clearInterval(interval);
-					actions.error({
-						msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
-					});
-				}
-			}, 0);
+				}, 0) === 0) break;
+			}
+			if (reintentos === 0) {
+				actions.error({
+					msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
+				});
+			}
 		}
 	}
 	dispatchEnclavamiento (enclavamiento, celda, estado) {
@@ -153,73 +150,61 @@ class Sector {
 	}
 }
 
-export default Reflux.createStore({
-	listenables: actions,
-	getInitialState: function () {
-		return {};
-	},
-	onOpenTabSector: function (nombre) {
+class SectorStore {
+	constructor () {
+		this.sector = {};
+		this.bindActions(actions);
+	}
+	onOpenTabSector (nombre) {
 		if (!nombre) {
-			sector = null;
-			return;
-		}
-		if (cache[nombre]) {
-			sector = cache[nombre];
-			actions.openTabSector.completed(sector);
+			this.sector = null;
+		} else if (cache[nombre]) {
+			this.sector = cache[nombre];
 		} else {
 			http.get('/data/sector/' + nombre)
-				.then(function (response) {
-					sector = cache[nombre] = new Sector(nombre, response.body);
-					actions.openTabSector.completed(sector);
+				.then(response => {
+					this.sector = cache[nombre] = new Sector(nombre, response.body);
+					this.sector.inicializarEnclavamientos();
+					this.emitChange();
 				})
-				.catch(function (response) {
-					sector = {};
-					actions.openTabSector.failed(
-						response.message || (response.statusCode + ': ' + response.body)
-					);
+				.catch(response => {
+					this.sector = {};
+					actions.error(response.message || (response.statusCode + ': ' + response.body));
+					this.emitChange();
 				});
+			return false;
 		}
-	},
-	onOpenTabSectorCompleted: function () {
-		this.trigger(sector);
-	},
-	onOpenTabSectorFailed: function (err) {
-		actions.error(err);
-		this.trigger(sector);
-	},
-	onCloseTabSector: function (nombre) {
-		if (sector === cache[nombre]) {
-			sector = {};
-			this.trigger(sector);
+	}
+	onCloseTabSector (nombre) {
+		if (this.sector === cache[nombre]) {
+			this.sector = {};
 		}
 		cache[nombre] = null;
-	},
-	onCambio: function (estado) {
-		var celda = sector.getCelda(estado.coords);
+	}
+	onCambio (estado) {
+		var celda = this.sector.getCelda(estado.coords);
 		celda.desviado = estado.desviado;
-		_.each(celda.enclavamientos, encl => sector.dispatchEnclavamiento(encl, celda, estado));
-		this.trigger(sector);
-	},
-	onTriple: function (estado) {
-		var celda = sector.getCelda(estado.coords);
+		_.each(celda.enclavamientos, encl => this.sector.dispatchEnclavamiento(encl, celda, estado));
+	}
+	onTriple (estado) {
+		var celda = this.sector.getCelda(estado.coords);
 		celda.posicion = estado.posicion;
-		_.each(celda.enclavamientos, encl => sector.dispatchEnclavamiento(encl, celda, estado));
-		this.trigger(sector);
-	},
-	onManual: function (estado) {
-		var celda = sector.getCelda(estado.coords);
+		_.each(celda.enclavamientos, encl => this.sector.dispatchEnclavamiento(encl, celda, estado));
+	}
+	onManual (estado) {
+		var celda = this.sector.getCelda(estado.coords);
 		if (estado.luz) {
-			var senal = sector.getSenal(estado.coords);
+			var senal = this.sector.getSenal(estado.coords);
 			senal[estado.luz].manual = estado.manual;
 		} else {
 			celda.manual = estado.manual;
 		}
-		_.each(celda.enclavamientos, encl => sector.dispatchEnclavamiento(encl, celda));
-		this.trigger(sector);
-	},
-	onSenal: function (estado) {
-		var senal = sector.getSenal(estado.coords);
-		senal[estado.luz].estado = estado.estado;
-		this.trigger(sector);
+		_.each(celda.enclavamientos, encl => this.sector.dispatchEnclavamiento(encl, celda));
 	}
-});
+	onSenal (estado) {
+		var senal = this.sector.getSenal(estado.coords);
+		senal[estado.luz].estado = estado.estado;
+	}
+}
+
+export default alt.createStore(SectorStore, 'SectorStore');

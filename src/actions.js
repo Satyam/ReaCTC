@@ -29,9 +29,6 @@ export default Reflux.createActions({
 import alt from './alt.js';
 
 export default alt.generateActions(
-	'loadSectores',
-	'sectoresLoaded',
-	'setLocalConfig', // ver de eliminar
 	'closeTabSector',
 	'openTabSector',
 	'tabSectorOpenned',

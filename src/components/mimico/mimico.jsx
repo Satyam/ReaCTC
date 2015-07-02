@@ -10,26 +10,27 @@ import _ from 'lodash';
 require('./mimico.less');
 import sectoresStore from '../../stores/sectores.js';
 import localConfigStore from '../../stores/localConfig.js';
+import erroresStore from '../../stores/errores.js';
 
 const sectorPathMatch = /\/sector\/(.+)/;
 export default React.createClass({
 	mixins: [
-		// Reflux.connect(sectoresStore, 'sectores'),
-		// Reflux.connect(localConfigStore, 'localConfig'),
 		Navigation,
 		State
 	],
 	getInitialState: function () {
-		return {localConfig: localConfigStore.getState().config};
+		return _.merge(localConfigStore.getState(), {errores:[], sectores:[]});
 	},
 	componentDidMount: function () {
-		// sectoresStore.load();
 		this.unlisteners = [
 			sectoresStore.listen(state => {
 				this.setState(state);
 			}),
-			localConfigStore.listen(config => {
-				this.setState({localConfig: config});
+			erroresStore.listen(state => {
+				this.setState(state);
+			}),
+			localConfigStore.listen(state => {
+				this.setState(state);
 			})
 		];
 	},
@@ -43,14 +44,9 @@ export default React.createClass({
 
 		actions.openTabSector(selected);
 
-//		actions.error.listen(msg => {
-//			this.setState({errorMsg: msg});
-//			global.setTimeout(() => this.setState({errorMsg: null}), 10000);
-//		});
-
 	},
 	closeErrorMsg: function () {
-		this.setState({errorMsg: null});
+		this.setState({errores: []});
 	},
 	onTabClick: function (ev) {
 		if (!leftButton(ev)) return;
@@ -104,24 +100,26 @@ export default React.createClass({
 		this.transitionTo('teletipo');
 	},
 	render: function () {
-		if (!(this.state && this.state.localConfig && this.state.sectores)) return null;
-		var lc = this.state.localConfig,
-			sectores = _.sortBy(this.state.sectores, 'nombre'),
+		var st = this.state,
+			lc = st.localConfig,
+			sectores = _.sortBy(st.sectores, 'nombre'),
 			selected = lc.selected,
-			visibles = lc.sectores;
+			visibles = lc.sectores || [];
 
 		return (
 			<div className="mimico">
-				{this.state.errorMsg && (
+				{st.errores.length ? (
 					<div onClick={this.closeErrorMsg} className="panel panel-warning error-msg">
 						<div className="panel-heading">
 							<i className="fa fa-close"/><h3 className="panel-title">Atención</h3>
 						</div>
 						<div className="panel-body">
-							{this.state.errorMsg}
+							{_.map(st.errores, (error, index) => {
+								return (<div key={index}>{error.msg}</div>);
+							})}
 						</div>
 					</div>
-				)}
+				) : null}
 				<ul className="nav nav-tabs">
 					{ sectores.map(sector => {
 						return (
@@ -148,7 +146,7 @@ export default React.createClass({
 							<i className="fa fa-plus"></i>
 						</a>
 						<ul className="dropdown-menu" role="menu" style={{
-							display: this.state.dropdownDisplay
+							display: st.dropdownDisplay
 						}}>
 						{sectores.map(sector => {
 							return (visibles.indexOf(sector.nombre) === -1 ?

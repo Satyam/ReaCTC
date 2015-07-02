@@ -16,11 +16,11 @@ class LocalConfigStore {
 			config = JSON.parse(config);
 		}
 		console.log('config', config);
-		this.config = config;
+		this.localConfig = config;
 		if (!config.terminalID) {
 			http.get('/action/id')
 			.then(response => {
-				this.config.terminalID = response.body.id;
+				this.localConfig.terminalID = response.body.id;
 				this.emitChange();
 			})
 			.catch(response => {
@@ -30,27 +30,27 @@ class LocalConfigStore {
 		this.bindActions(actions);
 	}
 	onCloseTabSector (nombre) {
-		var sectores = this.config.sectores,
+		var sectores = this.localConfig.sectores,
 			index = sectores.indexOf(nombre);
 		if (index > -1) {
 			sectores.splice(index, 1);
-			if (nombre === this.config.selected) {
-				this.config.selected = sectores[0];
+			if (nombre === this.localConfig.selected) {
+				this.localConfig.selected = sectores[0];
 			}
 			this.save();
 		}
 	}
 	onOpenTabSector (nombre) {
-		if (nombre === this.config.selected) return;
-		if (this.config.sectores.indexOf(nombre) === -1) {
-			this.config.sectores.push(nombre);
+		if (nombre === this.localConfig.selected) return;
+		if (this.localConfig.sectores.indexOf(nombre) === -1) {
+			this.localConfig.sectores.push(nombre);
 		}
-		this.config.selected = nombre;
+		this.localConfig.selected = nombre;
 		this.save();
 	}
 	save () {
-		console.log('saving new config', this.config);
-		global.localStorage.setItem(CTC, JSON.stringify(this.config));
+		console.log('saving new config', this.localConfig);
+		global.localStorage.setItem(CTC, JSON.stringify(this.localConfig));
 	}
 }
 
