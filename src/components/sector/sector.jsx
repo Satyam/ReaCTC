@@ -10,7 +10,7 @@ require('./sector.less');
 import sectorStore from '../../stores/sector.js';
 
 import Celda from '../celda/celda.jsx';
-// import Estado from '../estado/estado.jsx';
+import Estado from '../estado/estado.jsx';
 
 export default React.createClass({
 	getInitialState: function () {
@@ -31,7 +31,7 @@ export default React.createClass({
 		if (_.isEmpty(sector)) return (<div className='sector'><img className="loading" src="/loading.gif" /></div>);
 		return (
 			<div className='sector'>
-				{/*<Estado />*/}
+				<Estado />
 				<svg ref="svg" viewBox={`0 0 ${sector.ancho * ANCHO_CELDA} ${sector.alto * ANCHO_CELDA}`}>
 					{_.map(sector.celdas, (celda, coords) => (
 						<Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
@@ -42,12 +42,10 @@ export default React.createClass({
 	},
 	componentDidUpdate: function () {
 		if (this.refs.svg) {
-			global.setTimeout(() => {
-				actions.sectorUpdated({
-					svgNode: this.refs.svg.getDOMNode(),
-					sector: this.state.sector
-				});
-			}, 0);
+			actions.sectorUpdated.defer({
+				svgNode: this.refs.svg.getDOMNode(),
+				sector: this.state.sector
+			});
 		}
 	}
 });

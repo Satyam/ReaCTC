@@ -33,17 +33,31 @@ class Sector {
 				if (enclavamiento.celda) agregarEnclavamiento(enclavamiento.celda, enclavamiento);
 				_.each(enclavamiento.celdas, celda => agregarEnclavamiento(celda, enclavamiento));
 			});
-			let reintentos;
-			for (reintentos = 10; reintentos; reintentos--) {
-				if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
+			let reintentos = 10;
+			/* Por diseño de Flux, el dispatcher no acepta nuevas acciones dentro de una accion.
+				Para ello, Alt provee actions.action.defer() que permite encolarlas.
+				El caso es que algunos enclavamientos quieren verificar que el previo enclavamiento
+				se haya hecho, por ejemplo, `apareados`.
+				Pero si una accion resultante de un enclavamiento esta en la cola,
+				el enclavamiento no podra verificar que esta hecha.
+				Por eso, necesito dar tiempo a los enclavamientos que se hagan antes de hacer un nuevo
+				ciclo y verificar el estado.
+
+				*/
+			var interval = global.setInterval(() => {
+				reintentos--;
+				var changes = this.enclavamientos.reduce((prevVal, enclavamiento) => {
 					return prevVal + this.dispatchEnclavamiento(enclavamiento) ? 1 : 0;
-				}, 0) === 0) break;
-			}
-			if (reintentos === 0) {
-				actions.error({
-					msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
-				});
-			}
+				}, 0);
+				if (changes === 0) {
+					global.clearInterval(interval);
+				} else if (reintentos === 0) {
+					global.clearInterval(interval);
+					actions.error({
+						msg: 'El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones'
+					});
+				}
+			}, 0);
 		}
 	}
 	dispatchEnclavamiento (enclavamiento, celda, estado) {
@@ -65,7 +79,7 @@ class Sector {
 			if ((celdaDest.desviado || false) === desviado) return;
 
 			if (celdaDest.manual) {
-				actions.teletipo({
+				actions.teletipo.defer({
 					sector: this.descr,
 					coords: celdaDest.coords,
 					msg: 'Cambio automático propagado a celda en manual desde ' + celda.coords,
@@ -75,7 +89,7 @@ class Sector {
 			}
 
 			if (celdaDest._enProceso) {
-				actions.teletipo({
+				actions.teletipo.defer({
 					sector: this.descr,
 					coords: celdaDest.coords,
 					msg: 'Lazo infinito de enclavamiento desde ' + celda.coords,
@@ -86,7 +100,7 @@ class Sector {
 
 			celdaDest._enProceso = true;
 			celdaDest.desviado = desviado;
-			actions.cambio({
+			actions.cambio.defer({
 				nombreSector: this.nombre,
 				coords: celdaDest.coords,
 				desviado: desviado
@@ -128,7 +142,7 @@ class Sector {
 			return Math.max(prioridades.indexOf(value), pri);
 		}, 0)];
 		if (nuevoEstado !== l.estado) {
-			actions.senal({
+			actions.senal.defer({
 				nombreSector: this.nombre,
 				coords: coords,
 				luz: luz,

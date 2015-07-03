@@ -1,29 +1,28 @@
-var Reflux = require('reflux');
+import alt from '../alt.js';
 
 import actions from '../actions.js';
 import {splitCoords} from '../common/common.js';
 
 var svgNode,
-	sector,
-	estado = {};
+	sector;
 
-export default Reflux.createStore({
-	listenables: actions,
-	getInitialState: function () {
-		return {};
-	},
-	onSectorUpdated: function (data) {
+class EstadoStore {
+	constructor () {
+		this.estado = {};
+		this.bindActions(actions);
+	}
+	onSectorUpdated (data) {
 		svgNode = data.svgNode;
 		sector = data.sector;
-	},
-	onClickCelda: function (data) {
+	}
+	onClickCelda (data) {
 		var [x, y] = splitCoords(data.coords);
 		var ancho = sector.ancho,
 			alto = sector.alto;
 
 		var izq = x > ancho / 2;
 
-		estado = {
+		this.estado = {
 			nombreSector: data.nombreSector,
 			side: izq ? 'left' : 'right',
 			// 300 viene de estado/estado.less (eso esta muy mal)
@@ -33,16 +32,15 @@ export default Reflux.createStore({
 			senal: null,
 			visible: true
 		};
-		this.trigger(estado);
-	},
-	onClickSenal: function (data) {
+	}
+	onClickSenal (data) {
 		var [x, y] = splitCoords(data.coords);
 		var ancho = sector.ancho,
 			alto = sector.alto;
 
 		var izq = x > ancho / 2;
 
-		estado = {
+		this.estado = {
 			nombreSector: data.nombreSector,
 			side: izq ? 'left' : 'right',
 			// 300 viene de estado/estado.less (eso esta muy mal)
@@ -52,16 +50,10 @@ export default Reflux.createStore({
 			senal: data.dir,
 			visible: true
 		};
-		this.trigger(estado);
-	},
-	onCambio: function () {
-		this.trigger(estado);
-	},
-	onTriple: function () {
-		this.trigger(estado);
-	},
-	onCloseEstado: function () {
-		estado.visible = false;
-		this.trigger(estado);
 	}
-});
+	onCloseEstado () {
+		this.estado.visible = false;
+	}
+}
+
+export default alt.createStore(EstadoStore, 'EstadoStore');

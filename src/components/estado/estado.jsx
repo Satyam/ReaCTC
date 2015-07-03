@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import Reflux from 'reflux';
 import actions from '../../actions.js';
 import {ANCHO_CELDA} from '../../common/common.js';
 import _ from 'lodash';
@@ -236,9 +235,19 @@ var Senal = React.createClass({
 
 
 export default React.createClass({
-	mixins: [
-		Reflux.connect(estadoStore, 'estado')
-	],
+	getInitialState: function () {
+		return estadoStore.getState();
+	},
+	componentDidMount: function () {
+		this.unlisteners = [
+			estadoStore.listen(state => {
+				this.setState(state);
+			})
+		];
+	},
+	componentWillUnmount: function () {
+		this.unlisteners.forEach(u => u());
+	},
 	close: function () {
 		actions.closeEstado();
 	},
