@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteHandler, Navigation, State} from 'react-router';
+import {RouteHandler} from 'react-router';
 
 import actions from '../../actions.js';
 import {leftButton} from '../../common/common.js';
@@ -14,10 +14,6 @@ import erroresStore from '../../stores/errores.js';
 const sectorPathMatch = /\/sector\/(.+)/;
 
 export default React.createClass({
-	mixins: [
-		Navigation,
-		State
-	],
 	contextTypes: {
 		router: React.PropTypes.func.isRequired
 	},
@@ -29,7 +25,7 @@ export default React.createClass({
 		);
 	},
 	componentWillMount: function () {
-		var path = this.getPathname(),
+		var path = this.context.router.getCurrentPath(),
 			selected = sectorPathMatch.exec(path);
 		if (selected) actions.openTabSector(selected[1]);
 		else if (path === '/teletipo') actions.openTabSector(null);
@@ -76,7 +72,6 @@ export default React.createClass({
 				return;
 			}
 			actions.openTabSector(tabId);
-//			this.transitionTo('sector', {sector: tabId});
 			this.context.router.transitionTo('sector', {sector: tabId});
 		}
 	},
@@ -85,15 +80,15 @@ export default React.createClass({
 		if (selected === skip) selected = this.state.localConfig.sectores[1];
 		if (selected) {
 			actions.openTabSector(selected);
-			this.replaceWith('sector', {sector: selected});
+			this.context.router.replaceWith('sector', {sector: selected});
 		} else {
-			this.replaceWith('teletipo');
+			this.context.router.replaceWith('teletipo');
 		}
 	},
 	onDropdownItemClick: function (ev) {
 		if (!leftButton(ev)) return;
 		this.toggleDropdown();
-		this.transitionTo('sector', {sector: ev.target.dataset.sectorId});
+		this.context.router.transitionTo('sector', {sector: ev.target.dataset.sectorId});
 		actions.openTabSector(ev.target.dataset.sectorId);
 	},
 	onDropdownClick: function (ev) {
@@ -106,7 +101,7 @@ export default React.createClass({
 	openTeletipo: function (ev) {
 		if (!leftButton(ev)) return;
 		actions.openTabSector(null);
-		this.transitionTo('teletipo');
+		this.context.router.transitionTo('teletipo');
 	},
 	render: function () {
 		var st = this.state,
