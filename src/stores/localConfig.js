@@ -15,7 +15,6 @@ class LocalConfigStore {
 		} else {
 			config = JSON.parse(config);
 		}
-		console.log('config', config);
 		this.localConfig = config;
 		if (!config.terminalID) {
 			http.get('/action/id')
@@ -49,7 +48,6 @@ class LocalConfigStore {
 		this.save();
 	}
 	save () {
-		console.log('saving new config', this.localConfig);
 		global.localStorage.setItem(CTC, JSON.stringify(this.localConfig));
 	}
 }

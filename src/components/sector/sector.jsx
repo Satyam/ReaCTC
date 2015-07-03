@@ -14,7 +14,7 @@ import Celda from '../celda/celda.jsx';
 
 export default React.createClass({
 	getInitialState: function () {
-		return {sector: {}};
+		return sectorStore.getState();
 	},
 	componentDidMount: function () {
 		this.unlisteners = [
@@ -47,7 +47,7 @@ export default React.createClass({
 					svgNode: this.refs.svg.getDOMNode(),
 					sector: this.state.sector
 				});
-			},0);
+			}, 0);
 		}
 	}
 });

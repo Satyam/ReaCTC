@@ -156,6 +156,8 @@ class SectorStore {
 		this.bindActions(actions);
 	}
 	onOpenTabSector (nombre) {
+		this.waitFor(require('./localConfig.js'));
+
 		if (!nombre) {
 			this.sector = null;
 		} else if (cache[nombre]) {

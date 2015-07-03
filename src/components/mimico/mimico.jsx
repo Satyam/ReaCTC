@@ -1,5 +1,4 @@
 import React from 'react';
-// import Reflux from 'reflux';
 import {RouteHandler, Navigation, State} from 'react-router';
 
 import actions from '../../actions.js';
@@ -13,13 +12,29 @@ import localConfigStore from '../../stores/localConfig.js';
 import erroresStore from '../../stores/errores.js';
 
 const sectorPathMatch = /\/sector\/(.+)/;
+
 export default React.createClass({
 	mixins: [
 		Navigation,
 		State
 	],
+	contextTypes: {
+		router: React.PropTypes.func.isRequired
+	},
 	getInitialState: function () {
-		return _.merge(localConfigStore.getState(), {errores:[], sectores:[]});
+		return _.merge(
+			sectoresStore.getState(),
+			localConfigStore.getState(),
+			erroresStore.getState()
+		);
+	},
+	componentWillMount: function () {
+		var path = this.getPathname(),
+			selected = sectorPathMatch.exec(path);
+		if (selected) actions.openTabSector(selected[1]);
+		else if (path === '/teletipo') actions.openTabSector(null);
+		else this.gotoFirstTab();
+
 	},
 	componentDidMount: function () {
 		this.unlisteners = [
@@ -37,14 +52,7 @@ export default React.createClass({
 	componentWillUnmount: function () {
 		this.unlisteners.forEach(u => u());
 	},
-	componentWillMount: function () {
-		var selected = sectorPathMatch.exec(this.getPathname());
-		if (selected) selected = selected[1];
-		else this.gotoFirstTab();
 
-		actions.openTabSector(selected);
-
-	},
 	closeErrorMsg: function () {
 		this.setState({errores: []});
 	},
@@ -68,18 +76,19 @@ export default React.createClass({
 				return;
 			}
 			actions.openTabSector(tabId);
-			this.transitionTo('sector', {sector: tabId});
+//			this.transitionTo('sector', {sector: tabId});
+			this.context.router.transitionTo('sector', {sector: tabId});
 		}
 	},
 	gotoFirstTab: function (skip) {
-//		var selected = this.state && this.state.localConfig && this.state.localConfig.sectores[0];
-//		if (selected === skip) selected = this.state.localConfig.sectores[1];
-//		if (selected) {
-//			this.replaceWith('sector', {sector: selected});
-//			actions.openTabSector(selected);
-//		} else {
+		var selected = this.state.localConfig.sectores[0];
+		if (selected === skip) selected = this.state.localConfig.sectores[1];
+		if (selected) {
+			actions.openTabSector(selected);
+			this.replaceWith('sector', {sector: selected});
+		} else {
 			this.replaceWith('teletipo');
-//		}
+		}
 	},
 	onDropdownItemClick: function (ev) {
 		if (!leftButton(ev)) return;
