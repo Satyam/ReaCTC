@@ -24,6 +24,7 @@ class DB {
 			terminalID: terminalID,
 			posicion: data.posicion
 		});
+		return false;
 	}
 	onManual (data) {
 		http.post(path.join('/action', data.nombreSector, data.coords, 'manual'), {
@@ -31,6 +32,7 @@ class DB {
 			manual: data.manual,
 			luz: data.luz
 		});
+		return false;
 	}
 	onSenal (data) {
 		http.post(path.join('/action', data.nombreSector, data.coords, 'senal'), {
@@ -38,6 +40,7 @@ class DB {
 			luz: data.luz,
 			estado: data.estado
 		});
+		return false;
 	}
 }
 
