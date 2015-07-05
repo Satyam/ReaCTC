@@ -28,17 +28,17 @@ export default React.createClass({
 	},
 	render: function () {
 		var sector = this.state.sector;
-		if (_.isEmpty(sector)) return (<div className='sector'><img className="loading" src="/loading.gif" /></div>);
-		return (
-			<div className='sector'>
-				<Estado />
+		console.log('sector.render', sector, _.isEmpty(sector));
+		return (<div className='sector'>
+			<Estado />
+			{_.isEmpty(sector) ? (<img className="loading" src="/loading.gif" />) : (
 				<svg ref="svg" viewBox={`0 0 ${sector.ancho * ANCHO_CELDA} ${sector.alto * ANCHO_CELDA}`}>
 					{_.map(sector.celdas, (celda, coords) => (
 						<Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
 					))}
 				</svg>
-			</div>
-		);
+			)}
+		</div>);
 	},
 	componentDidUpdate: function () {
 		if (this.refs.svg) {
