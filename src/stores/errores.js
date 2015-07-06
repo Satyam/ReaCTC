@@ -16,9 +16,12 @@ class ErroresStore {
 	}
 	anejar () {
 		if (!this.timer) {
-			this.timer = global.setTimeout(() => {
+			this.timer = global.setInterval(() => {
 				this.errores.shift();
-				if (this.errores.length) this.anejar();
+				if (!this.errores.length) {
+					global.clearInterval(this.timer);
+					this.timer = null;
+				}
 				this.emitChange();
 			}, 10000);
 		}
