@@ -1,6 +1,4 @@
 import React from 'react';
-// import Reflux from 'reflux';
-// import actions from '../../actions.js';
 import _ from 'lodash';
 
 require('./teletipo.less');
@@ -18,13 +16,14 @@ export default React.createClass({
 		return teletipoStore.getState();
 	},
 	componentDidMount: function () {
-		teletipoStore.listen(this.onChange);
+		this.unlisteners = [
+			teletipoStore.listen(state => {
+				this.setState(state);
+			})
+		];
 	},
 	componentWillUnmount: function () {
-		teletipoStore.unlisten(this.onChange);
-	},
-	onChange: function (state) {
-		this.setState(state);
+		this.unlisteners.forEach(u => u());
 	},
 	render: function () {
 		return (<table className="table table-striped">
