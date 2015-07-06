@@ -15,6 +15,7 @@ class LocalConfigStore {
 		} else {
 			config = JSON.parse(config);
 		}
+		config.selected = null;
 		this.localConfig = config;
 		if (!config.terminalID) {
 			http.get('/action/id')
@@ -24,7 +25,9 @@ class LocalConfigStore {
 			})
 			.catch(response => {
 				actions.error(response.message || (response.statusCode + ': ' + response.body));
+				this.emitChange();
 			});
+			return false;
 		}
 		this.bindActions(actions);
 	}
@@ -40,8 +43,9 @@ class LocalConfigStore {
 		}
 	}
 	onOpenTabSector (nombre) {
-		if (nombre === this.localConfig.selected) return;
-		if (this.localConfig.sectores.indexOf(nombre) === -1) {
+		console.log('localConfig:onOpenTabSector', nombre);
+		if (nombre === this.localConfig.selected) return false;
+		if (nombre && this.localConfig.sectores.indexOf(nombre) === -1) {
 			this.localConfig.sectores.push(nombre);
 		}
 		this.localConfig.selected = nombre;
