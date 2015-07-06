@@ -27,6 +27,7 @@ var routes = (
 
 
 // Start the router
-Router.run(routes, Router.HistoryLocation, function(Handler/*, state */) {
+Router.run(routes, Router.HistoryLocation, function(Handler, state) {
+	console.log('main:run callback', Handler, state);
     React.render(<Handler/>, global.document.getElementById('app'));
 });

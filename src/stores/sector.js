@@ -171,7 +171,7 @@ class SectorStore {
 	}
 	onOpenTabSector (nombre) {
 		this.waitFor(require('./localConfig.js'));
-
+		console.log('sector:openTabSector', nombre);
 		if (!nombre) {
 			this.sector = null;
 		} else if (cache[nombre]) {
@@ -179,11 +179,13 @@ class SectorStore {
 		} else {
 			http.get('/data/sector/' + nombre)
 				.then(response => {
+					console.log('sector:httpSuccess');
 					this.sector = cache[nombre] = new Sector(nombre, response.body);
 					this.sector.inicializarEnclavamientos();
 					this.emitChange();
 				})
 				.catch(response => {
+					console.log('sector:httpFail', response);
 					this.sector = {};
 					actions.error(response.message || (response.statusCode + ': ' + response.body));
 					this.emitChange();
