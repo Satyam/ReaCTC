@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import _ from 'lodash';
 
 require('./teletipo.less');
@@ -8,24 +8,16 @@ var colores = [
 	'warning',
 	'danger'
 ];
-
+import {Componente} from '../../common/common.js';
 import teletipoStore from '../../stores/teletipo.js';
 
-export default React.createClass({
-	getInitialState: function () {
-		return teletipoStore.getState();
-	},
-	componentDidMount: function () {
-		this.unlisteners = [
-			teletipoStore.listen(state => {
-				this.setState(state);
-			})
+export default class Mimico extends Componente {
+	getStores () {
+		return [
+			teletipoStore
 		];
-	},
-	componentWillUnmount: function () {
-		this.unlisteners.forEach(u => u());
-	},
-	render: function () {
+	}
+	render () {
 		return (<table className="table table-striped">
 			<thead>
 				<tr>
@@ -47,4 +39,4 @@ export default React.createClass({
 			</tbody>
 		</table>);
 	}
-});
+}

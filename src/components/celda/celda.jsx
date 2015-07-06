@@ -6,8 +6,8 @@ import _ from 'lodash';
 
 import Senal from '../senal/senal.jsx';
 
-var Linea = React.createClass({
-	render: function () {
+class Linea extends React.Component {
+	render () {
 		var dest = this.props.dest,
 			estilo = this.props.estilo || '';
 
@@ -19,18 +19,10 @@ var Linea = React.createClass({
 			className={estilo}
 		/>);
 	}
-});
+}
 
-export default React.createClass({
-	propTypes: {
-		// <Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
-		coords: PropTypes.string.isRequired,
-		celda: PropTypes.shape({
-			tipo: PropTypes.string.isRequired
-		}),
-		nombreSector: PropTypes.string.isRequired
-	},
-	render: function () {
+export default class Celda extends React.Component {
+	render () {
 
 		var [x, y] = splitCoords(this.props.coords),
 			celda = this.props.celda,
@@ -40,7 +32,7 @@ export default React.createClass({
 		return (
 			<g
 				transform={`translate(${x * ANCHO_CELDA}, ${y * ANCHO_CELDA})`}
-				onClick={this.onClick}
+				onClick={this.onClick.bind(this)}
 			>
 				<rect x='0' y='0' width={ANCHO_CELDA} height={ANCHO_CELDA} className={(celda.manual ? 'manual' : '')} />
 				{ renderer && renderer.call(this, celda) }
@@ -54,28 +46,28 @@ export default React.createClass({
 				/>))}
 			</g>
 		);
-	},
-	onClick: function (ev) {
+	}
+	onClick (ev) {
 		if (!leftButton(ev)) return;
 		actions.clickCelda({
 			nombreSector: this.props.nombreSector,
 			coords: this.props.coords
 		});
-	},
-	linea: function (celda) {
+	}
+	linea (celda) {
 		return (<g>
 			<Linea dest={celda.desde.dir} />
 			<Linea dest={celda.hacia.dir} />
 		</g>);
-	},
-	cambio: function (celda) {
+	}
+	cambio (celda) {
 		return (<g>
 			<Linea dest={celda.punta.dir} />
 			<Linea dest={celda.normal.dir} estilo={celda.desviado ? 'off' : null} />
 			<Linea dest={celda.invertido.dir} estilo={!celda.desviado ? 'off' : null} />
 		</g>);
-	},
-	paragolpe: function (celda) {
+	}
+	paragolpe (celda) {
 		return (<g>
 			<Linea dest={celda.desde.dir} />
 			<circle cx={CENTRO_CELDA}
@@ -83,16 +75,16 @@ export default React.createClass({
 					r={ANCHO_CELDA / 10}
 			/>
 		</g>);
-	},
-	triple: function (celda) {
+	}
+	triple (celda) {
 		return (<g>
 			<Linea dest={celda.punta.dir} />
 			<Linea dest={celda.centro.dir} estilo={celda.posicion ? 'off' : null} />
 			<Linea dest={celda.izq.dir} estilo={celda.posicion !== -1 ? 'off' : null} />
 			<Linea dest={celda.der.dir} estilo={celda.posicion !== 1 ? 'off' : null} />
 		</g>);
-	},
-	cruce: function (celda) {
+	}
+	cruce (celda) {
 		return (<g>
 			<Linea dest={celda.l1.desde.dir} />
 			<Linea dest={celda.l1.hacia.dir} />
@@ -100,4 +92,13 @@ export default React.createClass({
 			<Linea dest={celda.l2.hacia.dir} />
 		</g>);
 	}
-});
+}
+
+Celda.propTypes = {
+	// <Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
+	coords: PropTypes.string.isRequired,
+	celda: PropTypes.shape({
+		tipo: PropTypes.string.isRequired
+	}),
+	nombreSector: PropTypes.string.isRequired
+};

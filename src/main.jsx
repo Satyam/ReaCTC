@@ -28,6 +28,6 @@ var routes = (
 
 // Start the router
 Router.run(routes, Router.HistoryLocation, function(Handler, state) {
-	console.log('main:run callback', Handler, state);
+	console.log('main:run callback', Handler, state);// eslint-disable-line no-console
     React.render(<Handler/>, global.document.getElementById('app'));
 });

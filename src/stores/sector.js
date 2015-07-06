@@ -171,7 +171,7 @@ class SectorStore {
 	}
 	onOpenTabSector (nombre) {
 		this.waitFor(require('./localConfig.js'));
-		console.log('sector:openTabSector', nombre);
+		console.log('sector:openTabSector', nombre);// eslint-disable-line no-console
 		if (!nombre) {
 			this.sector = null;
 		} else if (cache[nombre]) {
@@ -179,13 +179,13 @@ class SectorStore {
 		} else {
 			http.get('/data/sector/' + nombre)
 				.then(response => {
-					console.log('sector:httpSuccess');
+					console.log('sector:httpSuccess');// eslint-disable-line no-console
 					this.sector = cache[nombre] = new Sector(nombre, response.body);
 					this.sector.inicializarEnclavamientos();
 					this.emitChange();
 				})
 				.catch(response => {
-					console.log('sector:httpFail', response);
+					console.log('sector:httpFail', response);// eslint-disable-line no-console
 					this.sector = {};
 					actions.error(response.message || (response.statusCode + ': ' + response.body));
 					this.emitChange();

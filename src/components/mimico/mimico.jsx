@@ -22,7 +22,7 @@ export default class Mimico extends Componente {
 		];
 	}
 	componentWillMount () {
-		console.log('Mimico:componentWillMount');
+		console.log('Mimico:componentWillMount');// eslint-disable-line no-console
 		var path = this.context.router.getCurrentPath(),
 			selected = sectorPathMatch.exec(path);
 		if (selected) actions.openTabSector(selected[1]);
@@ -31,7 +31,7 @@ export default class Mimico extends Componente {
 
 	}
 	componentWillReceiveProps () {
-		console.log('Mimico:componentWillReceiveProps');
+		console.log('Mimico:componentWillReceiveProps');// eslint-disable-line no-console
 		var path = this.context.router.getCurrentPath(),
 			selected = sectorPathMatch.exec(path);
 		if (selected) actions.openTabSector(selected[1]);
@@ -52,7 +52,7 @@ export default class Mimico extends Componente {
 			a = a.parentElement;
 		}
 		if (a) {
-			console.log('Mimico:onTabClick', tabId);
+			console.log('Mimico:onTabClick', tabId);// eslint-disable-line no-console
 			tabId = a.dataset.tabId;
 			if (target.tagName === 'I') {
 				actions.closeTabSector(tabId);
@@ -66,7 +66,7 @@ export default class Mimico extends Componente {
 		}
 	}
 	gotoFirstTab (skip) {
-		console.log('Mimico:gotoFirstTab', skip);
+		console.log('Mimico:gotoFirstTab', skip);// eslint-disable-line no-console
 		var selected = this.state.localConfig.sectores[0];
 		if (selected === skip) selected = this.state.localConfig.sectores[1];
 		if (selected) {
@@ -102,7 +102,7 @@ export default class Mimico extends Componente {
 			selected = lc.selected,
 			visibles = lc.sectores || [];
 
-		console.log('Mimico.render', this.state, selected);
+		console.log('Mimico.render', this.state, selected);// eslint-disable-line no-console
 		return (
 			<div className="mimico">
 				<div

@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line no-unused-vars
+
 import actions from '../../actions.js';
 
-import {ANCHO_CELDA} from '../../common/common.js';
+import {Componente, ANCHO_CELDA} from '../../common/common.js';
 
 import _ from 'lodash';
 
@@ -12,23 +13,13 @@ import sectorStore from '../../stores/sector.js';
 import Celda from '../celda/celda.jsx';
 import Estado from '../estado/estado.jsx';
 
-export default React.createClass({
-	getInitialState: function () {
-		return sectorStore.getState();
-	},
-	componentDidMount: function () {
-		this.unlisteners = [
-			sectorStore.listen(state => {
-				this.setState(state);
-			})
-		];
-	},
-	componentWillUnmount: function () {
-		this.unlisteners.forEach(u => u());
-	},
-	render: function () {
+export default class Sector extends Componente {
+	getStores () {
+		return [sectorStore];
+	}
+	render () {
 		var sector = this.state.sector;
-		console.log('sector.render', sector, _.isEmpty(sector));
+		console.log('sector.render', sector, _.isEmpty(sector)); // eslint-disable-line no-console
 		return (<div className='sector'>
 			<Estado />
 			{_.isEmpty(sector) ? (<img className="loading" src="/loading.gif" />) : (
@@ -39,8 +30,8 @@ export default React.createClass({
 				</svg>
 			)}
 		</div>);
-	},
-	componentDidUpdate: function () {
+	}
+	componentDidUpdate () {
 		if (this.refs.svg) {
 			actions.sectorUpdated.defer({
 				svgNode: this.refs.svg.getDOMNode(),
@@ -48,4 +39,4 @@ export default React.createClass({
 			});
 		}
 	}
-});
+}

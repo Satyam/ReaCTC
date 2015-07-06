@@ -43,7 +43,7 @@ class LocalConfigStore {
 		}
 	}
 	onOpenTabSector (nombre) {
-		console.log('localConfig:onOpenTabSector', nombre);
+		console.log('localConfig:onOpenTabSector', nombre);// eslint-disable-line no-console
 		if (nombre === this.localConfig.selected) return false;
 		if (nombre && this.localConfig.sectores.indexOf(nombre) === -1) {
 			this.localConfig.sectores.push(nombre);
