@@ -17,7 +17,7 @@ var coordsRX = /(\d+,\d+)(,(.+))?/;
 
 class Sector {
 	constructor (nombre, config) {
-		_.merge(this, config);
+		Object.assign(this, config);
 		this.nombre = nombre;
 		_.each(this.celdas, (celda, coords) => celda.coords = coords);
 	}

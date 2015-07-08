@@ -48,13 +48,15 @@ export function leftButton (ev) {
 import React from 'react';
 import _ from 'lodash';
 
+var unlisteners = Symbol('unlisteners');
+
 export class Componente extends React.Component {
 	constructor (props, context) {
 		super(props, context);
 		// this._stores = this.get;
 		this.state = {};
-		this._unlisteners = _.map(this.getStores(), store => {
-			_.merge(this.state, store.getState());
+		this[unlisteners] = _.map(this.getStores(), store => {
+			Object.assign(this.state, store.getState());
 			return store.listen(state => {
 				this.setState(state);
 			});
@@ -65,18 +67,18 @@ export class Componente extends React.Component {
 //		this._stores = stores;
 //		this.state = {};
 //		_.each(stores, store => {
-//			_.merge(this.state, store.getState());
+//			Object.assign(this.state, store.getState());
 //		});
 //	}
 //	componentDidMount () {
-//		this._unlisteners = _.map(this._stores, store => {
+//		this[unlisteners] = _.map(this._stores, store => {
 //			return store.listen(state => {
 //				this.setState(state);
 //			});
 //		});
 //	}
 	componentWillUnmount () {
-		this._unlisteners.forEach(u => u());
+		this[unlisteners].forEach(u => u());
 	}
 }
 
