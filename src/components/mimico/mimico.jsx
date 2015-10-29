@@ -27,7 +27,8 @@ export default class Mimico extends Componente {
 			selected = sectorPathMatch.exec(path);
 		if (selected) actions.openTabSector(selected[1]);
 		else if (path === '/teletipo') actions.openTabSector(null);
-		else this.gotoFirstTab();
+		// The first time around there is no route to use router.replaceWith() on so it must be left for later.
+		else global.setTimeout(() => this.gotoFirstTab(), 0);
 
 	}
 	componentWillReceiveProps () {
@@ -67,8 +68,9 @@ export default class Mimico extends Componente {
 	}
 	gotoFirstTab (skip) {
 		console.log('Mimico:gotoFirstTab', skip);// eslint-disable-line no-console
-		var selected = this.state.localConfig.sectores[0];
-		if (selected === skip) selected = this.state.localConfig.sectores[1];
+		var lc = this.state.localConfig,
+				selected = lc && lc.sectores[0];
+		if (selected === skip) selected = lc.sectores[1];
 		if (selected) {
 			// actions.openTabSector(selected);
 			this.context.router.replaceWith('sector', {sector: selected});
@@ -88,7 +90,7 @@ export default class Mimico extends Componente {
 		this.toggleDropdown();
 	}
 	toggleDropdown() {
-		this.setState({dropdownDisplay: this.state.dropdownDisplay === 'block' ? 'none' : 'block'});
+		this.setState({dropdownOpen: this.state.dropdownOpen ? '' : ' open'});
 	}
 	openTeletipo (ev) {
 		if (!leftButton(ev)) return;
@@ -135,7 +137,7 @@ export default class Mimico extends Componente {
 								) : null)
 						);
 					})}
-					<li role="presentation" className="dropdown">
+					<li role="presentation" className={'dropdown' + st.dropdownOpen} key="_+_">
 						<a
 							className="dropdown-toggle btn-info"
 							data-toggle="dropdown"
@@ -144,9 +146,7 @@ export default class Mimico extends Componente {
 						>
 							<i className="fa fa-plus"></i>
 						</a>
-						<ul className="dropdown-menu" role="menu" style={{
-							display: st.dropdownDisplay
-						}}>
+						<ul className="dropdown-menu" role="menu">
 						{sectores.map(sector => {
 							return (visibles.indexOf(sector.nombre) === -1 ?
 								(<li
@@ -162,7 +162,7 @@ export default class Mimico extends Componente {
 							}
 					</ul>
 					</li>
-					<li className={'navbar-right' + (!selected ? ' active' : '')}>
+					<li className={'navbar-right' + (!selected ? ' active' : '')} key="_teletipo_">
 						<a href="teletipo" onClick={this.openTeletipo.bind(this)}>Teletipo</a>
 					</li>
 				</ul>
