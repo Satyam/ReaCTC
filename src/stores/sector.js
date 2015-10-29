@@ -170,7 +170,6 @@ class SectorStore {
 		this.bindActions(actions);
 	}
 	onOpenTabSector (nombre) {
-		this.waitFor(require('./localConfig.js'));
 		console.log('sector:openTabSector', nombre);// eslint-disable-line no-console
 		if (!nombre) {
 			this.sector = null;
