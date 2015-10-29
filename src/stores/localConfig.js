@@ -6,18 +6,18 @@ import http from '../common/http.js';
 
 class LocalConfigStore {
 	constructor() {
+		this.bindActions(actions);
 		var config = global.localStorage.getItem(CTC);
 		if (!config) {
-			config = {
+			this.localConfig = {
 				sectores: []
 			};
 			this.save();
 		} else {
-			config = JSON.parse(config);
+			this.localConfig = JSON.parse(config);
 		}
-		config.selected = null;
-		this.localConfig = config;
-		if (!config.terminalID) {
+		this.localConfig.selected = null;
+		if (!this.localConfig.terminalID) {
 			http.get('/action/id')
 			.then(response => {
 				this.localConfig.terminalID = response.body.id;
@@ -29,7 +29,6 @@ class LocalConfigStore {
 			});
 			return false;
 		}
-		this.bindActions(actions);
 	}
 	onCloseTabSector (nombre) {
 		var sectores = this.localConfig.sectores,
