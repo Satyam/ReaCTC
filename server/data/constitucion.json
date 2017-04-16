@@ -1,0 +1,443 @@
+{
+  "idSector": "constitucion",
+  "descrCorta": "Constitución",
+  "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
+  "ancho": 16,
+  "alto": 7,
+  "celdas": [
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "S"
+      },
+      "coords": "5,0"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "S"
+      },
+      "coords": "6,0"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "5,1"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,1"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NE"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "4,2"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "7,2"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NE"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "3,3"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "SW"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "4,3"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "senales": [
+        {
+          "primaria": {
+            "estado": "libre"
+          },
+          "dir": "E"
+        }
+      ],
+      "coords": "5,3"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "6,3"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "7,3"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "SE"
+      },
+      "normal": {
+        "dir": "NW"
+      },
+      "invertido": {
+        "dir": "W"
+      },
+      "senales": [
+        {
+          "primaria": {
+            "estado": "libre"
+          },
+          "izq": {
+            "estado": "alto"
+          },
+          "dir": "SE"
+        }
+      ],
+      "coords": "8,3"
+    },
+    {
+      "tipo": "paragolpe",
+      "desde": {
+        "dir": "E"
+      },
+      "coords": "0,4"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "1,4"
+    },
+    {
+      "tipo": "triple",
+      "punta": {
+        "dir": "W"
+      },
+      "centro": {
+        "dir": "E"
+      },
+      "izq": {
+        "dir": "NE"
+      },
+      "der": {
+        "dir": "SE"
+      },
+      "senales": [
+        {
+          "primaria": {
+            "estado": "alto"
+          },
+          "izq": {
+            "estado": "libre"
+          },
+          "der": {
+            "estado": "precaucion"
+          },
+          "dir": "W"
+        }
+      ],
+      "coords": "2,4"
+    },
+    {
+      "tipo": "cruce",
+      "l1": {
+        "desde": {
+          "dir": "SW"
+        },
+        "hacia": {
+          "dir": "NE"
+        }
+      },
+      "l2": {
+        "desde": {
+          "dir": "W"
+        },
+        "hacia": {
+          "dir": "E"
+        }
+      },
+      "coords": "3,4"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "W"
+      },
+      "normal": {
+        "dir": "E"
+      },
+      "invertido": {
+        "dir": "SE"
+      },
+      "senales": [
+        {
+          "primaria": {
+            "estado": "alto"
+          },
+          "der": {
+            "estado": "precaucion"
+          },
+          "dir": "W"
+        }
+      ],
+      "coords": "4,4"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "E"
+      },
+      "normal": {
+        "dir": "W"
+      },
+      "invertido": {
+        "dir": "SW"
+      },
+      "coords": "5,4"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,4"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "9,4"
+    },
+    {
+      "tipo": "paragolpe",
+      "desde": {
+        "dir": "E"
+      },
+      "coords": "0,5"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "1,5"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "W"
+      },
+      "normal": {
+        "dir": "E"
+      },
+      "invertido": {
+        "dir": "NE"
+      },
+      "coords": "2,5"
+    },
+    {
+      "tipo": "cruce",
+      "l1": {
+        "desde": {
+          "dir": "NW"
+        },
+        "hacia": {
+          "dir": "SE"
+        }
+      },
+      "l2": {
+        "desde": {
+          "dir": "W"
+        },
+        "hacia": {
+          "dir": "E"
+        }
+      },
+      "coords": "3,5"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "W"
+      },
+      "normal": {
+        "dir": "E"
+      },
+      "invertido": {
+        "dir": "NE"
+      },
+      "coords": "4,5"
+    },
+    {
+      "tipo": "cambio",
+      "punta": {
+        "dir": "E"
+      },
+      "normal": {
+        "dir": "W"
+      },
+      "invertido": {
+        "dir": "NW"
+      },
+      "coords": "5,5"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,5"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "7,5"
+    },
+    {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "10,5"
+    }
+  ],
+  "enclavamientos": [
+    {
+      "tipo": "apareados",
+      "celdas": [
+        "4,4",
+        "5,5"
+      ]
+    },
+    {
+      "tipo": "apareados",
+      "celdas": [
+        "5,4",
+        "4,5"
+      ]
+    },
+    {
+      "tipo": "senalCambio",
+      "senal": "8,3,SE",
+      "celda": "8,3",
+      "normal": {
+        "primaria": "libre",
+        "izq": "alto"
+      },
+      "desviado": {
+        "primaria": "alto",
+        "izq": "precaucion"
+      }
+    },
+    {
+      "tipo": "senalCambio",
+      "senal": "4,4,W",
+      "celda": "4,4",
+      "normal": {
+        "primaria": "libre",
+        "der": "alto"
+      },
+      "desviado": {
+        "primaria": "alto",
+        "der": "precaucion"
+      }
+    },
+    {
+      "tipo": "senalTriple",
+      "senal": "2,4,W",
+      "celda": "2,4",
+      "izq": {
+        "izq": "libre",
+        "primaria": "alto",
+        "der": "alto"
+      },
+      "centro": {
+        "izq": "alto",
+        "primaria": "libre",
+        "der": "alto"
+      },
+      "der": {
+        "izq": "alto",
+        "primaria": "alto",
+        "der": "libre"
+      }
+    }
+  ]
+}
