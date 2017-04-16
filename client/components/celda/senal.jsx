@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import isPlainClick from '_utils/isPlainClick';
 
-import { senalSelector } from '_store/selectors';
+import { senalItem } from '_store/selectors';
 
 import { clickSenal } from '_store/actions';
 
@@ -66,7 +66,7 @@ SenalComponent.propTypes = {
 };
 
 export const mapStateToProps = (state, { idSector, coords, dir }) =>
-  senalSelector.item(state, idSector, coords, dir);
+  senalItem(state, idSector, coords, dir);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
   onclick: ev => isPlainClick(ev) && dispatch(clickSenal(idSector, coords, dir)),

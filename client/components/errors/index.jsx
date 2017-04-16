@@ -4,7 +4,7 @@ import isPlainClick from '_utils/isPlainClick';
 import classNames from 'classnames';
 
 import { clearHttpErrors } from '_store/actions';
-import { requestSelectors } from '_store/selectors';
+import { requestErrors } from '_store/selectors';
 
 import styles from './styles.css';
 
@@ -30,7 +30,7 @@ ErrorsComponent.propTypes = {
 };
 
 export const mapStateToProps = state => ({
-  errors: requestSelectors.errors(state),
+  errors: requestErrors(state),
 });
 
 export const mapDispatchToProps = dispatch => ({

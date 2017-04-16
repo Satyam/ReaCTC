@@ -1,28 +1,15 @@
 import update from 'immutability-helper';
 
-import {
-  REPLY_RECEIVED,
-} from '_store/requests/constants';
+import { REPLY_RECEIVED } from '_store/requests/constants';
 
-import {
-  GET_SECTOR,
-} from '_store/sectores/constants';
+import { GET_SECTOR } from '_store/sectores/constants';
 
-export default (
-  state = {},
-  action
-) => {
+export default (state = {}, action) => {
+  if (action.stage && action.stage !== REPLY_RECEIVED) return state;
   const payload = action.payload;
-  switch (action.stage) {
-    case REPLY_RECEIVED:
-      switch (action.type) {
-        case GET_SECTOR:
-          return update(state,
-            { $merge: payload.entities.senales }
-          );
-        default:
-          return state;
-      }
+  switch (action.type) {
+    case GET_SECTOR:
+      return update(state, { $merge: payload.entities.senales });
     default:
       return state;
   }

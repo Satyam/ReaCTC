@@ -1,18 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withHandlers } from 'recompose';
 
 import isPlainClick from '_utils/isPlainClick';
 import { Button } from 'react-toolbox/lib/button';
 import { Switch } from 'react-toolbox/lib/switch';
 
-import { setCambio, setCambioManual } from '_store/actions';
+import { setLuzEstado, setLuzManual } from '_store/actions';
 
 import { celdaSelector } from '_store/selectors';
 
 import styles from './styles.css';
 
-export function Luz({ manual, estado, onSetManual, onSetAlto, onSetPrecaucion, onSetLibre }) {
+export function LuzComponent({
+  manual,
+  estado,
+  onBoundSetManual,
+  onSetAlto,
+  onSetPrecaucion,
+  onSetLibre,
+}) {
   return (
     <div>
       <Button
@@ -42,21 +50,28 @@ export function Luz({ manual, estado, onSetManual, onSetAlto, onSetPrecaucion, o
         className={styles.libre}
         onClick={onSetLibre}
       />
-      <Switch label="Manual" checked={manual} onChange={onSetManual} />
+      <Switch label="Manual" checked={manual} onChange={onBoundSetManual} />
     </div>
   );
 }
 
-Luz.propTypes = {
+LuzComponent.propTypes = {
   manual: PropTypes.bool,
   estado: PropTypes.string,
-  onSetManual: PropTypes.func,
+  onBoundSetManual: PropTypes.func,
   onSetAlto: PropTypes.func,
   onSetPrecaucion: PropTypes.func,
   onSetLibre: PropTypes.func,
 };
 
-export function SenalComponent({}) {
+export const Luz = withHandlers({
+  onBoundSetManual: props => value => props.onSetManual(props.luz, value),
+  onSetAlto: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'alto'),
+  onSetPrecaucion: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'precaucion'),
+  onSetLibre: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'libre'),
+})(LuzComponent);
+
+export function SenalComponent({ onSetEstado, onSetManual }) {
   const izq = senal.izq;
   const pri = senal.primaria;
   const der = senal.der;
@@ -64,32 +79,29 @@ export function SenalComponent({}) {
     <div>
       {izq
         ? <Luz
+          luz="izq"
           manual={izq.manual}
           estado={izq.estado}
-          onSetManual={q}
-          onSetAlto={q}
-          onSetPrecaucion={q}
-          onSetLibre={q}
+          onSetManual={onSetManual}
+          onSetEstado={onSetEstado}
         />
         : <div className={styles.noSenal} />}
       {izq
         ? <Luz
+          luz="primaria"
           manual={pri.manual}
           estado={pri.estado}
-          onSetManual={q}
-          onSetAlto={q}
-          onSetPrecaucion={q}
-          onSetLibre={q}
+          onSetManual={onSetManual}
+          onSetEstado={onSetEstado}
         />
         : <div className={styles.noSenal} />}
       {izq
         ? <Luz
+          luz="der"
           manual={der.manual}
           estado={der.estado}
-          onSetManual={q}
-          onSetAlto={q}
-          onSetPrecaucion={q}
-          onSetLibre={q}
+          onSetManual={onSetManual}
+          onSetEstado={onSetEstado}
         />
         : <div className={styles.noSenal} />}
     </div>
@@ -97,20 +109,16 @@ export function SenalComponent({}) {
 }
 
 SenalComponent.propTypes = {
-  desviado: PropTypes.bool,
-  manual: PropTypes.bool,
-  onSetCambioNormal: PropTypes.func,
-  onSetCambioDesviado: PropTypes.func,
+  onSetEstado: PropTypes.func,
   onSetManual: PropTypes.func,
 };
 
 export const mapStateToProps = (state, { idSector, coords }) =>
   celdaSelector.item(state, idSector, coords);
 
-export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, false)),
-  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, true)),
-  onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
+export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
+  onSetEstado: (luz, estado) => dispatch(setLuzEstado(idSector, coords, dir, luz, estado)),
+  onSetManual: (luz, manual) => dispatch(setLuzManual(idSector, coords, dir, luz, manual)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SenalComponent);

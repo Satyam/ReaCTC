@@ -4,14 +4,13 @@
   "description": "Control de Tráfico Centralizado",
   "main": "src/main.jsx",
   "scripts": {
-    "postinstall": "npm run build",
-    "server": "node server.js",
-    "build": "webpack -p --config webpack.production.config.js",
-    "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
-    "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
-    "coveralls": "cat coverage/lcov.info | coveralls",
-    "clean": "rm build/*",
-    "nn": "node nn1.js"
+    "start": "node bundles/webServer.js",
+    "debug": "node --inspect --debug-brk bundles/webServer.js",
+    "lint": "eslint --ext .jsx,.js . || exit 0",
+    "test": "jest --config jest/config.json",
+    "build": "webpack -d --config webpack.config/development.js",
+    "watch": "webpack -d --config webpack.config/development.js --watch &",
+    "production": "webpack -p --config webpack.config/production.js"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -42,6 +41,8 @@
     "babel-polyfill": "^6.23.0",
     "body-parser": "^1.17.1",
     "classnames": "^2.2.5",
+    "debug": "^2.6.3",
+    "denodeify": "^1.2.1",
     "express": "^4.15.2",
     "immutability-helper": "^2.1.2",
     "lodash": "^4.17.4",
@@ -53,6 +54,7 @@
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
     "react-toolbox": "^2.0.0-beta.8",
+    "recompose": "^0.23.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0"
   },

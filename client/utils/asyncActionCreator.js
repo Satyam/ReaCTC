@@ -2,7 +2,7 @@ import {
   REQUEST_SENT,
   REPLY_RECEIVED,
   FAILURE_RECEIVED,
-} from '_store/requests/actions';
+} from '_store/requests/constants';
 
 export default (type, asyncRequest, payload = {}, meta) =>
   (dispatch) => {
