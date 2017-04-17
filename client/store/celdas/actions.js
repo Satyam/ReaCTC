@@ -10,55 +10,67 @@ import {
 export function clickCelda(idSector, coords) {
   return {
     type: CLICK_CELDA,
-    idSector,
-    coords,
+    payload: {
+      idSector,
+      coords,
+    },
   };
 }
 
 export function setCambio(idSector, coords, desviado) {
   return {
     type: SET_CAMBIO,
-    idSector,
-    coords,
-    desviado,
+    payload: {
+      idSector,
+      coords,
+      desviado,
+    },
   };
 }
 
 export function setTriple(idSector, coords, posicion) {
   return {
     type: SET_TRIPLE,
-    idSector,
-    coords,
-    posicion,
+    payload: {
+      idSector,
+      coords,
+      posicion,
+    },
   };
 }
 
 export function setCambioManual(idSector, coords, manual) {
   return {
     type: SET_CAMBIO_MANUAL,
-    idSector,
-    coords,
-    manual,
+    payload: {
+      idSector,
+      coords,
+      manual,
+    },
   };
 }
 
 export function setLuzEstado(idSector, coords, dir, luz, estado) {
   return {
     type: SET_ESTADO_LUZ,
-    idSector,
-    coords,
-    dir,
-    luz,
-    estado,
+    payload: {
+      idSector,
+      coords,
+      dir,
+      luz,
+      estado,
+    },
   };
 }
 export function setLuzManual(idSector, coords, dir, luz, manual) {
   return {
     type: SET_LUZ_MANUAL,
-    idSector,
-    coords,
-    dir,
-    luz,
-    manual,
+    payload: {
+      idSector,
+      coords,
+      dir,
+      luz,
+      manual,
+    },
   };
 }

@@ -38,6 +38,7 @@ module.exports = version =>
         webClient: 'web',
         webServer: 'node',
       }[bundle],
+      devtool: 'source-map',
       module: {
         rules: [
           {

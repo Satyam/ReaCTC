@@ -3,17 +3,9 @@ import restAPI from '_platform/restAPI';
 import { normalize, schema } from 'normalizr';
 import update from 'immutability-helper';
 
-import {
-  NAME,
-  GET_SECTOR,
-  LIST_SECTORES,
-} from './constants';
+import { NAME, GET_SECTOR, LIST_SECTORES } from './constants';
 
-import {
-  sectorLoaded,
-  sectoresLoaded,
-} from './selectors';
-
+import { selSectorLoaded, selSectoresLoaded } from './selectors';
 
 const senal = new schema.Entity(
   'senales',
@@ -34,7 +26,7 @@ const enclavamiento = new schema.Entity(
   {},
   {
     idAttribute: (value, parent) => `${parent.sector}:${value.id}`,
-    processStrategy: value => Object.assign(value, { id: enc++ }),
+    processStrategy: value => Object.assign(value, { id: enc++ }), //eslint-disable-line no-plusplus
   }
 );
 
@@ -51,30 +43,26 @@ const api = restAPI(NAME);
 
 export function getSector(idSector) {
   return (dispatch, getState) => {
-    if (sectorLoaded(getState())) {
+    if (selSectorLoaded(getState())) {
       return Promise.resolve();
     }
-    return dispatch(asyncActionCreator(
-      GET_SECTOR,
-      api.read(idSector),
-      { idSector },
-    ))
-    .then(response => update(response, {
-      payload: {
-        $set: normalize(response.payload, sector),
-      },
-    }));
+    return dispatch(
+      asyncActionCreator(GET_SECTOR, api.read(idSector), { idSector })
+    ).then(response =>
+      update(response, {
+        payload: {
+          $set: normalize(response.payload, sector),
+        },
+      })
+    );
   };
 }
 
-export function listSectores() {
+export function getSectores() {
   return (dispatch, getState) => {
-    if (sectoresLoaded(getState())) {
+    if (selSectoresLoaded(getState())) {
       return Promise.resolve();
     }
-    return dispatch(asyncActionCreator(
-      LIST_SECTORES,
-      api.read(),
-    ));
+    return dispatch(asyncActionCreator(LIST_SECTORES, api.read()));
   };
 }

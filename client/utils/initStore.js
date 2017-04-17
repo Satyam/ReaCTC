@@ -1,4 +1,5 @@
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 import createHelper from 'recompose/createHelper';
 import createEagerFactory from 'recompose/createEagerFactory';
 
@@ -60,6 +61,5 @@ const initStore = initializer => (BaseComponent) => {
   };
   return StoreInitializer;
 };
-
 
 export default createHelper(initStore, 'initStore');

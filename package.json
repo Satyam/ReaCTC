@@ -2,7 +2,7 @@
   "name": "ReaCTC",
   "version": "1.0.0",
   "description": "Control de Tráfico Centralizado",
-  "main": "src/main.jsx",
+  "main": "webClient/index.jsx",
   "scripts": {
     "start": "node bundles/webServer.js",
     "debug": "node --inspect --debug-brk bundles/webServer.js",
@@ -11,6 +11,11 @@
     "build": "webpack -d --config webpack.config/development.js",
     "watch": "webpack -d --config webpack.config/development.js --watch &",
     "production": "webpack -p --config webpack.config/production.js"
+  },
+  "myWebServer": {
+    "port": 8080,
+    "host": "http://localhost",
+    "restAPIpath": "/data/v2"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

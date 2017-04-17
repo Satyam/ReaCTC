@@ -1,4 +1,5 @@
 import { NAME } from './constants';
 
-export const isLoading = state => !!state[NAME].pending;
-export const requestErrors = state => state[NAME].errors;
+export const selIsLoading = state => !!state[NAME].pending;
+export const selErrors = state => state[NAME].errors;
+export default selErrors;

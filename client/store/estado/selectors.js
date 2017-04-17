@@ -1,5 +1,7 @@
-import NAME from './constants';
+import { NAME } from './constants';
 
-export function estadoSelector(state) {
+export function selEstado(state) {
   return state[NAME];
 }
+
+export default selEstado;

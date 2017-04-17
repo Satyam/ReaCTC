@@ -12,7 +12,7 @@ import isEmpty from 'lodash/isEmpty';
 import Celda from '_components/celda';
 import Estado from '_components/estado';
 
-import { sectorSelector } from '_store/selectors';
+import { selSector } from '_store/selectors';
 
 import styles from './styles.css';
 
@@ -39,6 +39,6 @@ SectorComponent.propTypes = {
   celdas: PropTypes.object,
 };
 
-export const mapStateToProps = (state, { idSector }) => sectorSelector.item(state, idSector);
+export const mapStateToProps = (state, { idSector }) => selSector(state, idSector);
 
 export default connect(mapStateToProps)(SectorComponent);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { mensajesSelector } from '_store/selectors';
+import { selMensajes } from '_store/selectors';
 
 const colores = ['', 'warning', 'danger'];
 
@@ -40,6 +40,6 @@ TeletipoComponent.propTypes = {
     nivel: PropTypes.number,
   }),
 };
-export const mapStateToProps = state => mensajesSelector.item(state);
+export const mapStateToProps = state => selMensajes(state);
 
 export default connect(mapStateToProps)(TeletipoComponent);

@@ -9,7 +9,7 @@ import { Switch } from 'react-toolbox/lib/switch';
 
 import { setLuzEstado, setLuzManual } from '_store/actions';
 
-import { celdaSelector } from '_store/selectors';
+import { selSenal } from '_store/selectors';
 
 import styles from './styles.css';
 
@@ -71,10 +71,7 @@ export const Luz = withHandlers({
   onSetLibre: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'libre'),
 })(LuzComponent);
 
-export function SenalComponent({ onSetEstado, onSetManual }) {
-  const izq = senal.izq;
-  const pri = senal.primaria;
-  const der = senal.der;
+export function SenalComponent({ izq, primaria, der, onSetEstado, onSetManual }) {
   return (
     <div>
       {izq
@@ -86,16 +83,16 @@ export function SenalComponent({ onSetEstado, onSetManual }) {
           onSetEstado={onSetEstado}
         />
         : <div className={styles.noSenal} />}
-      {izq
+      {primaria
         ? <Luz
           luz="primaria"
-          manual={pri.manual}
-          estado={pri.estado}
+          manual={primaria.manual}
+          estado={primaria.estado}
           onSetManual={onSetManual}
           onSetEstado={onSetEstado}
         />
         : <div className={styles.noSenal} />}
-      {izq
+      {der
         ? <Luz
           luz="der"
           manual={der.manual}
@@ -109,12 +106,15 @@ export function SenalComponent({ onSetEstado, onSetManual }) {
 }
 
 SenalComponent.propTypes = {
+  primaria: PropTypes.object,
+  izq: PropTypes.object,
+  der: PropTypes.object,
   onSetEstado: PropTypes.func,
   onSetManual: PropTypes.func,
 };
 
-export const mapStateToProps = (state, { idSector, coords }) =>
-  celdaSelector.item(state, idSector, coords);
+export const mapStateToProps = (state, { idSector, coords, dir }) =>
+  selSenal(state, idSector, coords, dir);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
   onSetEstado: (luz, estado) => dispatch(setLuzEstado(idSector, coords, dir, luz, estado)),

@@ -27,13 +27,22 @@ const close = denodeify(server.close.bind(server));
 // app.use(REST_API_PATH, bodyParser.json(), /* showRequest, */ dataRouter);
 
 app.use('/bundles', express.static(absPath('bundles')));
-app.get('/data/sectores', (req, res) => {
+app.get(join(REST_API_PATH, 'sectores'), (req, res) => {
   res.json({
-    list: ['constitucion', 'retiro'],
+    list: [
+      {
+        idSector: 'constitucion',
+        descrCorta: 'Constitución',
+      },
+      {
+        idSector: 'retiro',
+        descrCorta: 'Retiro',
+      },
+    ],
   });
 });
 
-app.use('/data', express.static(absPath('data')));
+app.use(REST_API_PATH, express.static(absPath('data')));
 app.use(express.static(absPath('webServer/public')));
 
 app.get('/kill', (req, res) => {

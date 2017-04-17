@@ -9,7 +9,7 @@ import {
 } from '_store/actions';
 
 import {
-  celdaSelector,
+  selCelda,
 } from '_store/selectors';
 
 import isPlainClick from '_utils/isPlainClick';
@@ -79,7 +79,7 @@ CeldaComponent.propTypes = {
 };
 
 export const mapStateToProps = (state, { idSector, coords }) =>
-  celdaSelector.item(state, idSector, coords);
+  selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onclick: ev => isPlainClick(ev) && dispatch(clickCelda(idSector, coords)),

@@ -9,7 +9,7 @@ import { Switch } from 'react-toolbox/lib/switch';
 
 import { setTriple, setCambioManual } from '_store/actions';
 
-import { celdaSelector } from '_store/selectors';
+import { selCelda } from '_store/selectors';
 
 import styles from './styles.css';
 
@@ -75,7 +75,7 @@ CambioComponent.propTypes = {
 };
 
 export const mapStateToProps = (state, { idSector, coords }) =>
-  celdaSelector.item(state, idSector, coords);
+  selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onSetNormal: ev => isPlainClick(ev) && dispatch(setTriple(idSector, coords, 0)),

@@ -1,27 +1,27 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isPlainClick from '_utils/isPlainClick';
-import classNames from 'classnames';
+
+import { List, ListItem, ListDivider } from 'react-toolbox/lib/list';
 
 import { clearHttpErrors } from '_store/actions';
-import { requestErrors } from '_store/selectors';
-
-import styles from './styles.css';
+import { selErrors } from '_store/selectors';
 
 export const ErrorsComponent = ({ errors, onCloseErrors }) => {
   const closeErrorsHandler = ev => isPlainClick(ev) && onCloseErrors();
-  return (
-    <div className={classNames('errors', styles.errorsList, { hide: !errors.length })}>
-      <button onClick={closeErrorsHandler} className={styles.closeButton} />
-      {errors
-        .map(
-          process.env.NODE_ENV === 'production'
-            ? e => e.error.message
-            : e => JSON.stringify(e, null, 2)
-        )
-        .join('\n')}
-    </div>
-  );
+  return errors.length
+    ? <List>
+      <ListItem
+        caption="Close"
+        legend="Click individual errors to dismiss"
+        onClick={closeErrorsHandler}
+        rightIcon="delete_sweep"
+      />
+      <ListDivider />
+      {errors.map(err => <ListItem leftIcon="warning" caption={JSON.stringify(err)} />)}
+    </List>
+    : null;
 };
 
 ErrorsComponent.propTypes = {
@@ -30,7 +30,7 @@ ErrorsComponent.propTypes = {
 };
 
 export const mapStateToProps = state => ({
-  errors: requestErrors(state),
+  errors: selErrors(state),
 });
 
 export const mapDispatchToProps = dispatch => ({

@@ -5,12 +5,16 @@ import sectores from './sectores';
 import celdas from './celdas';
 import senales from './senales';
 import requests from './requests';
+import estado from './estado';
+import mensajes from './mensajes';
 
 const reducers = combineReducers({
   sectores,
   celdas,
   senales,
   requests,
+  estado,
+  mensajes,
 });
 
 export default (history, initialState) => {
@@ -33,9 +37,5 @@ export default (history, initialState) => {
       enhancer = compose(enhancer, window.devToolsExtension());
     }
   }
-  return createStore(
-    reducers,
-    initialState,
-    enhancer
-  );
+  return createStore(reducers, initialState, enhancer);
 };

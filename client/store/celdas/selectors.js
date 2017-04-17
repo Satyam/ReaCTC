@@ -1,5 +1,7 @@
-import NAME from './constants';
+import { NAME } from './constants';
 
-export function celdaSelector(state, idSector, coords) {
+export function selCelda(state, idSector, coords) {
   return state[NAME][`${idSector}:${coords}`];
 }
+
+export default selCelda;
