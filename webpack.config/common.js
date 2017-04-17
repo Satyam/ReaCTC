@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const join = path.join;
 const root = process.cwd();
@@ -43,20 +42,27 @@ module.exports = version =>
         rules: [
           {
             test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,
             loader: 'babel-loader',
           },
           {
             test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: 'css-loader?modules&camelCase',
-            }),
+            use: [
+              'style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true,
+                  sourceMap: true,
+                  importLoaders: 1,
+                  localIdentName: '[name]--[local]--[hash:base64:8]',
+                },
+              },
+              'postcss-loader', // has separate config, see postcss.config.js nearby
+            ],
           },
         ],
       },
       plugins: [
-        new ExtractTextPlugin(`${bundle}.css`),
         new webpack.DefinePlugin({
           'process.env': {
             NODE_ENV: JSON.stringify(version),
