@@ -10,6 +10,8 @@ import { closeEstado } from '_store/actions';
 
 import { selEstado } from '_store/selectors';
 
+import styles from './styles.css';
+
 import Cambio from './cambio';
 import Triple from './triple';
 import Senal from './senal';
@@ -19,8 +21,10 @@ export function EstadoComponent({ tipo, idSector, coords, dir, onClose }) {
   const Content = { cambio: Cambio, triple: Triple, senal: Senal }[tipo];
   return (
     <Sidebar active={!!tipo}>
-      <FontIcon value="close" onClick={onClose} />
-      <Content idSector={idSector} coords={coords} dir={dir} />
+      <FontIcon value="close" onClick={onClose} className={styles.closeIcon} />
+      <div className={styles.divider}>
+        <Content idSector={idSector} coords={coords} dir={dir} />
+      </div>
     </Sidebar>
   );
 }

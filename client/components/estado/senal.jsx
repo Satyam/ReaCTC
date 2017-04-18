@@ -7,6 +7,8 @@ import isPlainClick from '_utils/isPlainClick';
 import { Button } from 'react-toolbox/lib/button';
 import { Switch } from 'react-toolbox/lib/switch';
 
+import { Container, Row, Col } from 'react-grid-system';
+
 import { setLuzEstado, setLuzManual } from '_store/actions';
 
 import { selSenal } from '_store/selectors';
@@ -25,28 +27,25 @@ export function LuzComponent({
     <div>
       <Button
         floating
-        accent
         mini
         icon="lens"
-        disable={estado === 'alto'}
+        disabled={estado === 'alto'}
         className={styles.alto}
         onClick={onSetAlto}
       />
       <Button
         floating
-        accent
         mini
         icon="lens"
-        disable={estado === 'precaucion'}
+        disabled={estado === 'precaucion'}
         className={styles.precaucion}
         onClick={onSetPrecaucion}
       />
       <Button
         floating
-        accent
         mini
         icon="lens"
-        disable={estado === 'libre'}
+        disabled={estado === 'libre'}
         className={styles.libre}
         onClick={onSetLibre}
       />
@@ -71,41 +70,56 @@ export const Luz = withHandlers({
   onSetLibre: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'libre'),
 })(LuzComponent);
 
-export function SenalComponent({ izq, primaria, der, onSetEstado, onSetManual }) {
+export function SenalComponent({ coords, dir, izq, primaria, der, onSetEstado, onSetManual }) {
   return (
-    <div>
-      {izq
-        ? <Luz
-          luz="izq"
-          manual={izq.manual}
-          estado={izq.estado}
-          onSetManual={onSetManual}
-          onSetEstado={onSetEstado}
-        />
-        : <div className={styles.noSenal} />}
-      {primaria
-        ? <Luz
-          luz="primaria"
-          manual={primaria.manual}
-          estado={primaria.estado}
-          onSetManual={onSetManual}
-          onSetEstado={onSetEstado}
-        />
-        : <div className={styles.noSenal} />}
-      {der
-        ? <Luz
-          luz="der"
-          manual={der.manual}
-          estado={der.estado}
-          onSetManual={onSetManual}
-          onSetEstado={onSetEstado}
-        />
-        : <div className={styles.noSenal} />}
-    </div>
+    <Container>
+      <Row className={styles.rowSpacing}>
+        <Col md={4} className={styles.label}>Señal</Col>
+        <Col md={4}>{coords}</Col>
+        <Col md={4}>{dir}</Col>
+      </Row>
+      <Row className={styles.rowSpacing}>
+        <Col md={4}>
+          {izq
+            ? <Luz
+              luz="izq"
+              manual={izq.manual}
+              estado={izq.estado}
+              onSetManual={onSetManual}
+              onSetEstado={onSetEstado}
+            />
+            : <div className={styles.noSenal} />}
+        </Col>
+        <Col md={4}>
+          {primaria
+            ? <Luz
+              luz="primaria"
+              manual={primaria.manual}
+              estado={primaria.estado}
+              onSetManual={onSetManual}
+              onSetEstado={onSetEstado}
+            />
+            : <div className={styles.noSenal} />}
+        </Col>
+        <Col md={4}>
+          {der
+            ? <Luz
+              luz="der"
+              manual={der.manual}
+              estado={der.estado}
+              onSetManual={onSetManual}
+              onSetEstado={onSetEstado}
+            />
+            : <div className={styles.noSenal} />}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
 SenalComponent.propTypes = {
+  coords: PropTypes.string,
+  dir: PropTypes.string,
   primaria: PropTypes.object,
   izq: PropTypes.object,
   der: PropTypes.object,

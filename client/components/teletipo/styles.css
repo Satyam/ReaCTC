@@ -1,0 +1,8 @@
+.normal {
+}
+.warning {
+  background-color: yellow;
+}
+.danger {
+  background-color: orange;
+}

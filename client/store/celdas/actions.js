@@ -7,12 +7,13 @@ import {
   SET_LUZ_MANUAL,
 } from './constants';
 
-export function clickCelda(idSector, coords) {
+export function clickCelda(idSector, coords, tipo) {
   return {
     type: CLICK_CELDA,
     payload: {
       idSector,
       coords,
+      tipo,
     },
   };
 }

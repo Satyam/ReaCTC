@@ -15,9 +15,9 @@ export default (state = {}, action) => {
     case CLOSE_ESTADO:
       return update(state, { tipo: { $set: null } });
     case CLICK_CELDA:
-      return update(state, payload);
+      return update(state, { $merge: payload });
     case CLICK_SENAL:
-      return update(state, payload);
+      return update(state, { $merge: payload });
     default:
       return state;
   }

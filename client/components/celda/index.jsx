@@ -2,15 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import map from 'lodash/map';
 
-import {
-  clickCelda,
-} from '_store/actions';
+import { clickCelda } from '_store/actions';
 
-import {
-  selCelda,
-} from '_store/selectors';
+import { selCelda } from '_store/selectors';
 
 import isPlainClick from '_utils/isPlainClick';
 import splitCoords from '_utils/splitCoords';
@@ -34,15 +29,14 @@ const renderers = {
   triple: Triple,
 };
 
-export function CeldaComponent({ coords, celda, idSector, onClick }) {
+export function CeldaComponent({ idSector, coords, celda, onClick }) {
   const [x, y] = splitCoords(coords);
   const label = celda.descr || `[${x},${y}]`;
   const Renderer = renderers[celda.tipo];
-
   return (
     <g
       transform={`translate(${x * ANCHO_CELDA}, ${y * ANCHO_CELDA})`}
-      onClick={onClick}
+      onClick={onClick(celda.tipo)}
     >
       <rect
         x="0"
@@ -52,40 +46,32 @@ export function CeldaComponent({ coords, celda, idSector, onClick }) {
         className={classNames(styles.rect, celda.manual && styles.manual)}
       />
       <Renderer celda={celda} />
-      <text
-        className={styles.text}
-        x="5"
-        y="95"
-      >{label}</text>
-      {map(celda.senales, (senal, dir) => (<Senal
-        dir={dir}
-        luces={senal}
-        coords={celda.coords}
-        idSector={idSector}
-        key={dir}
-      />))}
+      <text className={styles.text} x="5" y="95">{label}</text>
+      {celda.senales
+        ? celda.senales.map((idSenal) => {
+          const dir = idSenal.split(':')[2];
+          return <Senal idSector={idSector} coords={coords} dir={dir} key={dir} />;
+        })
+        : null}
     </g>
   );
 }
 
 CeldaComponent.propTypes = {
-  // <Celda key={coords} coords={coords} celda={celda} nombreSector={sector.nombre}/>
   coords: PropTypes.string.isRequired,
   celda: PropTypes.shape({
     tipo: PropTypes.string.isRequired,
   }),
-  idSector: PropTypes.string,
-  onClick: PropTypes.func,
+  idSector: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export const mapStateToProps = (state, { idSector, coords }) =>
-  selCelda(state, idSector, coords);
-
-export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onclick: ev => isPlainClick(ev) && dispatch(clickCelda(idSector, coords)),
+export const mapStateToProps = (state, { idSector, coords }) => ({
+  celda: selCelda(state, idSector, coords),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CeldaComponent);
+export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
+  onClick: tipo => ev => isPlainClick(ev) && dispatch(clickCelda(idSector, coords, tipo)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CeldaComponent);

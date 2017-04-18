@@ -14,6 +14,7 @@ import { selCelda } from '_store/selectors';
 import styles from './styles.css';
 
 export function CambioComponent({
+  coords,
   posicion,
   manual,
   onSetNormal,
@@ -23,40 +24,40 @@ export function CambioComponent({
 }) {
   return (
     <Container>
-      <Row>
-        <Col md={3} className={styles.label}>Cambio</Col>
-        <Col md={3}>
+      <Row className={styles.rowSpacing}>
+        <Col md={6} className={styles.label}>Triple</Col>
+        <Col md={6} className={styles.label}>{coords}</Col>
+      </Row>
+      <Row className={styles.rowSpacing}>
+        <Col md={4}>
           <Button
-            icon="arrow back"
+            icon="arrow_back"
             floating
-            accent
             mini
             onClick={onSetIzq}
             disabled={posicion === -1}
           />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <Button
-            icon="arrow upward"
+            icon="arrow_upward"
             floating
-            accent
             mini
             onClick={onSetNormal}
             disabled={posicion === 0}
           />
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <Button
-            icon="arrow forward"
+            icon="arrow_forward"
             floating
-            accent
             mini
             onClick={onSetDer}
             disabled={posicion === 1}
           />
         </Col>
       </Row>
-      <Row>
+      <Row className={styles.rowSpacing}>
         <Col md={12}>
           <Switch label="Manual" checked={manual} onChange={onSetManual} />
         </Col>
@@ -66,6 +67,7 @@ export function CambioComponent({
 }
 
 CambioComponent.propTypes = {
+  coords: PropTypes.string,
   posicion: PropTypes.number,
   manual: PropTypes.bool,
   onSetNormal: PropTypes.func,
@@ -74,8 +76,7 @@ CambioComponent.propTypes = {
   onSetManual: PropTypes.func,
 };
 
-export const mapStateToProps = (state, { idSector, coords }) =>
-  selCelda(state, idSector, coords);
+export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onSetNormal: ev => isPlainClick(ev) && dispatch(setTriple(idSector, coords, 0)),

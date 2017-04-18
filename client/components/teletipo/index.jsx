@@ -2,44 +2,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
+
 import { selMensajes } from '_store/selectors';
 
-const colores = ['', 'warning', 'danger'];
+import styles from './styles.css';
+
+const colores = ['normal', 'warning', 'danger'];
 
 export function TeletipoComponent({ mensajes }) {
   return (
-    <table className="table table-striped">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Sector</th>
-          <th>Celda</th>
-          <th>Mensaje</th>
-        </tr>
-      </thead>
-      <tbody>
-        {mensajes.map(row => (
-          <tr className={colores[row.nivel]} key={row.fecha.getTime()}>
-            <td>{row.fecha.toLocaleString()}</td>
-            <td>{row.sector}</td>
-            <td>{row.coords}</td>
-            <td>{row.msg}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table selectable={false}>
+      <TableHead>
+        <TableCell>Fecha</TableCell>
+        <TableCell>Sector</TableCell>
+        <TableCell>Celda</TableCell>
+        <TableCell>Mensaje</TableCell>
+      </TableHead>
+      {mensajes.map(row => (
+        <TableRow className={styles[colores[row.nivel]]} key={row.fecha.getTime()}>
+          <TableCell>{row.fecha.toLocaleString()}</TableCell>
+          <TableCell>{row.sector}</TableCell>
+          <TableCell>{row.coords}</TableCell>
+          <TableCell>{row.msg}</TableCell>
+        </TableRow>
+      ))}
+    </Table>
   );
 }
 
 TeletipoComponent.propTypes = {
-  mensajes: PropTypes.arrayOf({
-    fecha: PropTypes.instanceOf(Date),
-    sector: PropTypes.string,
-    coords: PropTypes.string,
-    msg: PropTypes.string,
-    nivel: PropTypes.number,
-  }),
+  mensajes: PropTypes.arrayOf(
+    PropTypes.shape({
+      fecha: PropTypes.instanceOf(Date),
+      sector: PropTypes.string,
+      coords: PropTypes.string,
+      msg: PropTypes.string,
+      nivel: PropTypes.number,
+    })
+  ),
 };
-export const mapStateToProps = state => selMensajes(state);
+export const mapStateToProps = state => ({ mensajes: selMensajes(state) });
 
 export default connect(mapStateToProps)(TeletipoComponent);

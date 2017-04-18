@@ -12,7 +12,7 @@ import { clickSenal } from '_store/actions';
 import { CENTRO_CELDA, ANG } from './common';
 import styles from './styles.css';
 
-export function SenalComponent({ dir, luces, onClick }) {
+export function SenalComponent({ dir, primaria, izq, der, onClick }) {
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -35,41 +35,32 @@ export function SenalComponent({ dir, luces, onClick }) {
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={classNames(styles.primaria, styles[luces.primaria.estado])}
-        cx={luces.izq || luces.der ? x2 : x1}
+        className={classNames(styles.primaria, styles[primaria.estado])}
+        cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
-      {luces.izq &&
-        <circle
-          className={classNames(styles.izq, styles[luces.izq.estado])}
-          cx={x1}
-          cy={y + r}
-          r={r}
-        />}
-      {luces.der &&
-        <circle
-          className={classNames(styles.der, styles[luces.der.estado])}
-          cx={x1}
-          cy={y - r}
-          r={r}
-        />}
+      {izq &&
+        <circle className={classNames(styles.izq, styles[izq.estado])} cx={x1} cy={y + r} r={r} />}
+      {der &&
+        <circle className={classNames(styles.der, styles[der.estado])} cx={x1} cy={y - r} r={r} />}
     </g>
   );
 }
 
 SenalComponent.propTypes = {
-  // <Senal dir={dir} luces={senal} key={dir}/>
   dir: PropTypes.string.isRequired,
-  luces: PropTypes.object.isRequired,
-  onClick: PropTypes.func,
+  primaria: PropTypes.object,
+  izq: PropTypes.object,
+  der: PropTypes.object,
+  onClick: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state, { idSector, coords, dir }) =>
   selSenal(state, idSector, coords, dir);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
-  onclick: ev => isPlainClick(ev) && dispatch(clickSenal(idSector, coords, dir)),
+  onClick: ev => isPlainClick(ev) && dispatch(clickSenal(idSector, coords, dir)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SenalComponent);

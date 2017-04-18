@@ -5,12 +5,14 @@ import Tramo from './tramo';
 import { DIR } from './common';
 
 export default function Cruce({ celda }) {
-  return (<g>
-    <Tramo dest={celda.l1.desde.dir} />
-    <Tramo dest={celda.l1.hacia.dir} />
-    <Tramo dest={celda.l2.desde.dir} />
-    <Tramo dest={celda.l2.hacia.dir} />
-  </g>);
+  return (
+    <g>
+      <Tramo dest={celda.l1.desde.dir} />
+      <Tramo dest={celda.l1.hacia.dir} />
+      <Tramo dest={celda.l2.desde.dir} />
+      <Tramo dest={celda.l2.hacia.dir} />
+    </g>
+  );
 }
 
 Cruce.propTypes = {

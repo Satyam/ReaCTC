@@ -7,6 +7,7 @@ export function clickSenal(idSector, coords, dir) {
       idSector,
       coords,
       dir,
+      tipo: 'senal',
     },
   };
 }

@@ -14,6 +14,7 @@ import { selCelda } from '_store/selectors';
 import styles from './styles.css';
 
 export function CambioComponent({
+  coords,
   desviado,
   manual,
   onSetCambioNormal,
@@ -29,30 +30,31 @@ export function CambioComponent({
   // );
   return (
     <Container>
-      <Row>
-        <Col md={4} className={styles.label}>Cambio</Col>
-        <Col md={4}>
+      <Row className={styles.rowSpacing}>
+        <Col md={6} className={styles.label}>Cambio</Col>
+        <Col md={6} className={styles.label}>{coords}</Col>
+      </Row>
+      <Row className={styles.rowSpacing}>
+        <Col md={6}>
           <Button
-            icon="arrow upward"
+            icon="arrow_upward"
             floating
-            accent
             mini
             onClick={onSetCambioNormal}
             disabled={desviado}
           />
         </Col>
-        <Col md={4}>
+        <Col md={6}>
           <Button
-            icon="call made"
+            icon="call_made"
             floating
-            accent
             mini
             onClick={onSetCambioDesviado}
             disabled={!desviado}
           />
         </Col>
       </Row>
-      <Row>
+      <Row className={styles.rowSpacing}>
         <Col md={12}>
           <Switch label="Manual" checked={manual} onChange={onSetManual} />
         </Col>
@@ -62,6 +64,7 @@ export function CambioComponent({
 }
 
 CambioComponent.propTypes = {
+  coords: PropTypes.string,
   desviado: PropTypes.bool,
   manual: PropTypes.bool,
   onSetCambioNormal: PropTypes.func,
@@ -69,8 +72,7 @@ CambioComponent.propTypes = {
   onSetManual: PropTypes.func,
 };
 
-export const mapStateToProps = (state, { idSector, coords }) =>
-  selCelda(state, idSector, coords);
+export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, false)),

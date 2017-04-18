@@ -1,0 +1,15 @@
+.bottomDrawerOpen {
+    position:fixed;
+    height:7em;
+    bottom:0;
+    left:0;
+    right:0;
+    margin-bottom:0;
+    background-color: var(--color-background);
+}
+.bottomDrawerClosed {
+  display:none;
+}
+.contentWithDrawerOpen{
+  margin-bottom:7em;
+}
