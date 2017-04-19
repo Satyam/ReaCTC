@@ -55,7 +55,6 @@ module.exports = version =>
                   sourceMap: true,
                   importLoaders: 1,
                   localIdentName: '[name]--[local]--[hash:base64:8]',
-                  camelCase: true,
                 },
               },
               'postcss-loader', // has separate config, see postcss.config.js nearby
