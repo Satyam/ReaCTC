@@ -35,15 +35,27 @@ export function SenalComponent({ dir, primaria, izq, der, onClick }) {
       <line x1={xTope} y1={y} x2={x2 + r} y2={y} />
       <line x1={xTope} y1={y - r} x2={xTope} y2={y + r} />
       <circle
-        className={classNames(styles.primaria, styles[primaria.estado])}
+        className={classNames(styles.primaria, styles[primaria.estado], {
+          [styles.luzManual]: primaria.manual,
+        })}
         cx={izq || der ? x2 : x1}
         cy={y}
         r={r}
       />
       {izq &&
-        <circle className={classNames(styles.izq, styles[izq.estado])} cx={x1} cy={y + r} r={r} />}
+        <circle
+          className={classNames(styles.izq, styles[izq.estado], { [styles.luzManual]: izq.manual })}
+          cx={x1}
+          cy={y + r}
+          r={r}
+        />}
       {der &&
-        <circle className={classNames(styles.der, styles[der.estado])} cx={x1} cy={y - r} r={r} />}
+        <circle
+          className={classNames(styles.der, styles[der.estado], { [styles.luzManual]: der.manual })}
+          cx={x1}
+          cy={y - r}
+          r={r}
+        />}
     </g>
   );
 }

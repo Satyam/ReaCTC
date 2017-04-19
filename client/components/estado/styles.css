@@ -1,16 +1,6 @@
 .label {
   font-weight: bold;
 }
-.closeIcon {
-  float: right;
-  cursor: default;
-}
-.divider {
-  margin-top: 0.5em;
-  border-top: solid silver thin;
-  padding: 0.5em;
-  clear: both;
-}
 .libre {
   color: green !important;
   display: block;
@@ -29,4 +19,10 @@
 .rowSpacing {
   padding-top: .5em;
   padding-bottom: .5em;
+}
+.pushDown {
+  padding-top: 1.5em;
+}
+.centered {
+  margin: 3px auto;
 }

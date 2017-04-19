@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { clickCelda } from '_store/actions';
 
-import { selCelda } from '_store/selectors';
+import { selCelda, selEstado } from '_store/selectors';
 
 import isPlainClick from '_utils/isPlainClick';
 import splitCoords from '_utils/splitCoords';
@@ -29,7 +29,7 @@ const renderers = {
   triple: Triple,
 };
 
-export function CeldaComponent({ idSector, coords, celda, onClick }) {
+export function CeldaComponent({ idSector, coords, celda, estado, onClick }) {
   const [x, y] = splitCoords(coords);
   const label = celda.descr || `[${x},${y}]`;
   const Renderer = renderers[celda.tipo];
@@ -43,7 +43,12 @@ export function CeldaComponent({ idSector, coords, celda, onClick }) {
         y="0"
         width={ANCHO_CELDA}
         height={ANCHO_CELDA}
-        className={classNames(styles.rect, celda.manual && styles.manual)}
+        className={classNames(styles.rect, {
+          [celda.manual]: styles.manual,
+          [styles.seleccionada]: estado.tipo &&
+            idSector === estado.idSector &&
+            coords === estado.coords,
+        })}
       />
       <Renderer celda={celda} />
       <text className={styles.text} x="5" y="95">{label}</text>
@@ -58,16 +63,22 @@ export function CeldaComponent({ idSector, coords, celda, onClick }) {
 }
 
 CeldaComponent.propTypes = {
+  idSector: PropTypes.string.isRequired,
   coords: PropTypes.string.isRequired,
   celda: PropTypes.shape({
     tipo: PropTypes.string.isRequired,
   }),
-  idSector: PropTypes.string.isRequired,
+  estado: PropTypes.shape({
+    tipo: PropTypes.string,
+    idSector: PropTypes.string,
+    coords: PropTypes.string,
+  }),
   onClick: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = (state, { idSector, coords }) => ({
   celda: selCelda(state, idSector, coords),
+  estado: selEstado(state),
 });
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({

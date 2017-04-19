@@ -41,7 +41,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioNormal}
-            disabled={desviado}
+            disabled={!desviado}
           />
         </Col>
         <Col md={6}>
@@ -50,7 +50,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioDesviado}
-            disabled={!desviado}
+            disabled={desviado}
           />
         </Col>
       </Row>

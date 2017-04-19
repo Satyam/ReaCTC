@@ -30,31 +30,13 @@ export function CambioComponent({
       </Row>
       <Row className={styles.rowSpacing}>
         <Col md={4}>
-          <Button
-            icon="arrow_back"
-            floating
-            mini
-            onClick={onSetIzq}
-            disabled={posicion === -1}
-          />
+          <Button icon="arrow_back" floating mini onClick={onSetIzq} disabled={posicion === -1} />
         </Col>
         <Col md={4}>
-          <Button
-            icon="arrow_upward"
-            floating
-            mini
-            onClick={onSetNormal}
-            disabled={posicion === 0}
-          />
+          <Button icon="arrow_upward" floating mini onClick={onSetNormal} disabled={!posicion} />
         </Col>
         <Col md={4}>
-          <Button
-            icon="arrow_forward"
-            floating
-            mini
-            onClick={onSetDer}
-            disabled={posicion === 1}
-          />
+          <Button icon="arrow_forward" floating mini onClick={onSetDer} disabled={posicion === 1} />
         </Col>
       </Row>
       <Row className={styles.rowSpacing}>

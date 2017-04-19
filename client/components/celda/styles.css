@@ -18,6 +18,9 @@
   fill: yellow;
 }
 
+.luzManual {
+	stroke: lightpink;
+}
 .rect {
 	fill: #eeeeee;
 	stroke: white;
@@ -39,4 +42,7 @@
 .tramo-muerto {
 	stroke: silver;
 	stroke-width: 3;
+}
+.seleccionada {
+	fill: lightblue;
 }

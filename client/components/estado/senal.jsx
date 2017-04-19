@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withHandlers } from 'recompose';
+import classNames from 'classnames';
 
 import isPlainClick from '_utils/isPlainClick';
 import { Button } from 'react-toolbox/lib/button';
@@ -16,6 +17,7 @@ import { selSenal } from '_store/selectors';
 import styles from './styles.css';
 
 export function LuzComponent({
+  luz,
   manual,
   estado,
   onBoundSetManual,
@@ -24,13 +26,13 @@ export function LuzComponent({
   onSetLibre,
 }) {
   return (
-    <div>
+    <div className={classNames({ [styles.pushDown]: luz !== 'primaria' })}>
       <Button
         floating
         mini
         icon="lens"
         disabled={estado === 'alto'}
-        className={styles.alto}
+        className={classNames(styles.alto, styles.centered)}
         onClick={onSetAlto}
       />
       <Button
@@ -38,7 +40,7 @@ export function LuzComponent({
         mini
         icon="lens"
         disabled={estado === 'precaucion'}
-        className={styles.precaucion}
+        className={classNames(styles.precaucion, styles.centered)}
         onClick={onSetPrecaucion}
       />
       <Button
@@ -46,7 +48,7 @@ export function LuzComponent({
         mini
         icon="lens"
         disabled={estado === 'libre'}
-        className={styles.libre}
+        className={classNames(styles.libre, styles.centered)}
         onClick={onSetLibre}
       />
       <Switch label="Manual" checked={manual} onChange={onBoundSetManual} />
@@ -55,6 +57,7 @@ export function LuzComponent({
 }
 
 LuzComponent.propTypes = {
+  luz: PropTypes.string,
   manual: PropTypes.bool,
   estado: PropTypes.string,
   onBoundSetManual: PropTypes.func,

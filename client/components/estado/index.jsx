@@ -19,12 +19,10 @@ import Senal from './senal';
 export function EstadoComponent({ tipo, idSector, coords, dir, onClose }) {
   if (!tipo) return null;
   const Content = { cambio: Cambio, triple: Triple, senal: Senal }[tipo];
+  if (!Content) return null;
   return (
-    <Sidebar active={!!tipo}>
-      <FontIcon value="close" onClick={onClose} className={styles.closeIcon} />
-      <div className={styles.divider}>
-        <Content idSector={idSector} coords={coords} dir={dir} />
-      </div>
+    <Sidebar active={!!tipo} onOverlayClick={onClose}>
+      <Content idSector={idSector} coords={coords} dir={dir} />
     </Sidebar>
   );
 }

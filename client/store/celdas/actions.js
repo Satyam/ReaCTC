@@ -1,11 +1,4 @@
-import {
-  CLICK_CELDA,
-  SET_CAMBIO,
-  SET_TRIPLE,
-  SET_CAMBIO_MANUAL,
-  SET_ESTADO_LUZ,
-  SET_LUZ_MANUAL,
-} from './constants';
+import { CLICK_CELDA, SET_CAMBIO, SET_TRIPLE, SET_CAMBIO_MANUAL } from './constants';
 
 export function clickCelda(idSector, coords, tipo) {
   return {
@@ -46,31 +39,6 @@ export function setCambioManual(idSector, coords, manual) {
     payload: {
       idSector,
       coords,
-      manual,
-    },
-  };
-}
-
-export function setLuzEstado(idSector, coords, dir, luz, estado) {
-  return {
-    type: SET_ESTADO_LUZ,
-    payload: {
-      idSector,
-      coords,
-      dir,
-      luz,
-      estado,
-    },
-  };
-}
-export function setLuzManual(idSector, coords, dir, luz, manual) {
-  return {
-    type: SET_LUZ_MANUAL,
-    payload: {
-      idSector,
-      coords,
-      dir,
-      luz,
       manual,
     },
   };
