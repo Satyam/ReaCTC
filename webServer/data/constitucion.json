@@ -395,7 +395,7 @@
     },
     {
       "tipo": "senalCambio",
-      "senal": "8,3,SE",
+      "senal": "8,3:SE",
       "celda": "8,3",
       "normal": {
         "primaria": "libre",
@@ -408,7 +408,7 @@
     },
     {
       "tipo": "senalCambio",
-      "senal": "4,4,W",
+      "senal": "4,4:W",
       "celda": "4,4",
       "normal": {
         "primaria": "libre",
@@ -421,7 +421,7 @@
     },
     {
       "tipo": "senalTriple",
-      "senal": "2,4,W",
+      "senal": "2,4:W",
       "celda": "2,4",
       "izq": {
         "izq": "libre",
