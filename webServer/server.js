@@ -41,7 +41,7 @@ app.get(join(REST_API_PATH, 'sectores'), (req, res) => {
     ],
   });
 });
-console.log(join(REST_API_PATH, 'sectores/:idSector'));
+
 app.get(join(REST_API_PATH, 'sectores/:idSector'), (req, res) => {
   res.sendFile(`${absPath('webServer/data')}/${req.params.idSector}.json`);
 });
