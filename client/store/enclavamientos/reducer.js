@@ -1,4 +1,6 @@
 import update from 'immutability-helper';
+import mapValues from 'lodash/mapValues';
+import values from 'lodash/values';
 
 import { REPLY_RECEIVED } from '_store/requests/constants';
 
@@ -52,11 +54,9 @@ export default (
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR: {
-      const idSector = payload.idSector;
-      const sectores = payload.entities.sectores[idSector];
-      const enclavamientos = sectores.enclavamientos;
-
-      return update(state, { hash: { $merge: indexEnclavamientos(idSector, enclavamientos) } });
+      return update(state, {
+        hash: { $merge: mapValues(payload.entities.enclavamientos, o => values(o)) },
+      });
     }
     case SET_PENDING:
       return update(state, { pending: { $push: [`${payload.idSector}:${payload.coords}`] } });

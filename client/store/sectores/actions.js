@@ -11,9 +11,17 @@ const senal = new schema.Entity(
   {},
   { idAttribute: (value, parent) => `${parent.idSector}:${parent.coords}:${value.dir}` }
 );
+const enclavamiento = new schema.Entity(
+  'enclavamientos',
+  {},
+  { idAttribute: (value, parent) => `${parent.idSector}:${parent.coords}` }
+);
 const celda = new schema.Entity(
   'celdas',
-  { senales: [senal] },
+  {
+    senales: [senal],
+    enclavamientos: enclavamiento,
+  },
   {
     idAttribute: (value, parent) => `${parent.idSector}:${value.coords}`,
     processStrategy: (value, parent) => Object.assign(value, { idSector: parent.idSector }),

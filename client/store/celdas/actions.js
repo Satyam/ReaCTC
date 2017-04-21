@@ -45,9 +45,7 @@ export function setCambio(idSector, coords, desviado) {
           selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
             switch (enclavamiento.tipo) {
               case 'apareados':
-                return Promise.all(
-                  enclavamiento.celdas.map(c => dispatch(setCambio(idSector, c, desviado)))
-                );
+                return dispatch(setCambio(idSector, enclavamiento.celda, desviado));
               case 'senalCambio': {
                 const caso = desviado ? enclavamiento.desviado : enclavamiento.normal;
                 const [c, dir] = enclavamiento.senal.split(':');
@@ -95,9 +93,7 @@ export function setTriple(idSector, coords, posicion) {
           selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
             switch (enclavamiento.tipo) {
               case 'apareados':
-                return Promise.all(
-                  enclavamiento.celdas.map(c => dispatch(setCambio(idSector, c, posicion)))
-                );
+                return Promise.alldispatch(setCambio(idSector, enclavamiento.celda, posicion));
               case 'senalTriple': {
                 const caso = enclavamiento[['izq', 'centro', 'der'][posicion + 1]];
                 const [c, dir] = enclavamiento.senal.split(':');
