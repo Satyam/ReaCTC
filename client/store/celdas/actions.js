@@ -1,6 +1,6 @@
 import map from 'lodash/map';
 
-import { selCelda, selEnclavamientos, selIsPending } from '_store/selectors';
+import { selCelda, selEnclavamientos, selIsPending, selSenalIsManual } from '_store/selectors';
 
 import { clearAllPending, setPending, setLuzEstado } from '_store/actions';
 
@@ -40,26 +40,35 @@ export function setCambio(idSector, coords, desviado) {
           },
         })
       )
-      .then(() =>
-        Promise.all(
-          selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
-            switch (enclavamiento.tipo) {
-              case 'apareados':
-                return dispatch(setCambio(idSector, enclavamiento.celda, desviado));
-              case 'senalCambio': {
-                const caso = desviado ? enclavamiento.desviado : enclavamiento.normal;
-                const [c, dir] = enclavamiento.senal.split(':');
-                return Promise.all(
-                  map(caso, (estado, luz) => dispatch(setLuzEstado(idSector, c, dir, luz, estado)))
-                );
-              }
-              default:
-                return Promise.reject(
-                  `Celda en ${coords} de ${idSector} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-                );
-            }
-          })
-        )
+      .then(
+        () =>
+          (celda.manual
+            ? Promise.resolve()
+            : Promise.all(
+                selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
+                  switch (enclavamiento.tipo) {
+                    case 'apareados':
+                      return dispatch(setCambio(idSector, enclavamiento.celda, desviado));
+                    case 'senalCambio': {
+                      const caso = desviado ? enclavamiento.desviado : enclavamiento.normal;
+                      const [c, dir] = enclavamiento.senal.split(':');
+                      return Promise.all(
+                        map(
+                          caso,
+                          (estado, luz) =>
+                            (selSenalIsManual(getState(), idSector, c, dir, luz)
+                              ? Promise.resolve()
+                              : dispatch(setLuzEstado(idSector, c, dir, luz, estado)))
+                        )
+                      );
+                    }
+                    default:
+                      return Promise.reject(
+                        `Celda en ${coords} de ${idSector} tiene enclavamiento desconocido ${enclavamiento.tipo}`
+                      );
+                  }
+                })
+              ))
       )
       .then(() => dispatch(clearAllPending()));
   };
@@ -88,26 +97,37 @@ export function setTriple(idSector, coords, posicion) {
           },
         })
       )
-      .then(() =>
-        Promise.all(
-          selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
-            switch (enclavamiento.tipo) {
-              case 'apareados':
-                return Promise.alldispatch(setCambio(idSector, enclavamiento.celda, posicion));
-              case 'senalTriple': {
-                const caso = enclavamiento[['izq', 'centro', 'der'][posicion + 1]];
-                const [c, dir] = enclavamiento.senal.split(':');
-                return Promise.all(
-                  map(caso, (estado, luz) => dispatch(setLuzEstado(idSector, c, dir, luz, estado)))
-                );
-              }
-              default:
-                return Promise.reject(
-                  `Celda en ${coords} de ${idSector} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-                );
-            }
-          })
-        )
+      .then(
+        () =>
+          (celda.manual
+            ? Promise.resolve()
+            : Promise.all(
+                selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
+                  switch (enclavamiento.tipo) {
+                    case 'apareados':
+                      return Promise.alldispatch(
+                        setCambio(idSector, enclavamiento.celda, posicion)
+                      );
+                    case 'senalTriple': {
+                      const caso = enclavamiento[['izq', 'centro', 'der'][posicion + 1]];
+                      const [c, dir] = enclavamiento.senal.split(':');
+                      return Promise.all(
+                        map(
+                          caso,
+                          (estado, luz) =>
+                            (selSenalIsManual(getState(), idSector, c, dir, luz)
+                              ? Promise.resolve()
+                              : dispatch(setLuzEstado(idSector, c, dir, luz, estado)))
+                        )
+                      );
+                    }
+                    default:
+                      return Promise.reject(
+                        `Celda en ${coords} de ${idSector} tiene enclavamiento desconocido ${enclavamiento.tipo}`
+                      );
+                  }
+                })
+              ))
       )
       .then(() => dispatch(clearAllPending()));
   };
