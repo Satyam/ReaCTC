@@ -7,6 +7,7 @@ import senales from './senales';
 import requests from './requests';
 import estado from './estado';
 import mensajes from './mensajes';
+import enclavamientos from './enclavamientos';
 
 const reducers = combineReducers({
   sectores,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   requests,
   estado,
   mensajes,
+  enclavamientos,
 });
 
 export default (history, initialState) => {

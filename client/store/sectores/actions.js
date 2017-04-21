@@ -19,21 +19,11 @@ const celda = new schema.Entity(
     processStrategy: (value, parent) => Object.assign(value, { idSector: parent.idSector }),
   }
 );
-let enc = 0;
-const enclavamiento = new schema.Entity(
-  'enclavamientos',
-  {},
-  {
-    idAttribute: (value, parent) => `${parent.idSector}:${value.id}`,
-    processStrategy: value => Object.assign(value, { id: enc++ }), //eslint-disable-line no-plusplus
-  }
-);
 
 const sector = new schema.Entity(
   'sectores',
   {
     celdas: [celda],
-    enclavamientos: [enclavamiento],
   },
   { idAttribute: 'idSector' }
 );
@@ -42,7 +32,7 @@ const api = restAPI(NAME);
 
 export function getSector(idSector) {
   return (dispatch, getState) => {
-    if (selSectorLoaded(getState())) {
+    if (selSectorLoaded(getState(), idSector)) {
       return Promise.resolve();
     }
     return dispatch(
