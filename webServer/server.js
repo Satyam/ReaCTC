@@ -1,20 +1,15 @@
 import http from 'http';
-import { join, extname } from 'path';
+import { join } from 'path';
 import express, { Router as createRouter } from 'express';
 import { MongoClient } from 'mongodb';
 import dbg from 'debug';
 
 import bodyParser from 'body-parser';
 import denodeify from 'denodeify';
-import fs from 'fs';
 
 import dataServers from '_server';
 
 const absPath = relPath => join(ROOT_DIR, relPath);
-
-// const unlink = denodeify(fs.unlink);
-const readFile = denodeify(fs.readFile);
-const readDir = denodeify(fs.readdir);
 
 const app = express();
 const server = http.createServer(app);
@@ -89,30 +84,7 @@ function addRoute(operation, path, actions) {
 
 export function start() {
   return MongoClient.connect('mongodb://localhost:27017/CTC')
-    .then(db => db.collection('sectores'))
-    .then((collection) => {
-      collection.stats().then((stats) => {
-        if (stats.count === 0) {
-          return readDir(absPath('webServer/data')).then(files =>
-            Promise.all(
-              files.map((file) => {
-                if (extname(file) === '.json') {
-                  return readFile(absPath(`webServer/data/${file}`))
-                    .then(JSON.parse)
-                    .then(data =>
-                      collection.insertOne(Object.assign(data, { _id: data.idSector }))
-                    );
-                }
-                return null;
-              })
-            )
-          );
-        }
-        return Promise.resolve();
-      });
-      return collection;
-    })
-    .then(collection => dataServers(collection, addRoute))
+    .then(db => dataServers(db, addRoute))
     .then(() => listen(PORT));
 }
 export function stop() {
