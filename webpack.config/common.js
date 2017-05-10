@@ -32,6 +32,8 @@ module.exports = version =>
       output: {
         path: absPath('bundles'),
         filename: '[name].js',
+        publicPath: absPath('bundles'),
+        pathinfo: version === 'development',
       },
       target: {
         webClient: 'web',
@@ -39,6 +41,7 @@ module.exports = version =>
       }[bundle],
       devtool: 'source-map',
       module: {
+        noParse: /es6-promise/,
         rules: [
           {
             test: /\.jsx?$/,
