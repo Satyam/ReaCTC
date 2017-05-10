@@ -5,3 +5,4 @@ export * from './requests/actions';
 export * from './estado/actions';
 export * from './mensajes/actions';
 export * from './enclavamientos/actions';
+export * from './user/actions';

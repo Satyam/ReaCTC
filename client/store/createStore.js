@@ -8,6 +8,7 @@ import requests from './requests';
 import estado from './estado';
 import mensajes from './mensajes';
 import enclavamientos from './enclavamientos';
+import user from './user';
 
 const reducers = combineReducers({
   sectores,
@@ -17,6 +18,7 @@ const reducers = combineReducers({
   estado,
   mensajes,
   enclavamientos,
+  user,
 });
 
 export default (history, initialState) => {

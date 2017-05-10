@@ -1,6 +1,7 @@
 import http from 'http';
 import { join } from 'path';
 import express, { Router as createRouter } from 'express';
+import passport from 'passport';
 import { MongoClient } from 'mongodb';
 import morgan from 'morgan';
 
@@ -8,6 +9,8 @@ import bodyParser from 'body-parser';
 import denodeify from 'denodeify';
 
 import dataServers from '_server';
+
+import { setStrategy, signup, login, logout } from './userAccess';
 
 const absPath = relPath => join(ROOT_DIR, relPath);
 
@@ -20,8 +23,25 @@ const close = denodeify(server.close.bind(server));
 const dataRouter = createRouter();
 
 app.use(morgan('dev'));
+// To make this server CORS-ENABLEd
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
-app.use(REST_API_PATH, bodyParser.json(), dataRouter);
+app.use(`${REST_API_PATH}/user/signup`, bodyParser.json(), signup);
+app.use(`${REST_API_PATH}/user/login`, bodyParser.json(), login);
+app.use(`${REST_API_PATH}/user/logout`, logout);
+
+app.use(passport.initialize());
+
+app.use(
+  REST_API_PATH,
+  passport.authenticate('jwt', { session: false }),
+  bodyParser.json(),
+  dataRouter
+);
 
 app.use('/bundles', express.static(absPath('bundles')));
 app.use(express.static(absPath('webServer/public')));
@@ -39,6 +59,7 @@ const handleRequest = actions => (req, res) => {
     keys: req.params || {},
     data: req.body,
     options: req.query || {},
+    user: req.user || {},
   };
 
   return []
@@ -62,7 +83,7 @@ function addRoute(operation, path, actions) {
 
 export function start() {
   return MongoClient.connect('mongodb://localhost:27017/CTC')
-    .then(db => dataServers(db, addRoute))
+    .then(db => dataServers(db, addRoute).then(() => setStrategy(passport, db)))
     .then(() => listen(PORT));
 }
 export function stop() {

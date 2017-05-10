@@ -16,8 +16,7 @@ import isPlainClick from '_utils/isPlainClick';
 import { getSectores } from '_store/actions';
 import { selSectores } from '_store/selectors';
 
-export function MenuComponent({ sectores, match, onClick }) {
-  const currentSector = match && match.params.idSector;
+export function MenuComponent({ sectores, location, onClick }) {
   return (
     <List selectable>
       <ListSubHeader caption="Recientes" />
@@ -26,7 +25,7 @@ export function MenuComponent({ sectores, match, onClick }) {
           key={sector.idSector}
           onClick={onClick(sector.idSector)}
           caption={sector.descrCorta}
-          disabled={sector.idSector === currentSector}
+          disabled={`/sector/${sector.idSector}` === location.pathname}
         />
       ))}
       <ListDivider />
@@ -43,7 +42,7 @@ MenuComponent.propTypes = {
       descrCorta: PropTypes.string,
     })
   ),
-  match: PropTypes.object,
+  location: PropTypes.object,
   onClick: PropTypes.func,
 };
 
@@ -56,7 +55,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = (dispatch, { history, onClose }) => ({
   onClick: idSector => (ev) => {
     if (isPlainClick(ev)) {
-      history.push(idSector);
+      history.push(`/sector/${idSector}`);
       onClose();
     }
   },

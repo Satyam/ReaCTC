@@ -1,6 +1,3 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
+import App from '_components/app';
 
-import Mimico from '_components/mimico';
-
-export default () => <Route path="/:idSector?"><Mimico /></Route>;
+export default App;
