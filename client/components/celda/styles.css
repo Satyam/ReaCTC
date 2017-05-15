@@ -1,0 +1,48 @@
+.senal {
+	stroke-width: 2;
+	stroke: black;
+}
+.senal:hover {
+  stroke: lightblue;
+}
+
+.libre {
+  fill: green;
+}
+
+.alto {
+  fill: red;
+}
+
+.precaucion {
+  fill: yellow;
+}
+
+.luzManual {
+	stroke: lightpink;
+}
+.rect {
+	fill: #eeeeee;
+	stroke: white;
+	stroke-width: 2;
+}
+.manual {
+	fill: lightpink;
+}
+
+.text {
+	stroke: blue;
+	stroke-width: 1;
+}
+
+.tramo-normal {
+	stroke: black;
+	stroke-width: 4;
+}
+.tramo-muerto {
+	stroke: silver;
+	stroke-width: 3;
+}
+.seleccionada {
+	fill: lightblue;
+}

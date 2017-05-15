@@ -1,0 +1,28 @@
+.label {
+  font-weight: bold;
+}
+.libre {
+  color: green !important;
+  display: block;
+  margin: 3px 0;
+}
+.precaucion {
+  color: yellow !important;
+  display: block;
+  margin: 3px 0;
+}
+.alto {
+  color: red !important;
+  display: block;
+  margin: 3px 0;
+}
+.rowSpacing {
+  padding-top: .5em;
+  padding-bottom: .5em;
+}
+.pushDown {
+  padding-top: 1.5em;
+}
+.centered {
+  margin: 3px auto;
+}

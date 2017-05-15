@@ -17,5 +17,4 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-# SQLite database
-data/db.db
+bundles
