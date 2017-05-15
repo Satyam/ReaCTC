@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import createHelper from 'recompose/createHelper';
+import setDisplayName from 'recompose/setDisplayName';
+import wrapDisplayName from 'recompose/wrapDisplayName';
 import createEagerFactory from 'recompose/createEagerFactory';
 
 const initStore = initializer => (BaseComponent) => {
@@ -59,7 +60,12 @@ const initStore = initializer => (BaseComponent) => {
       getState: PropTypes.func.isRequired,
     }),
   };
+  if (process.env.NODE_ENV !== 'production') {
+    return setDisplayName(wrapDisplayName(BaseComponent, 'initStore'))(
+      StoreInitializer
+    );
+  }
   return StoreInitializer;
 };
 
-export default createHelper(initStore, 'initStore');
+export default initStore;
