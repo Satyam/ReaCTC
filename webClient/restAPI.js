@@ -33,12 +33,14 @@ export default (base, host = `${HOST}:${PORT}`) => {
       body: body && JSON.stringify(body),
     })
       .then(
-        response =>
+        // prettier-ignore
+        response => (
           response.ok
-            ? response
-            : Promise.reject(
-                new ServerError(response.status, response.statusText, method, plainJoin(base, path))
-              )
+          ? response
+          : Promise.reject(
+            new ServerError(response.status, response.statusText, method, plainJoin(base, path))
+          )
+        )
       )
       .then(response => response.json());
     // ----- when debugging
