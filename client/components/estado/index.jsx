@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import isPlainClick from '_utils/isPlainClick';
-import { FontIcon } from 'react-toolbox/lib/font_icon';
 import { Sidebar } from 'react-toolbox/lib/layout';
 
 import { closeEstado } from '_store/actions';
 
 import { selEstado } from '_store/selectors';
-
-import styles from './styles.css';
 
 import Cambio from './cambio';
 import Triple from './triple';
