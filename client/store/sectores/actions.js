@@ -4,7 +4,7 @@ import { normalize, schema } from 'normalizr';
 
 import { NAME, GET_SECTOR, GET_SECTORES } from './constants';
 
-import { selSectorLoaded, selSectoresLoaded } from './selectors';
+import { selSectorRequested, selSectoresLoaded } from './selectors';
 
 const senal = new schema.Entity(
   'senales',
@@ -40,7 +40,7 @@ const api = restAPI(NAME);
 
 export function getSector(idSector) {
   return (dispatch, getState) => {
-    if (selSectorLoaded(getState(), idSector)) {
+    if (selSectorRequested(getState(), idSector)) {
       return Promise.resolve();
     }
     return dispatch(

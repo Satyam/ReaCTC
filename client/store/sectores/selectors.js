@@ -8,7 +8,7 @@ export function selSectores(state) {
   return state[NAME].list;
 }
 
-export function selSectorLoaded(state, idSector) {
+export function selSectorRequested(state, idSector) {
   return idSector in state[NAME].hash;
 }
 
