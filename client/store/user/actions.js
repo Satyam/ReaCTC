@@ -15,16 +15,15 @@ export function login(username, password, signup) {
     return dispatch(
       asyncActionCreator(
         signup ? LOGIN : SIGNUP,
-        api.create(signup ? 'signup' : 'login', { username, password }),
+        api.create(signup ? 'signup' : 'login', { username, password }).then((response) => {
+          setAuthorization(response.success ? response.token : '');
+          return response;
+        }),
         {
           username,
         }
       )
-    ).then((response) => {
-      const { success, token } = response.payload;
-      setAuthorization(success ? token : '');
-      return response;
-    });
+    );
   };
 }
 
