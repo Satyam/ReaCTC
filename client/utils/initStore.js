@@ -35,7 +35,7 @@ const initStore = initializer => (BaseComponent) => {
 
     isInitialized(initRet) {
       this.shouldUpdate = initRet !== false;
-      if (initRet.then) {
+      if (typeof initRet === 'object' && initRet.then) {
         if (typeof window !== 'undefined') {
           this.shouldUpdate = false;
           initRet.then(() => {
@@ -61,9 +61,7 @@ const initStore = initializer => (BaseComponent) => {
     }),
   };
   if (process.env.NODE_ENV !== 'production') {
-    return setDisplayName(wrapDisplayName(BaseComponent, 'initStore'))(
-      StoreInitializer
-    );
+    return setDisplayName(wrapDisplayName(BaseComponent, 'initStore'))(StoreInitializer);
   }
   return StoreInitializer;
 };
