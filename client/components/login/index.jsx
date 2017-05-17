@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
@@ -13,16 +15,15 @@ import { selUserName } from '_store/selectors';
 
 import styles from './styles.css';
 
-const signupRexp = /\wsignup\w/i;
-
 export class LoginComponent extends Component {
   constructor(props, context) {
     super(props, context);
+    const username = props.username;
     this.state = {
-      username: props.username || '',
+      username: username && username !== 'guest' ? username : '',
       password: '',
       confirmation: '',
-      signup: signupRexp.test(props.location.pathname),
+      signup: props.location.search === '?newUser',
     };
     bindHandlers(this);
   }
@@ -41,6 +42,7 @@ export class LoginComponent extends Component {
         this.setState({ fail: true });
         return;
       }
+      this.setState({ password: '' });
       this.props.onLogin(username, password, signup);
     }
   }
@@ -73,8 +75,12 @@ export class LoginComponent extends Component {
             error={fail ? 'passwords do not match' : null}
           />
           : null}
-        <Button raised primary onClick={this.onSubmitHandler}>Login</Button>
-        <Button className={styles.right} raised onClick={this.onToggleSignupHandler}>{signup ? 'Login' : 'Sign Up'}</Button>
+        <Button raised primary onClick={this.onSubmitHandler}>
+          {signup ? 'Sign Up' : 'Login'}
+        </Button>
+        <Button className={styles.right} raised onClick={this.onToggleSignupHandler}>
+          Switch to {signup ? 'login' : 'sign Up'}
+        </Button>
       </div>
     );
   }
@@ -88,8 +94,9 @@ LoginComponent.propTypes = {
 
 export const mapStateToProps = state => ({ username: selUserName(state) });
 
-export const mapDispatchToProps = dispatch => ({
-  onLogin: (username, password, signup) => dispatch(login(username, password, signup)),
+export const mapDispatchToProps = (dispatch, { history }) => ({
+  onLogin: (username, password, signup) =>
+    dispatch(login(username, password, signup)).then(() => history.replace('/')),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(LoginComponent);

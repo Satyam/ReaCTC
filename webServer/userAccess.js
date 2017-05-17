@@ -15,9 +15,10 @@ let usersCollection;
 
 export function setStrategy(passport, db) {
   usersCollection = db.collection('users');
-  const opts = {};
-  opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
-  opts.secretOrKey = SECRET;
+  const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    secretOrKey: SECRET,
+  };
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
       usersCollection.findOne({ _id: jwtPayload.username }, (err, user) => {
@@ -89,5 +90,5 @@ export function login(req, res) {
 
 export function logout(req, res) {
   req.logout();
-  res.redirect('/');
+  res.json({});
 }

@@ -14,9 +14,10 @@ import {
 import initStore from '_utils/initStore';
 import isPlainClick from '_utils/isPlainClick';
 import { getSectores } from '_store/actions';
-import { selSectores } from '_store/selectors';
+import { selSectores, selUserName } from '_store/selectors';
 
-export function MenuComponent({ sectores, location, onClick }) {
+export function MenuComponent({ sectores, location, username, onClick, onLogin, onLogout }) {
+  const loggedIn = username && username !== 'guest';
   return (
     <List selectable>
       <ListSubHeader caption="Recientes" />
@@ -30,7 +31,8 @@ export function MenuComponent({ sectores, location, onClick }) {
       ))}
       <ListDivider />
       <ListSubHeader caption="Whatever else" />
-      <ListItem value="signout" icon="delete" caption="Delete" disabled />
+      <ListDivider />
+      <ListItem caption={loggedIn ? 'Logout' : 'Login'} onClick={loggedIn ? onLogout : onLogin} />
     </List>
   );
 }
@@ -42,20 +44,36 @@ MenuComponent.propTypes = {
       descrCorta: PropTypes.string,
     })
   ),
+  username: PropTypes.string,
   location: PropTypes.object,
   onClick: PropTypes.func,
+  onLogin: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 export const storeInitializer = dispatch => dispatch(getSectores());
 
 export const mapStateToProps = state => ({
   sectores: selSectores(state),
+  username: selUserName(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history, onClose }) => ({
   onClick: idSector => (ev) => {
     if (isPlainClick(ev)) {
       history.push(`/sector/${idSector}`);
+      onClose();
+    }
+  },
+  onLogin: (ev) => {
+    if (isPlainClick(ev)) {
+      history.push('/login');
+      onClose();
+    }
+  },
+  onLogout: (ev) => {
+    if (isPlainClick(ev)) {
+      history.push('/logout');
       onClose();
     }
   },

@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Route, withRouter, matchPath } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import { connect } from 'react-redux';
 
-import { selSector } from '_store/selectors';
+import initStore from '_utils/initStore';
+import { selSector, selUserName } from '_store/selectors';
+import { login, logout } from '_store/actions';
 
 import { AppBar } from 'react-toolbox/lib/app_bar';
+import { FontIcon } from 'react-toolbox/lib/font_icon';
 import { Layout, Panel, NavDrawer } from 'react-toolbox/lib/layout';
 
 import Teletipo from '_components/teletipo';
@@ -20,7 +22,7 @@ import Errors from '_components/errors';
 import bindHandlers from '_utils/bindHandlers';
 import styles from './styles.css';
 
-export class MimicoComponent extends Component {
+export class AppComponent extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -36,44 +38,76 @@ export class MimicoComponent extends Component {
     this.setState({ menu: !this.state.menu });
   }
   render() {
-    const title = this.props.descr ? `CTC - ${this.props.descr}` : 'CTC';
+    const { username = '', sector } = this.props;
+    const descr = sector && sector.descr;
+    const title = descr ? `CTC - ${descr}` : 'CTC';
     return (
       <div>
         <Errors />
-        <AppBar
-          title={title}
-          leftIcon="menu"
-          onLeftIconClick={this.onToggleMenuHandler}
-          rightIcon="message"
-          onRightIconClick={this.onToggleTeletipoHandler}
-        />
-        <div className={this.state.teletipo ? styles.contentWithDrawerOpen : ''}>
-          <Layout>
-            <NavDrawer active={this.state.menu} onOverlayClick={this.onToggleMenuHandler}>
-              <Menu onClose={this.onToggleMenuHandler} />
-            </NavDrawer>
-            <Panel>
-              <Route path="/sector/:idSector" component={Mimico} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Login} />
-            </Panel>
-          </Layout>
-        </div>
-        <div className={this.state.teletipo ? styles.bottomDrawerOpen : styles.bottomDrawerClosed}>
-          <Teletipo />
-        </div>
+        <Route path="/login" component={Login} />
+        {username &&
+          <div>
+            <AppBar
+              title={title}
+              leftIcon="menu"
+              onLeftIconClick={this.onToggleMenuHandler}
+              rightIcon="message"
+              onRightIconClick={this.onToggleTeletipoHandler}
+            >
+              <FontIcon value="person" /> {username}
+            </AppBar>
+            <div className={this.state.teletipo ? styles.contentWithDrawerOpen : ''}>
+              <Layout>
+                <NavDrawer active={this.state.menu} onOverlayClick={this.onToggleMenuHandler}>
+                  <Menu onClose={this.onToggleMenuHandler} />
+                </NavDrawer>
+                <Panel>
+                  <Route path="/sector/:idSector" component={Mimico} />
+                </Panel>
+              </Layout>
+            </div>
+            <div
+              className={this.state.teletipo ? styles.bottomDrawerOpen : styles.bottomDrawerClosed}
+            >
+              <Teletipo />
+            </div>
+          </div>}
       </div>
     );
   }
 }
 
-MimicoComponent.propTypes = {
-  descr: PropTypes.string,
+AppComponent.propTypes = {
+  sector: PropTypes.shape({
+    descr: PropTypes.string,
+  }),
+  username: PropTypes.string,
+};
+
+export const storeInitializer = (dispatch, getState, { location, history }) => {
+  if (matchPath(location.pathname, { path: '/logout' })) {
+    return dispatch(logout()).then(() => history.replace('/'));
+  }
+  if (!matchPath(location.pathname, { path: '/login' })) {
+    if (!selUserName(getState())) {
+      return dispatch(login('guest', 'guest'));
+    }
+  }
+  return true;
 };
 
 export const mapStateToProps = (state, { location }) => {
   const match = matchPath(location.pathname, { path: '/sector/:idSector' });
-  return match ? selSector(state, match.params.idSector) : {};
+  const username = selUserName(state);
+  return {
+    username,
+    sector: match && username && selSector(state, match.params.idSector),
+  };
 };
 
-export default compose(withRouter, connect(mapStateToProps))(MimicoComponent);
+// prettier-ignore
+export default compose(
+  withRouter,
+  initStore(storeInitializer),
+  connect(mapStateToProps)
+)(AppComponent);
