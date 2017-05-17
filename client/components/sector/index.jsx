@@ -7,7 +7,6 @@ import { ANCHO_CELDA } from '_components/celda/common';
 
 import Celda from '_components/celda';
 
-
 import initStore from '_utils/initStore';
 
 import { getSector } from '_store/actions';
@@ -15,18 +14,14 @@ import { selSector } from '_store/selectors';
 
 export function SectorComponent({ match, ancho, alto, celdas }) {
   const idSector = match.params.idSector;
-  return (
-    typeof ancho === 'undefined' // Any property would do just as well
+  return typeof ancho === 'undefined' // Any property would do just as well
     ? <img alt="loading..." src="/loading.gif" />
-  : (
-    <svg viewBox={`0 0 ${ancho * ANCHO_CELDA} ${alto * ANCHO_CELDA}`}>
+    : <svg viewBox={`0 0 ${ancho * ANCHO_CELDA} ${alto * ANCHO_CELDA}`}>
       {celdas.map((idCelda) => {
         const coords = idCelda.split(':')[1];
         return <Celda key={coords} coords={coords} idSector={idSector} />;
       })}
-    </svg>
-    )
-  );
+    </svg>;
 }
 SectorComponent.propTypes = {
   match: PropTypes.object,
@@ -35,7 +30,7 @@ SectorComponent.propTypes = {
   celdas: PropTypes.arrayOf(PropTypes.string),
 };
 
-export const storeInitializer = (dispatch, state, { match }) =>
+export const storeInitializer = (dispatch, getState, { match }) =>
   dispatch(getSector(match.params.idSector));
 
 export const mapStateToProps = (state, { match }) => selSector(state, match.params.idSector);
