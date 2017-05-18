@@ -6,28 +6,22 @@ import plainJoin from '_utils/plainJoin';
 // const debug = dbg('RoxyMusic:webClient/restAPI');
 
 const clients = {};
-let authorization = '';
-let timerId;
-const SESSION_TIMEOUT = 20 * 60 * 1000;
-
-export function setAuthorization(auth) {
-  authorization = auth;
-}
 
 export default (base, host = `${HOST}:${PORT}`) => {
   const key = plainJoin(host, base);
   if (clients[key]) return clients[key];
   const restClient = method => (path = '/', body) => {
-    if (timerId) clearTimeout(timerId);
-    timerId = setTimeout(() => {
-      authorization = '';
-    }, SESSION_TIMEOUT);
+    if (parseInt(localStorage.getItem('lastAccess'), 10) + SESSION_TIMEOUT < Date.now()) {
+      localStorage.removeItem('authorization');
+    } else {
+      localStorage.setItem('lastAccess', Date.now());
+    }
     return fetch(plainJoin(host, REST_API_PATH, base, path), {
       method,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: authorization,
+        Authorization: localStorage.getItem('authorization'),
       },
       credentials: 'include',
       body: body && JSON.stringify(body),

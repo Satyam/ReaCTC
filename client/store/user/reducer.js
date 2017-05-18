@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 
 import { REPLY_RECEIVED } from '_store/requests/constants';
 
-import { LOGIN, SIGNUP, LOGOUT } from './constants';
+import { LOGIN, SIGNUP, LOGOUT, GET_DATA } from './constants';
 
 // const assign = (...args) => Object.assign({}, ...args);
 
@@ -17,6 +17,8 @@ export default (state = {}, action) => {
         return pick(payload, 'username');
       }
       return state;
+    case GET_DATA:
+      return pick(payload, 'username');
     case LOGOUT:
       return {};
     default:

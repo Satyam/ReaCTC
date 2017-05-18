@@ -21,6 +21,7 @@ export function setStrategy(passport, db) {
   };
   passport.use(
     new JwtStrategy(opts, (jwtPayload, done) => {
+      console.log('verify', jwtPayload.username);
       usersCollection.findOne({ _id: jwtPayload.username }, (err, user) => {
         if (err) {
           done(err, false);
@@ -91,4 +92,15 @@ export function login(req, res) {
 export function logout(req, res) {
   req.logout();
   res.json({});
+}
+
+export function userData(req, res) {
+  usersCollection
+    .findOne({ _id: req.params.username })
+    .then((user) => {
+      res.json(pick(user, 'username'));
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 }

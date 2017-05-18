@@ -10,7 +10,7 @@ import denodeify from 'denodeify';
 
 import dataServers from '_server';
 
-import { setStrategy, signup, login, logout } from './userAccess';
+import { setStrategy, signup, login, logout, userData } from './userAccess';
 
 const absPath = relPath => join(ROOT_DIR, relPath);
 
@@ -43,6 +43,7 @@ app.use(
   dataRouter
 );
 
+app.get(`${REST_API_PATH}/user/data/:username`, userData);
 app.use('/bundles', express.static(absPath('bundles')));
 app.use(express.static(absPath('webServer/public')));
 
