@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+const mapValues = require('lodash/mapValues');
+const config = require('../config.js');
 
 const join = path.join;
 const root = process.cwd();
@@ -66,16 +68,18 @@ module.exports = version =>
         ],
       },
       plugins: [
-        new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: JSON.stringify(version),
-          },
-          PORT: JSON.stringify(process.env.npm_package_myWebServer_port),
-          HOST: JSON.stringify(process.env.npm_package_myWebServer_host),
-          REST_API_PATH: JSON.stringify(process.env.npm_package_myWebServer_restAPIpath),
-          ROOT_DIR: JSON.stringify(root),
-          BUNDLE: JSON.stringify(bundle),
-        }),
+        new webpack.DefinePlugin(
+          Object.assign(
+            {
+              'process.env': {
+                NODE_ENV: JSON.stringify(version),
+              },
+              ROOT_DIR: JSON.stringify(root),
+              BUNDLE: JSON.stringify(bundle),
+            },
+            mapValues(config, JSON.stringify)
+          )
+        ),
       ],
       resolve: {
         alias: aliases,
