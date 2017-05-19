@@ -5,8 +5,8 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import initStore from '_utils/initStore';
-import { selSector, selUserName } from '_store/selectors';
-import { login, logout, getUserData } from '_store/actions';
+import { selSector, selUsername } from '_store/selectors';
+import { logout, ensureUser } from '_store/actions';
 
 import { AppBar } from 'react-toolbox/lib/app_bar';
 import { FontIcon } from 'react-toolbox/lib/font_icon';
@@ -88,31 +88,15 @@ export const storeInitializer = (dispatch, getState, { location, history }) => {
   if (matchPath(location.pathname, { path: '/logout' })) {
     return dispatch(logout()).then(() => history.replace('/'));
   }
-  if (!matchPath(location.pathname, { path: '/login' })) {
-    const storeUsername = selUserName(getState());
-    const storageUsername = parseInt(localStorage.getItem('lastAccess'), 10) + SESSION_TIMEOUT <
-      Date.now()
-      ? ''
-      : localStorage.getItem('username');
-    if (storeUsername) {
-      if (storageUsername) {
-        if (storeUsername === storageUsername) {
-          return true;
-        }
-        return dispatch(getUserData(storageUsername));
-      }
-      return dispatch(login('guest', 'guest'));
-    } else if (storageUsername) {
-      return dispatch(getUserData(storageUsername));
-    }
-    return dispatch(login('guest', 'guest'));
+  if (matchPath(location.pathname, { path: '/login' })) {
+    return true;
   }
-  return true;
+  return dispatch(ensureUser());
 };
 
 export const mapStateToProps = (state, { location }) => {
   const match = matchPath(location.pathname, { path: '/sector/:idSector' });
-  const username = selUserName(state);
+  const username = selUsername(state);
   return {
     username,
     sector: match && username && selSector(state, match.params.idSector),

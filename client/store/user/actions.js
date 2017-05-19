@@ -3,7 +3,7 @@ import restAPI from '_platform/restAPI';
 
 import { NAME, LOGIN, LOGOUT, SIGNUP, GET_DATA } from './constants';
 
-import { selIsLoggedIn } from './selectors';
+import { selIsLoggedIn, selUsername } from './selectors';
 
 const api = restAPI(NAME);
 
@@ -40,19 +40,38 @@ export function getUserData(username) {
       return Promise.resolve();
     }
     return dispatch(
-      asyncActionCreator(
-        GET_DATA,
-        api.read(`/data/${username}`),
-        {
-          username,
-        }
-      )
+      asyncActionCreator(GET_DATA, api.read(`/data/${username}`), {
+        username,
+      })
     );
+  };
+}
+
+export function ensureUser() {
+  return (dispatch, getState) => {
+    const storeUsername = selUsername(getState());
+    const lastAccess = parseInt(localStorage.getItem('lastAccess'), 10);
+    const storageUsername = lastAccess + SESSION_TIMEOUT < Date.now()
+      ? ''
+      : localStorage.getItem('username');
+    if (storeUsername) {
+      if (storageUsername) {
+        if (storeUsername === storageUsername) {
+          return true;
+        }
+        return dispatch(getUserData(storageUsername));
+      }
+      return dispatch(login('guest', 'guest'));
+    } else if (storageUsername) {
+      return dispatch(getUserData(storageUsername));
+    }
+    return dispatch(login('guest', 'guest'));
   };
 }
 
 export function logout() {
   localStorage.removeItem('authorization');
   localStorage.removeItem('username');
+  localStorage.removeItem('lastAccess');
   return asyncActionCreator(LOGOUT, api.read('logout'));
 }
