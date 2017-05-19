@@ -4,6 +4,6 @@ export function selIsLoggedIn(state, username) {
   return state[NAME].username === username;
 }
 
-export function selUserName(state) {
+export function selUsername(state) {
   return state[NAME].username;
 }

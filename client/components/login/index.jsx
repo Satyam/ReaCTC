@@ -11,7 +11,7 @@ import bindHandlers from '_utils/bindHandlers';
 import isPlainClick from '_utils/isPlainClick';
 
 import { login } from '_store/actions';
-import { selUserName } from '_store/selectors';
+import { selUsername } from '_store/selectors';
 
 import styles from './styles.css';
 
@@ -92,7 +92,7 @@ LoginComponent.propTypes = {
   location: PropTypes.object,
 };
 
-export const mapStateToProps = state => ({ username: selUserName(state) });
+export const mapStateToProps = state => ({ username: selUsername(state) });
 
 export const mapDispatchToProps = (dispatch, { history }) => ({
   onLogin: (username, password, signup) =>

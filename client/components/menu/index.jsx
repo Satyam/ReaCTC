@@ -14,7 +14,7 @@ import {
 import initStore from '_utils/initStore';
 import isPlainClick from '_utils/isPlainClick';
 import { getSectores } from '_store/actions';
-import { selSectores, selUserName } from '_store/selectors';
+import { selSectores, selUsername } from '_store/selectors';
 
 export function MenuComponent({ sectores, location, username, onClick, onLogin, onLogout }) {
   const loggedIn = username && username !== 'guest';
@@ -55,7 +55,7 @@ export const storeInitializer = dispatch => dispatch(getSectores());
 
 export const mapStateToProps = state => ({
   sectores: selSectores(state),
-  username: selUserName(state),
+  username: selUsername(state),
 });
 
 export const mapDispatchToProps = (dispatch, { history, onClose }) => ({
