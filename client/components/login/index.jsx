@@ -7,7 +7,6 @@ import { withRouter } from 'react-router-dom';
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
 
-import bindHandlers from '_utils/bindHandlers';
 import isPlainClick from '_utils/isPlainClick';
 
 import { login } from '_store/actions';
@@ -25,17 +24,16 @@ export class LoginComponent extends Component {
       confirmation: '',
       signup: props.location.search === '?newUser',
     };
-    bindHandlers(this);
   }
-  onChangeHandler(value, ev) {
+  onChangeHandler = (value, ev) => {
     this.setState({ [ev.target.name]: value, fail: false });
   }
-  onToggleSignupHandler(ev) {
+  onToggleSignupHandler = (ev) => {
     if (isPlainClick(ev)) {
       this.setState({ signup: !this.state.signup });
     }
   }
-  onSubmitHandler(ev) {
+  onSubmitHandler = (ev) => {
     if (isPlainClick(ev)) {
       const { username, password, confirmation, signup } = this.state;
       if (signup && password !== confirmation) {

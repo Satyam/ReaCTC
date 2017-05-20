@@ -7,6 +7,7 @@ module.exports = {
     node: true,
     jest: true,
   },
+  parser: "babel-eslint",
   settings: {
     'import/resolver': {
       webpack: {

@@ -19,7 +19,6 @@ import Login from '_components/login';
 
 import Errors from '_components/errors';
 
-import bindHandlers from '_utils/bindHandlers';
 import styles from './styles.css';
 
 export class AppComponent extends Component {
@@ -29,12 +28,11 @@ export class AppComponent extends Component {
       teletipo: false,
       menu: false,
     };
-    bindHandlers(this);
   }
-  onToggleTeletipoHandler() {
+  onToggleTeletipoHandler = () => {
     this.setState({ teletipo: !this.state.teletipo });
   }
-  onToggleMenuHandler() {
+  onToggleMenuHandler = () => {
     this.setState({ menu: !this.state.menu });
   }
   render() {
