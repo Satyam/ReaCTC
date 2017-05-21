@@ -1,0 +1,18 @@
+.main {
+  fill: none;
+  stroke: black;
+  stroke-width:4px;
+  stroke-linecap: round;
+}
+
+.alt {
+  fill: none;
+  stroke:silver;
+  stroke-width:2px;
+  stroke-linecap: round;
+}
+
+.svg {
+  width: 1em;
+  height: 1em;
+}

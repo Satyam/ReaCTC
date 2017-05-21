@@ -7,6 +7,8 @@ import { Container, Row, Col } from 'react-grid-system';
 import { Button } from 'react-toolbox/lib/button';
 import { Switch } from 'react-toolbox/lib/switch';
 
+import { CambioNormal, CambioDesviado } from '_components/icons';
+
 import { setCambio, setCambioManual } from '_store/actions';
 
 import { selCelda } from '_store/selectors';
@@ -37,7 +39,7 @@ export function CambioComponent({
       <Row className={styles.rowSpacing}>
         <Col md={6}>
           <Button
-            icon="arrow_upward"
+            icon={<CambioNormal />}
             floating
             mini
             onClick={onSetCambioNormal}
@@ -46,7 +48,7 @@ export function CambioComponent({
         </Col>
         <Col md={6}>
           <Button
-            icon="call_made"
+            icon={<CambioDesviado />}
             floating
             mini
             onClick={onSetCambioDesviado}

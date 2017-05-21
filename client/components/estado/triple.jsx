@@ -7,6 +7,8 @@ import { Container, Row, Col } from 'react-grid-system';
 import { Button } from 'react-toolbox/lib/button';
 import { Switch } from 'react-toolbox/lib/switch';
 
+import { TripleIzq, TripleNormal, TripleDer } from '_components/icons';
+
 import { setTriple, setCambioManual } from '_store/actions';
 
 import { selCelda } from '_store/selectors';
@@ -30,13 +32,25 @@ export function CambioComponent({
       </Row>
       <Row className={styles.rowSpacing}>
         <Col md={4}>
-          <Button icon="arrow_back" floating mini onClick={onSetIzq} disabled={posicion === -1} />
+          <Button
+            icon={<TripleIzq />}
+            floating
+            mini
+            onClick={onSetIzq}
+            disabled={posicion === -1}
+          />
         </Col>
         <Col md={4}>
-          <Button icon="arrow_upward" floating mini onClick={onSetNormal} disabled={!posicion} />
+          <Button
+            icon={<TripleNormal />}
+            floating
+            mini
+            onClick={onSetNormal}
+            disabled={!posicion}
+          />
         </Col>
         <Col md={4}>
-          <Button icon="arrow_forward" floating mini onClick={onSetDer} disabled={posicion === 1} />
+          <Button icon={<TripleDer />} floating mini onClick={onSetDer} disabled={posicion === 1} />
         </Col>
       </Row>
       <Row className={styles.rowSpacing}>
