@@ -22,11 +22,12 @@ const reducers = combineReducers({
 });
 
 export default (history, initialState) => {
-  let enhancer = applyMiddleware(reduxThunk);
+  const middlewares = [reduxThunk];
+  const enhancers = [];
+
   if (process.env.NODE_ENV !== 'production') {
     if (BUNDLE === 'cordova' /* || BUNDLE === 'webServer' */) {
-      enhancer = applyMiddleware(
-        reduxThunk,
+      middlewares.push(
         /* eslint-disable global-require */
         require('_utils/reduxLogger').default
         /* eslint-enable global-require */
@@ -37,9 +38,12 @@ export default (history, initialState) => {
         console.groupEnd = console.log;
       }
       /* eslint-enable no-console */
-    } else if (typeof window !== 'undefined' && window.devToolsExtension) {
-      enhancer = compose(enhancer, window.devToolsExtension());
+      /* eslint-disable no-underscore-dangle */
+    } else if (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__) {
+      enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
+      /* eslint-enable no-underscore-dangle */
     }
   }
-  return createStore(reducers, initialState, enhancer);
+  enhancers.push(applyMiddleware(...middlewares));
+  return createStore(reducers, initialState, compose(...enhancers));
 };
