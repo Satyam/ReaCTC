@@ -85,6 +85,38 @@ module.exports = version =>
         alias: aliases,
         extensions: ['.js', '.jsx'],
       },
+      externals: [
+        (context, request, callback) => {
+          if (bundle === 'webClient') {
+            return callback();
+          }
+          // if (bundle === 'cordova') {
+          //   return callback();
+          // }
+          // if (request === 'electron') {
+          //   return callback(null, `commonjs ${request}`);
+          // }
+          switch (request[0]) {
+            case '.': {
+              const fullPath = join(context, request);
+              if (fullPath.indexOf('/node_modules/') > -1) {
+                return callback(null, `commonjs ${fullPath}`);
+              }
+              break;
+            }
+            case '/':
+              break;
+            default: {
+              const firstPart = request.split('/')[0];
+              if (Object.keys(aliases).indexOf(firstPart) === -1) {
+                return callback(null, `commonjs ${request}`);
+              }
+              break;
+            }
+          }
+          return callback();
+        },
+      ],
       stats: { children: false },
     };
   });
