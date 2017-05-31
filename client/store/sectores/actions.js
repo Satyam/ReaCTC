@@ -1,4 +1,3 @@
-import asyncActionCreator from '_utils/asyncActionCreator';
 import restAPI from '_platform/restAPI';
 import { normalize, schema } from 'normalizr';
 
@@ -43,13 +42,13 @@ export function getSector(idSector) {
     if (selSectorRequested(getState(), idSector)) {
       return Promise.resolve();
     }
-    return dispatch(
-      asyncActionCreator(
-        GET_SECTOR,
-        api.read(idSector).then(response => normalize(response, sector)),
-        { idSector }
-      )
-    );
+    return dispatch({
+      type: GET_SECTOR,
+      promise: api.read(idSector).then(response => normalize(response, sector)),
+      payload: {
+        idSector,
+      },
+    });
   };
 }
 
@@ -58,6 +57,9 @@ export function getSectores() {
     if (selSectoresLoaded(getState())) {
       return Promise.resolve();
     }
-    return dispatch(asyncActionCreator(GET_SECTORES, api.read()));
+    return dispatch({
+      type: GET_SECTORES,
+      promise: api.read(),
+    });
   };
 }

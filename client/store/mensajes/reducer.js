@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED } from '_store/requests/constants';
+import { REPLY_RECEIVED } from '_store/promiseMiddleware';
 
 import { ADD_MENSAJE } from './constants';
 

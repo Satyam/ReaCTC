@@ -1,4 +1,3 @@
-import asyncActionCreator from '_utils/asyncActionCreator';
 import restAPI from '_platform/restAPI';
 
 import { NAME, LOGIN, LOGOUT, SIGNUP, GET_DATA } from './constants';
@@ -12,25 +11,23 @@ export function login(username, password, signup) {
     if (selIsLoggedIn(getState(), username)) {
       return Promise.resolve();
     }
-    return dispatch(
-      asyncActionCreator(
-        signup ? LOGIN : SIGNUP,
-        api.create(signup ? 'signup' : 'login', { username, password }).then((response) => {
-          if (response.success) {
-            localStorage.setItem('authorization', response.token);
-            localStorage.setItem('username', username);
-            localStorage.setItem('lastAccess', Date.now());
-          } else {
-            localStorage.removeItem('authorization');
-            localStorage.removeItem('username');
-          }
-          return response;
-        }),
-        {
-          username,
+    return dispatch({
+      type: signup ? LOGIN : SIGNUP,
+      promise: api.create(signup ? 'signup' : 'login', { username, password }).then((response) => {
+        if (response.success) {
+          localStorage.setItem('authorization', response.token);
+          localStorage.setItem('username', username);
+          localStorage.setItem('lastAccess', Date.now());
+        } else {
+          localStorage.removeItem('authorization');
+          localStorage.removeItem('username');
         }
-      )
-    );
+        return response;
+      }),
+      payload: {
+        username,
+      },
+    });
   };
 }
 
@@ -39,11 +36,13 @@ export function getUserData(username) {
     if (selIsLoggedIn(getState(), username)) {
       return Promise.resolve();
     }
-    return dispatch(
-      asyncActionCreator(GET_DATA, api.read(`/data/${username}`), {
+    return dispatch({
+      type: GET_DATA,
+      promise: api.read(`/data/${username}`),
+      payload: {
         username,
-      })
-    );
+      },
+    });
   };
 }
 
@@ -73,5 +72,8 @@ export function logout() {
   localStorage.removeItem('authorization');
   localStorage.removeItem('username');
   localStorage.removeItem('lastAccess');
-  return asyncActionCreator(LOGOUT, api.read('logout'));
+  return {
+    type: LOGOUT,
+    promise: api.read('logout'),
+  };
 }

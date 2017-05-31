@@ -1,7 +1,7 @@
 // import update from 'immutability-helper';
 import pick from 'lodash/pick';
 
-import { REPLY_RECEIVED } from '_store/requests/constants';
+import { REPLY_RECEIVED } from '_store/promiseMiddleware';
 
 import { LOGIN, SIGNUP, LOGOUT, GET_DATA } from './constants';
 

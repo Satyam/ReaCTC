@@ -1,5 +1,6 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
+import promiseMiddleware from './promiseMiddleware';
 
 import sectores from './sectores';
 import celdas from './celdas';
@@ -22,7 +23,7 @@ const reducers = combineReducers({
 });
 
 export default (history, initialState) => {
-  const middlewares = [reduxThunk];
+  const middlewares = [reduxThunk, promiseMiddleware];
   const enhancers = [];
 
   if (process.env.NODE_ENV !== 'production') {
@@ -44,6 +45,6 @@ export default (history, initialState) => {
       /* eslint-enable no-underscore-dangle */
     }
   }
-  enhancers.push(applyMiddleware(...middlewares));
+  enhancers.unshift(applyMiddleware(...middlewares));
   return createStore(reducers, initialState, compose(...enhancers));
 };

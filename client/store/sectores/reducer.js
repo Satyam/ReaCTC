@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED, REQUEST_SENT } from '_store/requests/constants';
+import { REPLY_RECEIVED, REQUEST_SENT } from '_store/promiseMiddleware';
 
 import { GET_SECTOR, GET_SECTORES } from './constants';
 
