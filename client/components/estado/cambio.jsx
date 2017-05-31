@@ -23,13 +23,6 @@ export function CambioComponent({
   onSetCambioDesviado,
   onSetManual,
 }) {
-  // Eventualmente reemplazar iconos en botones por:
-  // icon={<GithubIcon />}
-  // const GithubIcon = () => (
-  //   <svg viewBox="0 0 284 277">
-  //     <g><path d="M141.888675,0.0234927555 ....  141.888675,0.0234927555" /></g>
-  //   </svg>
-  // );
   return (
     <Container>
       <Row className={styles.rowSpacing}>

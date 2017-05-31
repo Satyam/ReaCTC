@@ -105,7 +105,7 @@ export function setTriple(idSector, coords, posicion) {
                 selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
                   switch (enclavamiento.tipo) {
                     case 'apareados':
-                      return Promise.alldispatch(
+                      return dispatch(
                         setCambio(idSector, enclavamiento.celda, posicion)
                       );
                     case 'senalTriple': {
