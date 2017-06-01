@@ -15,6 +15,9 @@ import { selCelda } from '_store/selectors';
 
 import styles from './styles.css';
 
+const DESVIADO = 'desviado';
+const NORMAL = 'normal';
+
 export function CambioComponent({
   coords,
   posicion,
@@ -36,7 +39,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioNormal}
-            disabled={posicion === 'normal'}
+            disabled={posicion === NORMAL}
           />
         </Col>
         <Col md={6}>
@@ -45,7 +48,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioDesviado}
-            disabled={posicion === 'desviado'}
+            disabled={posicion === DESVIADO}
           />
         </Col>
       </Row>
@@ -70,8 +73,8 @@ CambioComponent.propTypes = {
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'normal')),
-  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'desviado')),
+  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, NORMAL)),
+  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, DESVIADO)),
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 

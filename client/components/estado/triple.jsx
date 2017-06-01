@@ -15,6 +15,10 @@ import { selCelda } from '_store/selectors';
 
 import styles from './styles.css';
 
+const IZQ = 'izq';
+const CENTRO = 'centro';
+const DER = 'der';
+
 export function CambioComponent({
   coords,
   posicion,
@@ -37,7 +41,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetIzq}
-            disabled={posicion === 'izq'}
+            disabled={posicion === IZQ}
           />
         </Col>
         <Col md={4}>
@@ -46,7 +50,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetNormal}
-            disabled={posicion === 'centro'}
+            disabled={posicion === CENTRO}
           />
         </Col>
         <Col md={4}>
@@ -55,7 +59,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetDer}
-            disabled={posicion === 'der'}
+            disabled={posicion === DER}
           />
         </Col>
       </Row>
@@ -81,9 +85,9 @@ CambioComponent.propTypes = {
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onSetNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'centro')),
-  onSetIzq: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'izq')),
-  onSetDer: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'der')),
+  onSetNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, CENTRO)),
+  onSetIzq: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, IZQ)),
+  onSetDer: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, DER)),
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 
