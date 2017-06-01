@@ -19,14 +19,13 @@ import Linea from './linea';
 import Cambio from './cambio';
 import Paragolpe from './paragolpe';
 import Cruce from './cruce';
-import Triple from './triple';
 
 const renderers = {
   linea: Linea,
   cambio: Cambio,
   paragolpe: Paragolpe,
   cruce: Cruce,
-  triple: Triple,
+  triple: Cambio,
 };
 
 export function CeldaComponent({ idSector, coords, celda, estado, onClick }) {
@@ -44,7 +43,7 @@ export function CeldaComponent({ idSector, coords, celda, estado, onClick }) {
         width={ANCHO_CELDA}
         height={ANCHO_CELDA}
         className={classNames(styles.rect, {
-          [celda.manual]: styles.manual,
+          [styles.manual]: celda.manual,
           [styles.seleccionada]: estado.tipo &&
             idSector === estado.idSector &&
             coords === estado.coords,
@@ -67,6 +66,7 @@ CeldaComponent.propTypes = {
   coords: PropTypes.string.isRequired,
   celda: PropTypes.shape({
     tipo: PropTypes.string.isRequired,
+    manual: PropTypes.bool,
   }),
   estado: PropTypes.shape({
     tipo: PropTypes.string,

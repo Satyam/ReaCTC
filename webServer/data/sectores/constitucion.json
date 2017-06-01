@@ -122,39 +122,40 @@
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "SE"
       },
-      "normal": {
-        "dir": "NW"
-      },
-      "invertido": {
-        "dir": "W"
+      "ramas": {
+        "normal": {
+          "dir": "NW"
+        },
+        "desviado": {
+          "dir": "W"
+        }
       },
       "senales": [{
+        "dir": "SE",
         "primaria": {
           "estado": "libre"
         },
         "izq": {
           "estado": "alto"
-        },
-        "dir": "SE"
+        }
       }],
       "coords": "8,3",
-      "enclavamientos": [
-        {
-          "tipo": "senalCambio",
-          "senal": "8,3:SE",
-          "normal": {
-            "primaria": "libre",
-            "izq": "alto"
-          },
-          "desviado": {
-            "primaria": "alto",
-            "izq": "precaucion"
-          }
+      "enclavamientos": [{
+        "tipo": "senalCambio",
+        "senal": "8,3:SE",
+        "normal": {
+          "primaria": "libre",
+          "izq": "alto"
+        },
+        "desviado": {
+          "primaria": "alto",
+          "izq": "precaucion"
         }
-      ]
+      }]
     },
     {
       "tipo": "paragolpe",
@@ -175,19 +176,23 @@
     },
     {
       "tipo": "triple",
+      "posicion": "centro",
       "punta": {
         "dir": "W"
       },
-      "centro": {
-        "dir": "E"
-      },
-      "izq": {
-        "dir": "NE"
-      },
-      "der": {
-        "dir": "SE"
+      "ramas": {
+        "centro": {
+          "dir": "E"
+        },
+        "izq": {
+          "dir": "NE"
+        },
+        "der": {
+          "dir": "SE"
+        }
       },
       "senales": [{
+        "dir": "W",
         "primaria": {
           "estado": "alto"
         },
@@ -196,31 +201,28 @@
         },
         "der": {
           "estado": "precaucion"
-        },
-        "dir": "W"
+        }
       }],
       "coords": "2,4",
-      "enclavamientos": [
-        {
-          "tipo": "senalTriple",
-          "senal": "2,4:W",
-          "izq": {
-            "izq": "libre",
-            "primaria": "alto",
-            "der": "alto"
-          },
-          "centro": {
-            "izq": "alto",
-            "primaria": "libre",
-            "der": "alto"
-          },
-          "der": {
-            "izq": "alto",
-            "primaria": "alto",
-            "der": "libre"
-          }
+      "enclavamientos": [{
+        "tipo": "senalCambio",
+        "senal": "2,4:W",
+        "izq": {
+          "izq": "libre",
+          "primaria": "alto",
+          "der": "alto"
+        },
+        "centro": {
+          "izq": "alto",
+          "primaria": "libre",
+          "der": "alto"
+        },
+        "der": {
+          "izq": "alto",
+          "primaria": "alto",
+          "der": "libre"
         }
-      ]
+      }]
     },
     {
       "tipo": "cruce",
@@ -244,14 +246,17 @@
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "W"
       },
-      "normal": {
-        "dir": "E"
-      },
-      "invertido": {
-        "dir": "SE"
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "SE"
+        }
       },
       "senales": [{
         "primaria": {
@@ -263,10 +268,11 @@
         "dir": "W"
       }],
       "coords": "4,4",
-      "enclavamientos": [
-        {
+      "enclavamientos": [{
           "tipo": "apareados",
-          "celda": "5,5"
+          "celda": "5,5",
+          "normal": "normal",
+          "desviado": "desviado"
         },
         {
           "tipo": "senalCambio",
@@ -284,22 +290,25 @@
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "E"
       },
-      "normal": {
-        "dir": "W"
-      },
-      "invertido": {
-        "dir": "SW"
+      "ramas": {
+        "normal": {
+          "dir": "W"
+        },
+        "desviado": {
+          "dir": "SW"
+        }
       },
       "coords": "5,4",
-      "enclavamientos": [
-        {
-          "tipo": "apareados",
-          "celda": "4,5"
-        }
-      ]
+      "enclavamientos": [{
+        "tipo": "apareados",
+        "celda": "4,5",
+        "normal": "normal",
+        "desviado": "desviado"
+      }]
     },
     {
       "tipo": "linea",
@@ -340,14 +349,17 @@
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "W"
       },
-      "normal": {
-        "dir": "E"
-      },
-      "invertido": {
-        "dir": "NE"
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "NE"
+        }
       },
       "coords": "2,5"
     },
@@ -373,41 +385,47 @@
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "W"
       },
-      "normal": {
-        "dir": "E"
-      },
-      "invertido": {
-        "dir": "NE"
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "NE"
+        }
       },
       "coords": "4,5",
-      "enclavamientos": [
-        {
-          "tipo": "apareados",
-          "celda": "5,4"
-        }
-      ]
+      "enclavamientos": [{
+        "tipo": "apareados",
+        "celda": "5,4",
+        "normal": "normal",
+        "desviado": "desviado"
+      }]
     },
     {
       "tipo": "cambio",
+      "posicion": "normal",
       "punta": {
         "dir": "E"
       },
-      "normal": {
-        "dir": "W"
-      },
-      "invertido": {
-        "dir": "NW"
+      "ramas": {
+        "normal": {
+          "dir": "W"
+        },
+        "desviado": {
+          "dir": "NW"
+        }
       },
       "coords": "5,5",
-      "enclavamientos": [
-        {
-          "tipo": "apareados",
-          "celda": "4,4"
-        }
-      ]
+      "enclavamientos": [{
+        "tipo": "apareados",
+        "celda": "4,4",
+        "normal": "normal",
+        "desviado": "desviado"
+      }]
     },
     {
       "tipo": "linea",

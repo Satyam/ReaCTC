@@ -17,7 +17,7 @@ import styles from './styles.css';
 
 export function CambioComponent({
   coords,
-  desviado,
+  posicion,
   manual,
   onSetCambioNormal,
   onSetCambioDesviado,
@@ -36,7 +36,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioNormal}
-            disabled={!desviado}
+            disabled={posicion === 'normal'}
           />
         </Col>
         <Col md={6}>
@@ -45,7 +45,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetCambioDesviado}
-            disabled={desviado}
+            disabled={posicion === 'desviado'}
           />
         </Col>
       </Row>
@@ -60,7 +60,7 @@ export function CambioComponent({
 
 CambioComponent.propTypes = {
   coords: PropTypes.string,
-  desviado: PropTypes.bool,
+  posicion: PropTypes.string,
   manual: PropTypes.bool,
   onSetCambioNormal: PropTypes.func,
   onSetCambioDesviado: PropTypes.func,
@@ -70,8 +70,8 @@ CambioComponent.propTypes = {
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, false)),
-  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, true)),
+  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'normal')),
+  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'desviado')),
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 

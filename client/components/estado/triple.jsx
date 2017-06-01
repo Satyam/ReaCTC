@@ -9,7 +9,7 @@ import { Switch } from 'react-toolbox/lib/switch';
 
 import { TripleIzq, TripleNormal, TripleDer } from '_components/icons';
 
-import { setTriple, setCambioManual } from '_store/actions';
+import { setCambio, setCambioManual } from '_store/actions';
 
 import { selCelda } from '_store/selectors';
 
@@ -37,7 +37,7 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetIzq}
-            disabled={posicion === -1}
+            disabled={posicion === 'izq'}
           />
         </Col>
         <Col md={4}>
@@ -46,11 +46,17 @@ export function CambioComponent({
             floating
             mini
             onClick={onSetNormal}
-            disabled={!posicion}
+            disabled={posicion === 'centro'}
           />
         </Col>
         <Col md={4}>
-          <Button icon={<TripleDer />} floating mini onClick={onSetDer} disabled={posicion === 1} />
+          <Button
+            icon={<TripleDer />}
+            floating
+            mini
+            onClick={onSetDer}
+            disabled={posicion === 'der'}
+          />
         </Col>
       </Row>
       <Row className={styles.rowSpacing}>
@@ -64,7 +70,7 @@ export function CambioComponent({
 
 CambioComponent.propTypes = {
   coords: PropTypes.string,
-  posicion: PropTypes.number,
+  posicion: PropTypes.string,
   manual: PropTypes.bool,
   onSetNormal: PropTypes.func,
   onSetIzq: PropTypes.func,
@@ -75,9 +81,9 @@ CambioComponent.propTypes = {
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
 export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onSetNormal: ev => isPlainClick(ev) && dispatch(setTriple(idSector, coords, 0)),
-  onSetIzq: ev => isPlainClick(ev) && dispatch(setTriple(idSector, coords, -1)),
-  onSetDer: ev => isPlainClick(ev) && dispatch(setTriple(idSector, coords, 1)),
+  onSetNormal: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'centro')),
+  onSetIzq: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'izq')),
+  onSetDer: ev => isPlainClick(ev) && dispatch(setCambio(idSector, coords, 'der')),
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 

@@ -1,15 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import map from 'lodash/map';
 
 import Tramo from './tramo';
 import { DIR } from './common';
 
 export default function Cambio({ celda }) {
-  return (<g>
-    <Tramo dest={celda.punta.dir} />
-    <Tramo dest={celda.normal.dir} estilo={celda.desviado ? 'tramo-muerto' : 'tramo-normal'} />
-    <Tramo dest={celda.invertido.dir} estilo={celda.desviado ? 'tramo-normal' : 'tramo-muerto'} />
-  </g>);
+  return (
+    <g>
+      <Tramo key="punta" dest={celda.punta.dir} />
+      {map(celda.ramas, (rama, nombre) => (
+        <Tramo
+          key={nombre}
+          dest={rama.dir}
+          estilo={celda.posicion === nombre ? 'tramo-normal' : 'tramo-muerto'}
+        />
+      ))}
+    </g>
+  );
 }
 
 Cambio.propTypes = {
@@ -23,6 +31,6 @@ Cambio.propTypes = {
     invertido: PropTypes.shape({
       dir: PropTypes.oneOf(DIR),
     }),
-    desviado: PropTypes.bool,
+    posicion: PropTypes.string,
   }),
 };

@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import { REPLY_RECEIVED } from '_store/promiseMiddleware';
 
 import { GET_SECTOR } from '_store/sectores/constants';
-import { SET_CAMBIO, SET_TRIPLE, SET_CAMBIO_MANUAL } from './constants';
+import { SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
 export default (state = {}, action) => {
   if (action.stage && action.stage !== REPLY_RECEIVED) return state;
@@ -14,12 +14,6 @@ export default (state = {}, action) => {
       return celdas ? update(state, { $merge: celdas }) : state;
     }
     case SET_CAMBIO:
-      return update(state, {
-        [`${payload.idSector}:${payload.coords}`]: {
-          desviado: { $set: payload.desviado },
-        },
-      });
-    case SET_TRIPLE:
       return update(state, {
         [`${payload.idSector}:${payload.coords}`]: { posicion: { $set: payload.posicion } },
       });
