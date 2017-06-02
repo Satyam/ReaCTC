@@ -17,38 +17,6 @@ export function clickCelda(idSector, coords, tipo) {
   };
 }
 
-export function setCambio(idSector, coords, posicion) {
-  return (dispatch, getState) => {
-    const celda = selCelda(getState(), idSector, coords);
-    if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
-      return Promise.reject(`Celda en ${coords} de ${idSector} no es un cambio`);
-    }
-    if (celda.posicion === posicion) {
-      return Promise.resolve();
-    }
-    if (selIsPending(getState(), idSector, coords)) {
-      return Promise.reject(`Celda en ${coords} de ${idSector} loop por enclavamiento`);
-    }
-    return (
-      Promise.resolve(dispatch(setPending(idSector, coords)))
-        .then(() =>
-          dispatch({
-            type: SET_CAMBIO,
-            payload: {
-              idSector,
-              coords,
-              posicion,
-            },
-          })
-        )
-        /* eslint-disable no-use-before-define */
-        .then(() => dispatch(setEnclavamientos(idSector, coords)))
-        /* eslint-enable no-use-before-define */
-        .then(() => dispatch(clearAllPending()))
-    );
-  };
-}
-
 export function setEnclavamientos(idSector, coords) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idSector, coords);
@@ -59,7 +27,9 @@ export function setEnclavamientos(idSector, coords) {
             switch (enclavamiento.tipo) {
               case 'apareados':
                 return dispatch(
+                  /* eslint-disable no-use-before-define */
                   setCambio(idSector, enclavamiento.celda, enclavamiento[celda.posicion])
+                  /* eslint-enable no-use-before-define */
                 );
               case 'senalCambio': {
                 const caso = enclavamiento[celda.posicion];
@@ -86,13 +56,44 @@ export function setEnclavamientos(idSector, coords) {
   };
 }
 
-export function setCambioManual(idSector, coords, manual) {
-  return {
-    type: SET_CAMBIO_MANUAL,
-    payload: {
-      idSector,
-      coords,
-      manual,
-    },
+export function setCambio(idSector, coords, posicion) {
+  return (dispatch, getState) => {
+    const celda = selCelda(getState(), idSector, coords);
+    if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
+      return Promise.reject(`Celda en ${coords} de ${idSector} no es un cambio`);
+    }
+    if (celda.posicion === posicion) {
+      return Promise.resolve();
+    }
+    if (selIsPending(getState(), idSector, coords)) {
+      return Promise.reject(`Celda en ${coords} de ${idSector} loop por enclavamiento`);
+    }
+    return Promise.resolve(dispatch(setPending(idSector, coords)))
+      .then(() =>
+        dispatch({
+          type: SET_CAMBIO,
+          payload: {
+            idSector,
+            coords,
+            posicion,
+          },
+        })
+      )
+      .then(() => dispatch(setEnclavamientos(idSector, coords)))
+      .then(() => dispatch(clearAllPending()));
   };
+}
+
+export function setCambioManual(idSector, coords, manual) {
+  return dispatch =>
+    Promise.resolve(
+      dispatch({
+        type: SET_CAMBIO_MANUAL,
+        payload: {
+          idSector,
+          coords,
+          manual,
+        },
+      })
+    ).then(() => dispatch(setEnclavamientos(idSector, coords)));
 }
