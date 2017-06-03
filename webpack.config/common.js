@@ -19,6 +19,43 @@ module.exports = version =>
       _platform: absPath(bundle === 'webServer' ? 'webClient' : bundle),
       _jest: absPath('jest'),
     };
+    const plugins = [
+      new webpack.DefinePlugin(
+        Object.assign(
+          {
+            'process.env': {
+              NODE_ENV: JSON.stringify(version),
+            },
+            ROOT_DIR: JSON.stringify(root),
+            BUNDLE: JSON.stringify(bundle),
+          },
+          mapValues(config, JSON.stringify)
+        )
+      ),
+    ];
+    if (bundle === 'webClient') {
+      plugins.push(
+        new webpack.optimize.CommonsChunkPlugin({
+          name: `${bundle}-vendor`, // Specify the common bundle's name
+          minChunks: function minChunks(module) {
+            // this assumes your vendor imports exist in the node_modules directory
+            return module.context && module.context.indexOf(absPath('node_modules')) === 0;
+          },
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+          name: `${bundle}-react`, // Specify the common bundle's name
+          minChunks: function minChunks(module) {
+            // this assumes your vendor imports exist in the node_modules directory
+            return module.context && module.context.indexOf(absPath('node_modules/react')) === 0;
+          },
+        }),
+        // CommonChunksPlugin will now extract all the common modules from vendor and main bundles
+        new webpack.optimize.CommonsChunkPlugin({
+          name: `${bundle}-manifest`, // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+          minChunks: Infinity,
+        })
+      );
+    }
     return {
       entry: {
         [bundle]: [
@@ -33,6 +70,7 @@ module.exports = version =>
       },
       output: {
         path: absPath('bundles'),
+        // filename: version === 'development' ? '[name].js' : '[name].[chunkhash].js',
         filename: '[name].js',
         publicPath: absPath('bundles'),
         pathinfo: version === 'development',
@@ -43,7 +81,7 @@ module.exports = version =>
       }[bundle],
       devtool: 'source-map',
       module: {
-        noParse: /es6-promise/,
+        noParse: /es6-promise/, // some dependencies might want it.
         rules: [
           {
             test: /\.jsx?$/,
@@ -67,20 +105,7 @@ module.exports = version =>
           },
         ],
       },
-      plugins: [
-        new webpack.DefinePlugin(
-          Object.assign(
-            {
-              'process.env': {
-                NODE_ENV: JSON.stringify(version),
-              },
-              ROOT_DIR: JSON.stringify(root),
-              BUNDLE: JSON.stringify(bundle),
-            },
-            mapValues(config, JSON.stringify)
-          )
-        ),
-      ],
+      plugins,
       resolve: {
         alias: aliases,
         extensions: ['.js', '.jsx'],
