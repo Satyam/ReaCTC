@@ -1,6 +1,7 @@
 import http from 'http';
 import { join } from 'path';
 import express, { Router as createRouter } from 'express';
+import compression from 'compression';
 import passport from 'passport';
 import { MongoClient } from 'mongodb';
 import morgan from 'morgan';
@@ -22,6 +23,7 @@ const close = denodeify(server.close.bind(server));
 
 const dataRouter = createRouter();
 
+app.use(compression());
 app.use(morgan('dev'));
 // To make this server CORS-ENABLEd
 app.use((req, res, next) => {
