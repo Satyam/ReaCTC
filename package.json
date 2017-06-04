@@ -44,13 +44,15 @@
     "redux-devtools": "^3.4.0",
     "redux-mock-store": "^1.2.3",
     "style-loader": "^0.18.1",
-    "webpack": "^2.6.1"
+    "webpack": "^2.6.1",
+    "webpack-bundle-analyzer": "^2.8.2"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
     "classnames": "^2.2.5",
+    "compression": "^1.6.2",
     "debug": "^2.6.8",
     "denodeify": "^1.2.1",
     "express": "^4.15.3",

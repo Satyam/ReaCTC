@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const mapValues = require('lodash/mapValues');
 const config = require('../config.js');
@@ -6,6 +7,10 @@ const config = require('../config.js');
 const join = path.join;
 const root = process.cwd();
 const absPath = relative => join(root, relative);
+
+const vendorChunk = new RegExp(`^${absPath('node_modules')}`);
+const reactChunk = new RegExp(`^${absPath('node_modules/(react|redux)')}`);
+const rToolboxChunk = new RegExp(`^${absPath('node_modules/react-toolbox')}`);
 
 module.exports = version =>
   ['webClient', 'webServer'].map((bundle) => {
@@ -36,25 +41,31 @@ module.exports = version =>
     if (bundle === 'webClient') {
       plugins.push(
         new webpack.optimize.CommonsChunkPlugin({
-          name: `${bundle}-vendor`, // Specify the common bundle's name
+          name: `${bundle}-vendor`,
           minChunks: function minChunks(module) {
-            // this assumes your vendor imports exist in the node_modules directory
-            return module.context && module.context.indexOf(absPath('node_modules')) === 0;
+            return module.context && vendorChunk.test(module.context);
           },
         }),
         new webpack.optimize.CommonsChunkPlugin({
-          name: `${bundle}-react`, // Specify the common bundle's name
+          name: `${bundle}-react`,
           minChunks: function minChunks(module) {
-            // this assumes your vendor imports exist in the node_modules directory
-            return module.context && module.context.indexOf(absPath('node_modules/react')) === 0;
+            return module.context && reactChunk.test(module.context);
           },
         }),
-        // CommonChunksPlugin will now extract all the common modules from vendor and main bundles
         new webpack.optimize.CommonsChunkPlugin({
-          name: `${bundle}-manifest`, // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+          name: `${bundle}-react-toolbox`,
+          minChunks: function minChunks(module) {
+            return module.context && rToolboxChunk.test(module.context);
+          },
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+          name: `${bundle}-manifest`,
           minChunks: Infinity,
         })
       );
+      if (version === 'development') {
+        plugins.push(new BundleAnalyzerPlugin());
+      }
     }
     return {
       entry: {
@@ -72,7 +83,7 @@ module.exports = version =>
         path: absPath('bundles'),
         // filename: version === 'development' ? '[name].js' : '[name].[chunkhash].js',
         filename: '[name].js',
-        publicPath: absPath('bundles'),
+        publicPath: '/bundles/',
         pathinfo: version === 'development',
       },
       target: {

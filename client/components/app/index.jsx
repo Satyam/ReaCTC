@@ -13,11 +13,11 @@ import { FontIcon } from 'react-toolbox/lib/font_icon';
 import { Layout, Panel, NavDrawer } from 'react-toolbox/lib/layout';
 
 import Teletipo from '_components/teletipo';
-import Mimico from '_components/mimico';
 import Menu from '_components/menu';
-import Login from '_components/login';
 
 import Errors from '_components/errors';
+
+import loadModule from '_utils/moduleLoader';
 
 import styles from './styles.css';
 
@@ -31,10 +31,10 @@ export class AppComponent extends Component {
   }
   onToggleTeletipoHandler = () => {
     this.setState({ teletipo: !this.state.teletipo });
-  }
+  };
   onToggleMenuHandler = () => {
     this.setState({ menu: !this.state.menu });
-  }
+  };
   render() {
     const { username = '', sector } = this.props;
     const descr = sector && sector.descr;
@@ -42,7 +42,6 @@ export class AppComponent extends Component {
     return (
       <div>
         <Errors />
-        <Route path="/login" component={Login} />
         {username &&
           <div>
             <AppBar
@@ -60,7 +59,8 @@ export class AppComponent extends Component {
                   <Menu onClose={this.onToggleMenuHandler} />
                 </NavDrawer>
                 <Panel>
-                  <Route path="/sector/:idSector" component={Mimico} />
+                  <Route path="/sector/:idSector" component={loadModule('Mimico')} />
+                  <Route path="/login" component={loadModule('Login')} />
                 </Panel>
               </Layout>
             </div>
@@ -85,9 +85,6 @@ AppComponent.propTypes = {
 export const storeInitializer = (dispatch, getState, { location, history }) => {
   if (matchPath(location.pathname, { path: '/logout' })) {
     return dispatch(logout()).then(() => history.replace('/'));
-  }
-  if (matchPath(location.pathname, { path: '/login' })) {
-    return true;
   }
   return dispatch(ensureUser());
 };
