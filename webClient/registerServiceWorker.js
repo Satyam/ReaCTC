@@ -10,7 +10,7 @@
 const SW_URL = '/service-worker.js';
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register(SW_URL)

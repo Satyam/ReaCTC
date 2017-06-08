@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const mapValues = require('lodash/mapValues');
 const config = require('../config.js');
@@ -40,6 +41,11 @@ module.exports = version =>
     ];
     if (bundle === 'webClient') {
       plugins.push(
+        new HtmlWebpackPlugin({
+          hash: false,
+          // filename: absPath('webServer/index.html')
+          template: absPath('webpack.config/index.html.ejs'),
+        }),
         new webpack.optimize.CommonsChunkPlugin({
           name: `${bundle}-vendor`,
           minChunks: function minChunks(module) {
@@ -82,7 +88,7 @@ module.exports = version =>
       output: {
         path: absPath('bundles'),
         // filename: version === 'development' ? '[name].js' : '[name].[chunkhash].js',
-        filename: '[name].js',
+        filename: '[name].[chunkhash].js',
         publicPath: '/bundles/',
         pathinfo: version === 'development',
       },
