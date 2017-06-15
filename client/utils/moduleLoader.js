@@ -21,6 +21,11 @@ export default function loadModule(componentName, props) {
             this.setState({ Component: require('_components/login').default });
           });
           break;
+        case 'AdminSectores':
+          require.ensure('_components/adminSectores', (require) => {
+            this.setState({ Component: require('_components/adminSectores').default });
+          });
+          break;
       }
     }
     render() {

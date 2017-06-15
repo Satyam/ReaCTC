@@ -27,16 +27,33 @@ export function init(db) {
   });
 }
 
-export function getSectores() {
-  return collection.find({}, { idSector: 1, descrCorta: 1, _id: 0 }).toArray();
+export function listSectores() {
+  return collection.find({}, { idSector: 1, descrCorta: 1, descr: 1, _id: 0 }).toArray();
 }
 
 export function getSector({ keys }) {
   return collection.find({ _id: keys.idSector }).next();
 }
 
+export function deleteSectores({ keys }) {
+  return collection.deleteMany({ idSector: { $in: keys.idSector.split(',') } });
+}
+
+export function addSector({ data }) {
+  console.log('addSector', data);
+  return collection.insertOne(Object.assign(data, { _id: data.idSector })).catch((err) => {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      return Promise.reject({
+        code: 409,
+        msg: 'idSector duplicado',
+      });
+    }
+    throw err;
+  });
+}
+
 export default db =>
   init(db).then(() => ({
-    '/:idSector': { read: getSector },
-    '/': { read: getSectores },
+    '/:idSector': { read: getSector, delete: deleteSectores },
+    '/': { read: listSectores, create: addSector },
   }));

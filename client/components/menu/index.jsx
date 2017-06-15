@@ -13,24 +13,33 @@ import {
 
 import initStore from '_utils/initStore';
 import isPlainClick from '_utils/isPlainClick';
-import { getSectores } from '_store/actions';
+import { listSectores } from '_store/actions';
 import { selSectores, selUsername } from '_store/selectors';
 
-export function MenuComponent({ sectores, location, username, onClick, onLogin, onLogout }) {
+export function MenuComponent({
+  sectores,
+  location,
+  username,
+  onClick,
+  onLogin,
+  onLogout,
+  onAdminSectores,
+}) {
   const loggedIn = username && username !== 'guest';
   return (
     <List selectable>
       <ListSubHeader caption="Recientes" />
-      {sectores.map(sector => (
-        <ListItem
+      {sectores.map(sector =>
+        (<ListItem
           key={sector.idSector}
           onClick={onClick(sector.idSector)}
           caption={sector.descrCorta}
           disabled={`/sector/${sector.idSector}` === location.pathname}
-        />
-      ))}
+        />)
+      )}
       <ListDivider />
       <ListSubHeader caption="Whatever else" />
+      <ListItem caption="Admin Sectores" onClick={onAdminSectores} />
       <ListDivider />
       <ListItem caption={loggedIn ? 'Logout' : 'Login'} onClick={loggedIn ? onLogout : onLogin} />
     </List>
@@ -49,9 +58,10 @@ MenuComponent.propTypes = {
   onClick: PropTypes.func,
   onLogin: PropTypes.func,
   onLogout: PropTypes.func,
+  onAdminSectores: PropTypes.func,
 };
 
-export const storeInitializer = dispatch => dispatch(getSectores());
+export const storeInitializer = dispatch => dispatch(listSectores());
 
 export const mapStateToProps = state => ({
   sectores: selSectores(state),
@@ -74,6 +84,12 @@ export const mapDispatchToProps = (dispatch, { history, onClose }) => ({
   onLogout: (ev) => {
     if (isPlainClick(ev)) {
       history.push('/logout');
+      onClose();
+    }
+  },
+  onAdminSectores: (ev) => {
+    if (isPlainClick(ev)) {
+      history.push('/admin/sectores');
       onClose();
     }
   },

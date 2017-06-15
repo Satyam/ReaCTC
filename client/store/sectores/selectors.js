@@ -1,11 +1,15 @@
 import { NAME } from './constants';
 
-export function selSectoresLoaded(state) {
-  return !!state[NAME].$loaded;
+export function selSectoresRequested(state) {
+  return state[NAME].list.requested;
 }
 
 export function selSectores(state) {
-  return state[NAME].list;
+  return state[NAME].list.list;
+}
+
+export function selStatusAdmin(state) {
+  return state[NAME].list.status;
 }
 
 export function selSectorRequested(state, idSector) {

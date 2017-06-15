@@ -61,6 +61,7 @@ export class AppComponent extends Component {
                 <Panel>
                   <Route path="/sector/:idSector" component={loadModule('Mimico')} />
                   <Route path="/login" component={loadModule('Login')} />
+                  <Route path="/admin/sectores" component={loadModule('AdminSectores')} />
                 </Panel>
               </Layout>
             </div>
