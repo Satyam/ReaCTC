@@ -1,0 +1,23 @@
+.senal {
+	stroke-width: 2;
+	stroke: black;
+}
+.senal:hover {
+  stroke: lightblue;
+}
+
+.libre {
+  fill: green;
+}
+
+.alto {
+  fill: red;
+}
+
+.precaucion {
+  fill: yellow;
+}
+
+.luzManual {
+	stroke: lightpink;
+}

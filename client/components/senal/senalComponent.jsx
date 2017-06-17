@@ -1,18 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 
-import isPlainClick from '_utils/isPlainClick';
-
-import { selSenal } from '_store/selectors';
-
-import { clickSenal } from '_store/actions';
-
-import { CENTRO_CELDA, ANG } from './common';
+import { CENTRO_CELDA, ANG } from '_components/celda/common';
 import styles from './styles.css';
 
-export function SenalComponent({ dir, primaria, izq, der, onClick }) {
+export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -67,12 +60,3 @@ SenalComponent.propTypes = {
   der: PropTypes.object,
   onClick: PropTypes.func.isRequired,
 };
-
-export const mapStateToProps = (state, { idSector, coords, dir }) =>
-  selSenal(state, idSector, coords, dir);
-
-export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
-  onClick: ev => isPlainClick(ev) && dispatch(clickSenal(idSector, coords, dir)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SenalComponent);
