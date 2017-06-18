@@ -26,7 +26,7 @@ module.exports = version =>
           firebase: 'firebase/containers',
         }[bundle]
       ),
-      _utils: absPath('webClient/utils'),
+      _utils: absPath('utils'),
       _test: absPath('test'),
       _platform: absPath('webClient'),
       _jest: absPath('jest'),
