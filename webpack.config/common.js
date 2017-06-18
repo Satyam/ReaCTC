@@ -5,19 +5,30 @@ const config = require('../config.js');
 
 const join = path.join;
 const root = process.cwd();
-const absPath = relative => join(root, relative);
-
+const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
   ['webClient', 'webServer'].map((bundle) => {
     const aliases = {
       _client: absPath('client'),
+      _firebase: absPath('firebase'),
       _server: absPath('server'),
-      _store: absPath('client/store'),
-      _components: absPath('client/components'),
-      _utils: absPath('client/utils'),
+      _store: absPath(
+        {
+          webClient: 'webClient/store',
+          firebase: 'firebase/store',
+        }[bundle]
+      ),
+      _components: absPath('components'),
+      _containers: absPath(
+        {
+          webClient: 'webClient/containers',
+          firebase: 'firebase/containers',
+        }[bundle]
+      ),
+      _utils: absPath('webClient/utils'),
       _test: absPath('test'),
-      _platform: absPath(bundle === 'webServer' ? 'webClient' : bundle),
+      _platform: absPath('webClient'),
       _jest: absPath('jest'),
     };
     const plugins = [
@@ -42,6 +53,7 @@ module.exports = version =>
             {
               webClient: 'webClient/index.jsx',
               webServer: 'webServer/index.js',
+              firebase: 'firebase/index.jsx',
             }[bundle]
           ),
         ],
@@ -49,12 +61,14 @@ module.exports = version =>
       output: {
         path: absPath('bundles'),
         filename: '[name].js',
+        chunkFilename: `${bundle}.[id].js`,
         publicPath: '/bundles/',
         pathinfo: version === 'development',
       },
       target: {
         webClient: 'web',
         webServer: 'node',
+        firebase: 'web',
       }[bundle],
       devtool: 'source-map',
       module: {
@@ -89,28 +103,32 @@ module.exports = version =>
       },
       externals: [
         (context, request, callback) => {
-          if (bundle === 'webClient') {
-            return callback();
-          }
-          switch (request[0]) {
-            case '.': {
-              const fullPath = join(context, request);
-              if (fullPath.indexOf('/node_modules/') > -1) {
-                return callback(null, `commonjs ${fullPath}`);
+          switch (bundle) {
+            case 'webClient':
+              return callback();
+            case 'firebase':
+              return callback();
+            default:
+              switch (request[0]) {
+                case '.': {
+                  const fullPath = join(context, request);
+                  if (fullPath.indexOf('/node_modules/') > -1) {
+                    return callback(null, `commonjs ${fullPath}`);
+                  }
+                  break;
+                }
+                case '/':
+                  break;
+                default: {
+                  const firstPart = request.split('/')[0];
+                  if (Object.keys(aliases).indexOf(firstPart) === -1) {
+                    return callback(null, `commonjs ${request}`);
+                  }
+                  break;
+                }
               }
-              break;
-            }
-            case '/':
-              break;
-            default: {
-              const firstPart = request.split('/')[0];
-              if (Object.keys(aliases).indexOf(firstPart) === -1) {
-                return callback(null, `commonjs ${request}`);
-              }
-              break;
-            }
+              return callback();
           }
-          return callback();
         },
       ],
       stats: { children: false },

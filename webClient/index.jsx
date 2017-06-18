@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import Client from '_client';
+import App from '_containers/app';
 import createStore from '_store/createStore';
 
 const dest = document.getElementById('contents');
@@ -11,7 +11,7 @@ const store = createStore();
 render(
   <Provider store={store}>
     <BrowserRouter>
-      <Client />
+      <App />
     </BrowserRouter>
   </Provider>,
   dest
