@@ -6,7 +6,7 @@ import { setCambio, setCambioManual } from '_store/actions';
 
 import { selCelda } from '_store/selectors';
 
-import TripleComponent, { IZQ, CENTRO, DER } from '_components/estado/triple';
+import Triple, { IZQ, CENTRO, DER } from '_components/estado/triple';
 
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
@@ -17,4 +17,4 @@ export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TripleComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Triple);

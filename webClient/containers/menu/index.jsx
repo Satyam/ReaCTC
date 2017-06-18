@@ -7,7 +7,7 @@ import isPlainClick from '_utils/isPlainClick';
 import { listSectores } from '_store/actions';
 import { selSectores, selUsername } from '_store/selectors';
 
-import MenuComponent from '_components/menu';
+import Menu from '_components/menu';
 
 export const storeInitializer = dispatch => dispatch(listSectores());
 
@@ -47,4 +47,4 @@ export default compose(
   initStore(storeInitializer),
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(MenuComponent);
+)(Menu);

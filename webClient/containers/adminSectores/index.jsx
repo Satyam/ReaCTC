@@ -5,7 +5,7 @@ import initStore from '_utils/initStore';
 import { listSectores, deleteSectores, addSector, clearStatusAdmin } from '_store/actions';
 import { selSectores, selStatusAdmin } from '_store/selectors';
 
-import AdminSectoresComponent from '_components/adminSectores';
+import AdminSectores from '_components/adminSectores';
 
 export const storeInitializer = dispatch => dispatch(listSectores());
 
@@ -21,5 +21,5 @@ export const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(initStore(storeInitializer), connect(mapStateToProps, mapDispatchToProps))(
-  AdminSectoresComponent
+  AdminSectores
 );

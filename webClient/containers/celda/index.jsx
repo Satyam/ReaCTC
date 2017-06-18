@@ -6,7 +6,7 @@ import { selCelda, selEstado } from '_store/selectors';
 
 import isPlainClick from '_utils/isPlainClick';
 
-import CeldaComponent from '_components/celda';
+import Celda from '_components/celda';
 
 export const mapStateToProps = (state, { idSector, coords }) => ({
   celda: selCelda(state, idSector, coords),
@@ -17,4 +17,4 @@ export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onClick: tipo => ev => isPlainClick(ev) && dispatch(clickCelda(idSector, coords, tipo)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CeldaComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Celda);

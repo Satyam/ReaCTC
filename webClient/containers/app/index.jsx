@@ -6,7 +6,7 @@ import initStore from '_utils/initStore';
 import { selSector, selUsername } from '_store/selectors';
 import { logout, ensureUser } from '_store/actions';
 
-import AppComponent from '_components/app';
+import App from '_components/app';
 
 export const storeInitializer = (dispatch, getState, { location, history }) => {
   if (matchPath(location.pathname, { path: '/logout' })) {
@@ -29,4 +29,4 @@ export default compose(
   withRouter,
   initStore(storeInitializer),
   connect(mapStateToProps)
-)(AppComponent);
+)(App);

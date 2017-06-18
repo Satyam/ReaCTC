@@ -6,7 +6,7 @@ import { setCambio, setCambioManual } from '_store/actions';
 
 import { selCelda } from '_store/selectors';
 
-import CambioComponent, { DESVIADO, NORMAL } from '_components/estado/cambio';
+import Cambio, { DESVIADO, NORMAL } from '_components/estado/cambio';
 
 export const mapStateToProps = (state, { idSector, coords }) => selCelda(state, idSector, coords);
 
@@ -16,4 +16,4 @@ export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
   onSetManual: value => dispatch(setCambioManual(idSector, coords, value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CambioComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Cambio);
