@@ -69,7 +69,7 @@ export default class AdminSectoresComponent extends Component {
   render() {
     const delList = this.state.delList;
     const { sectores, status } = this.props;
-    return (
+    return (sectores || null) && (
       <div>
         <div className={styles.form}>
           <List className={styles.list}>
