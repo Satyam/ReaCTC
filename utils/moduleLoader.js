@@ -7,24 +7,28 @@ export default function loadModule(componentName, props) {
       super(...args);
       this.state = { Component: null };
     }
+    setComponent = (module) => {
+      /* eslint-disable no-underscore-dangle */
+      this.setState({ Component: module.__esModule ? module.default : module });
+      /* eslint-enable no-underscore-dangle */
+    }
     componentDidMount() {
       // Unfortunately, the names of the imported modules have to be
       // named explicitely for webpack to know what to bundle
       switch (componentName) {
         case 'Mimico':
-          require.ensure('_components/mimico', (require) => {
-            this.setState({ Component: require('_components/mimico').default });
-          });
+          import(/* webpackChunkName: "Mimico" */ '_containers/mimico')
+            .then(this.setComponent);
           break;
         case 'Login':
-          require.ensure('_components/login', (require) => {
-            this.setState({ Component: require('_components/login').default });
-          });
+          import(/* webpackChunkName: "Login" */ '_containers/login')
+            .then(this.setComponent);
           break;
         case 'AdminSectores':
-          require.ensure('_components/adminSectores', (require) => {
-            this.setState({ Component: require('_components/adminSectores').default });
-          });
+          import(/* webpackChunkName: "AdminSectores" */ '_containers/adminSectores')
+            .then(this.setComponent);
+          break;
+        default:
           break;
       }
     }
