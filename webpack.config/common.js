@@ -8,7 +8,7 @@ const root = process.cwd();
 const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
-  ['webClient', 'webServer'].map((bundle) => {
+  ['webClient', 'webServer', 'firebase'].map((bundle) => {
     const aliases = {
       _client: absPath('client'),
       _firebase: absPath('firebase'),
@@ -32,6 +32,7 @@ module.exports = version =>
       _jest: absPath('jest'),
     };
     const plugins = [
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.DefinePlugin(
         Object.assign(
           {
@@ -61,7 +62,7 @@ module.exports = version =>
       output: {
         path: absPath('bundles'),
         filename: '[name].js',
-        chunkFilename: `${bundle}.[id].js`,
+        chunkFilename: `${bundle}.[name].js`,
         publicPath: '/bundles/',
         pathinfo: version === 'development',
       },
