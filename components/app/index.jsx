@@ -30,7 +30,7 @@ export default class AppComponent extends Component {
     this.setState({ menu: !this.state.menu });
   };
   render() {
-    const { username = '', sector } = this.props;
+    const { username = '', sector, photoURL } = this.props;
     const descr = sector && sector.descr;
     const title = descr ? `CTC - ${descr}` : 'CTC';
     return (
@@ -45,7 +45,10 @@ export default class AppComponent extends Component {
               rightIcon="message"
               onRightIconClick={this.onToggleTeletipoHandler}
             >
-              <FontIcon value="person" /> {username}
+              {photoURL
+                ? <img alt={username} width="30" height="30" src={photoURL} />
+                : <FontIcon value="person" />}
+              {username}
             </AppBar>
             <div className={this.state.teletipo ? styles.contentWithDrawerOpen : ''}>
               <Layout>
@@ -75,4 +78,5 @@ AppComponent.propTypes = {
     descr: PropTypes.string,
   }),
   username: PropTypes.string,
+  photoURL: PropTypes.string,
 };
