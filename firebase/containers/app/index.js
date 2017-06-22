@@ -1,21 +1,10 @@
 import { withRouter, matchPath } from 'react-router-dom';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
 
-import initStore from '_utils/initStore';
 import firebaseConnect from '_utils/firebase/connect';
-
-import { logout, ensureUser } from '_store/actions';
-import { selUsername } from '_store/selectors';
+import firebaseUserConnect from '_utils/firebase/user';
 
 import App from '_components/app';
-
-export const storeInitializer = (dispatch, getState, { location, history }) => {
-  if (matchPath(location.pathname, { path: '/logout' })) {
-    return dispatch(logout()).then(() => history.replace('/'));
-  }
-  return dispatch(ensureUser());
-};
 
 export const listeners = ({ location }) => {
   const match = matchPath(location.pathname, { path: '/sector/:idSector' });
@@ -24,12 +13,12 @@ export const listeners = ({ location }) => {
   };
 };
 
-export const mapStateToProps = state => ({ username: selUsername(state) });
-
 // prettier-ignore
 export default compose(
   withRouter,
-  initStore(storeInitializer),
-  connect(mapStateToProps),
+  firebaseUserConnect(user => ({
+    username: user.isAnonymous ? 'guest' : user.displayName,
+    photoURL: user.photoURL,
+  })),
   firebaseConnect(listeners),
 )(App);
