@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import * as firebase from 'firebase';
 
-import FirebaseProvider from '_utils/firebase/Provider';
+import FirebaseProvider from '_utils/firebase/provider';
 
 import App from '_containers/app';
 import createStore from '_store/createStore';
