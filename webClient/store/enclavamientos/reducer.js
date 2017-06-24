@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import mapValues from 'lodash/mapValues';
 import values from 'lodash/values';
 
-import { REPLY_RECEIVED } from '_store/promiseMiddleware';
+import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { GET_SECTOR } from '_store/sectores/constants';
 import { SET_PENDING, CLEAR_ALL_PENDING } from './constants';

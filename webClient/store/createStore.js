@@ -1,6 +1,6 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
-import promiseMiddleware from './promiseMiddleware';
+import promiseMiddleware from '_utils/promiseMiddleware';
 
 import sectores from './sectores';
 import celdas from './celdas';

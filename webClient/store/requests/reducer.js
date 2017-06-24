@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from '_store/promiseMiddleware';
+import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
 
 import { CLEAR_HTTP_ERRORS } from './constants';
 

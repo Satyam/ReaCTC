@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
-import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_store/promiseMiddleware';
+import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
 
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
 

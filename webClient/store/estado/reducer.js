@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED } from '_store/promiseMiddleware';
+import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { CLICK_SENAL } from '_store/senales/constants';
 
