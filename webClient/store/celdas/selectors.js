@@ -1,7 +1,7 @@
 import { NAME } from './constants';
 
-export function selCelda(state, idSector, coords) {
-  return state[NAME][`${idSector}:${coords}`];
+export function selCelda(state, idCelda) {
+  return state[NAME][idCelda];
 }
 
 export default selCelda;

@@ -6,49 +6,49 @@ import { clearAllPending, setPending, setLuzEstado } from '_store/actions';
 
 import { CLICK_CELDA, SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
-export function clickCelda(idSector, coords, tipo) {
+export function clickCelda(idCelda, tipo) {
   return {
     type: CLICK_CELDA,
     payload: {
-      idSector,
-      coords,
+      idCelda,
       tipo,
     },
   };
 }
 
-export function setEnclavamientos(idSector, coords) {
+export function setEnclavamientos(idCelda) {
   return (dispatch, getState) => {
-    const celda = selCelda(getState(), idSector, coords);
+    const celda = selCelda(getState(), idCelda);
     return celda.manual
       ? Promise.resolve()
       : Promise.all(
-        selEnclavamientos(getState(), idSector, coords).map((enclavamiento) => {
+        celda.enclavamientos.map((idEnclavamiento) => {
+          const enclavamiento = selEnclavamientos(getState(), idEnclavamiento);
           switch (enclavamiento.tipo) {
             case 'apareados':
               return dispatch(
                 /* eslint-disable no-use-before-define */
-                setCambio(idSector, enclavamiento.celda, enclavamiento[celda.posicion])
+                setCambio(enclavamiento.celda, enclavamiento[celda.posicion])
                 /* eslint-enable no-use-before-define */
               );
             case 'senalCambio': {
               const caso = enclavamiento[celda.posicion];
-              const [c, dir] = enclavamiento.senal.split(':');
+              const idSenal = enclavamiento.senal;
               return Promise.all(
                 map(
                   caso,
                   // prettier-ignore
                   (estado, luz) => (
-                    selSenalIsManual(getState(), idSector, c, dir, luz)
+                    selSenalIsManual(getState(), idSenal, luz)
                       ? Promise.resolve()
-                      : dispatch(setLuzEstado(idSector, c, dir, luz, estado))
+                      : dispatch(setLuzEstado(idSenal, luz, estado))
                   )
                 )
               );
             }
             default:
               return Promise.reject(
-                `Celda en ${coords} de ${idSector} tiene enclavamiento desconocido ${enclavamiento.tipo}`
+                `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
               );
           }
         })
@@ -56,44 +56,42 @@ export function setEnclavamientos(idSector, coords) {
   };
 }
 
-export function setCambio(idSector, coords, posicion) {
+export function setCambio(idCelda, posicion) {
   return (dispatch, getState) => {
-    const celda = selCelda(getState(), idSector, coords);
+    const celda = selCelda(getState(), idCelda);
     if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
-      return Promise.reject(`Celda en ${coords} de ${idSector} no es un cambio`);
+      return Promise.reject(`Celda ${idCelda}  no es un cambio`);
     }
     if (celda.posicion === posicion) {
       return Promise.resolve();
     }
-    if (selIsPending(getState(), idSector, coords)) {
-      return Promise.reject(`Celda en ${coords} de ${idSector} loop por enclavamiento`);
+    if (selIsPending(getState(), idCelda)) {
+      return Promise.reject(`Celda ${idCelda} error: loop por enclavamiento`);
     }
-    return Promise.resolve(dispatch(setPending(idSector, coords)))
+    return Promise.resolve(dispatch(setPending(idCelda)))
       .then(() =>
         dispatch({
           type: SET_CAMBIO,
           payload: {
-            idSector,
-            coords,
+            idCelda,
             posicion,
           },
         })
       )
-      .then(() => dispatch(setEnclavamientos(idSector, coords)))
+      .then(() => dispatch(setEnclavamientos(idCelda)))
       .then(() => dispatch(clearAllPending()));
   };
 }
 
-export function setCambioManual(idSector, coords, manual) {
+export function setCambioManual(idCelda, manual) {
   return dispatch =>
     Promise.resolve(
       dispatch({
         type: SET_CAMBIO_MANUAL,
         payload: {
-          idSector,
-          coords,
+          idCelda,
           manual,
         },
       })
-    ).then(() => dispatch(setEnclavamientos(idSector, coords)));
+    ).then(() => dispatch(setEnclavamientos(idCelda)));
 }

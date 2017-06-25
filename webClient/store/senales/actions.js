@@ -1,35 +1,30 @@
 import { CLICK_SENAL, SET_ESTADO_LUZ, SET_LUZ_MANUAL } from './constants';
 
-export function clickSenal(idSector, coords, dir) {
+export function clickSenal(idSenal) {
   return {
     type: CLICK_SENAL,
     payload: {
-      idSector,
-      coords,
-      dir,
+      idSenal,
+
       tipo: 'senal',
     },
   };
 }
-export function setLuzEstado(idSector, coords, dir, luz, estado) {
+export function setLuzEstado(idSenal, luz, estado) {
   return {
     type: SET_ESTADO_LUZ,
     payload: {
-      idSector,
-      coords,
-      dir,
+      idSenal,
       luz,
       estado,
     },
   };
 }
-export function setLuzManual(idSector, coords, dir, luz, manual) {
+export function setLuzManual(idSenal, luz, manual) {
   return {
     type: SET_LUZ_MANUAL,
     payload: {
-      idSector,
-      coords,
-      dir,
+      idSenal,
       luz,
       manual,
     },

@@ -1,11 +1,10 @@
 import { SET_PENDING, CLEAR_ALL_PENDING } from './constants';
 
-export function setPending(idSector, coords) {
+export function setPending(idCelda) {
   return {
     type: SET_PENDING,
     payload: {
-      idSector,
-      coords,
+      idCelda,
     },
   };
 }

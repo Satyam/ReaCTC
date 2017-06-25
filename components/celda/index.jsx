@@ -22,8 +22,8 @@ const renderers = {
   triple: Cambio,
 };
 
-export default function CeldaComponent({ idSector, coords, celda, estado, onClick }) {
-  const [x, y] = splitCoords(coords);
+export default function CeldaComponent({ idCelda, celda, estado, onClick }) {
+  const [x, y] = splitCoords(celda.coords);
   const label = celda.descr || `[${x},${y}]`;
   const Renderer = renderers[celda.tipo];
   return (
@@ -38,33 +38,27 @@ export default function CeldaComponent({ idSector, coords, celda, estado, onClic
         height={ANCHO_CELDA}
         className={classNames(styles.rect, {
           [styles.manual]: celda.manual,
-          [styles.seleccionada]:
-          estado.tipo && idSector === estado.idSector && coords === estado.coords,
+          [styles.seleccionada]: estado.tipo && idCelda === estado.idCelda,
         })}
       />
       <Renderer celda={celda} />
       <text className={styles.text} x="5" y="95">{label}</text>
       {celda.senales
-        ? celda.senales.map((idSenal) => {
-          const dir = idSenal.split(':')[2];
-          return <Senal idSector={idSector} coords={coords} dir={dir} key={dir} />;
-        })
+        ? celda.senales.map(idSenal => <Senal idSenal={idSenal} key={idSenal} />)
         : null}
     </g>
   );
 }
 
 CeldaComponent.propTypes = {
-  idSector: PropTypes.string.isRequired,
-  coords: PropTypes.string.isRequired,
+  idCelda: PropTypes.string,
   celda: PropTypes.shape({
     tipo: PropTypes.string.isRequired,
     manual: PropTypes.bool,
   }),
   estado: PropTypes.shape({
     tipo: PropTypes.string,
-    idSector: PropTypes.string,
-    coords: PropTypes.string,
+    idCelda: PropTypes.string,
   }),
   onClick: PropTypes.func.isRequired,
 };

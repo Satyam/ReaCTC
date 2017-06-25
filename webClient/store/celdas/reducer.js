@@ -15,11 +15,11 @@ export default (state = {}, action) => {
     }
     case SET_CAMBIO:
       return update(state, {
-        [`${payload.idSector}:${payload.coords}`]: { posicion: { $set: payload.posicion } },
+        [payload.idCelda]: { posicion: { $set: payload.posicion } },
       });
     case SET_CAMBIO_MANUAL:
       return update(state, {
-        [`${payload.idSector}:${payload.coords}`]: { manual: { $set: payload.manual } },
+        [payload.idCelda]: { manual: { $set: payload.manual } },
       });
     default:
       return state;

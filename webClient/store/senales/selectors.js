@@ -1,11 +1,11 @@
 import { NAME } from './constants';
 
-export function selSenal(state, idSector, coords, dir) {
-  return state[NAME][`${idSector}:${coords}:${dir}`];
+export function selSenal(state, idSenal) {
+  return state[NAME][idSenal];
 }
 
-export function selSenalIsManual(state, idSector, coords, dir, luz) {
-  return state[NAME][`${idSector}:${coords}:${dir}`][luz].manual;
+export function selSenalIsManual(state, idSenal, luz) {
+  return state[NAME][idSenal][luz].manual;
 }
 
 export default selSenal;

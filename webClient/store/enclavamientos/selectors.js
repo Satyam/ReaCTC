@@ -1,7 +1,7 @@
 import { NAME } from './constants';
 
-export function selEnclavamientos(state, idSector, coords) {
-  return state[NAME].hash[`${idSector}:${coords}`];
+export function selEnclavamientos(state, enclavamiento) {
+  return state[NAME].hash[enclavamiento];
 }
 
 export function selIsPending(state, idSector, coords) {

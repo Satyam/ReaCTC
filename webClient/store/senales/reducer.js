@@ -15,13 +15,13 @@ export default (state = {}, action) => {
     }
     case SET_ESTADO_LUZ:
       return update(state, {
-        [`${payload.idSector}:${payload.coords}:${payload.dir}`]: {
+        [payload.idSenal]: {
           [payload.luz]: { estado: { $set: payload.estado } },
         },
       });
     case SET_LUZ_MANUAL:
       return update(state, {
-        [`${payload.idSector}:${payload.coords}:${payload.dir}`]: {
+        [payload.idSenal]: {
           [payload.luz]: { manual: { $set: payload.manual } },
         },
       });

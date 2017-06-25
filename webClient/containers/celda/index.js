@@ -8,13 +8,13 @@ import isPlainClick from '_utils/isPlainClick';
 
 import Celda from '_components/celda';
 
-export const mapStateToProps = (state, { idSector, coords }) => ({
-  celda: selCelda(state, idSector, coords),
+export const mapStateToProps = (state, { idCelda }) => ({
+  celda: selCelda(state, idCelda),
   estado: selEstado(state),
 });
 
-export const mapDispatchToProps = (dispatch, { idSector, coords }) => ({
-  onClick: tipo => ev => isPlainClick(ev) && dispatch(clickCelda(idSector, coords, tipo)),
+export const mapDispatchToProps = (dispatch, { idCelda }) => ({
+  onClick: tipo => ev => isPlainClick(ev) && dispatch(clickCelda(idCelda, tipo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Celda);

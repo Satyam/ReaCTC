@@ -146,7 +146,7 @@
       "coords": "8,3",
       "enclavamientos": [{
         "tipo": "senalCambio",
-        "senal": "8,3:SE",
+        "senal": "constitucion:8,3:SE",
         "normal": {
           "primaria": "libre",
           "izq": "alto"
@@ -206,7 +206,7 @@
       "coords": "2,4",
       "enclavamientos": [{
         "tipo": "senalCambio",
-        "senal": "2,4:W",
+        "senal": "constitucion:2,4:W",
         "izq": {
           "izq": "libre",
           "primaria": "alto",
@@ -270,13 +270,13 @@
       "coords": "4,4",
       "enclavamientos": [{
           "tipo": "apareados",
-          "celda": "5,5",
+          "celda": "constitucion:5,5",
           "normal": "normal",
           "desviado": "desviado"
         },
         {
           "tipo": "senalCambio",
-          "senal": "4,4:W",
+          "senal": "constitucion:4,4:W",
           "normal": {
             "primaria": "libre",
             "der": "alto"
@@ -305,7 +305,7 @@
       "coords": "5,4",
       "enclavamientos": [{
         "tipo": "apareados",
-        "celda": "4,5",
+        "celda": "constitucion:4,5",
         "normal": "normal",
         "desviado": "desviado"
       }]
@@ -400,7 +400,7 @@
       "coords": "4,5",
       "enclavamientos": [{
         "tipo": "apareados",
-        "celda": "5,4",
+        "celda": "constitucion:5,4",
         "normal": "normal",
         "desviado": "desviado"
       }]
@@ -422,7 +422,7 @@
       "coords": "5,5",
       "enclavamientos": [{
         "tipo": "apareados",
-        "celda": "4,4",
+        "celda": "constitucion:4,4",
         "normal": "normal",
         "desviado": "desviado"
       }]
