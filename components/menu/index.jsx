@@ -21,14 +21,15 @@ export default function MenuComponent({
   return (
     <List selectable>
       <ListSubHeader caption="Recientes" />
-      {sectores.map(sector =>
-        (<ListItem
-          key={sector.idSector}
-          onClick={onClick(sector.idSector)}
-          caption={sector.descrCorta}
-          disabled={`/sector/${sector.idSector}` === location.pathname}
-        />)
-      )}
+      {(sectores || null) &&
+        sectores.map(sector =>
+          (<ListItem
+            key={sector.idSector}
+            onClick={onClick(sector.idSector)}
+            caption={sector.descrCorta}
+            disabled={`/sector/${sector.idSector}` === location.pathname}
+          />)
+        )}
       <ListDivider />
       <ListSubHeader caption="Whatever else" />
       <ListItem caption="Admin Sectores" onClick={onAdminSectores} />
