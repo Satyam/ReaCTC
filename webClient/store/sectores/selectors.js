@@ -9,7 +9,7 @@ export function selSectores(state) {
 }
 
 export function selStatusAdmin(state) {
-  return state[NAME].list.status;
+  return state[NAME].adminStatus;
 }
 
 export function selSectorRequested(state, idSector) {

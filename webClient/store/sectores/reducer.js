@@ -4,7 +4,17 @@ import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMi
 
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
 
-export function list(state = { list: [], requested: false, status: [] }, action) {
+export function adminStatus(state = [], action) {
+  switch (action.type) {
+    case ADD_STATUS_ADMIN:
+      return update(state, { status: { $push: [action.payload] } });
+    case CLEAR_STATUS_ADMIN:
+      return update(state, { status: { $set: [] } });
+    default:
+      return state;
+  }
+}
+export function list(state = { list: [], requested: false }, action) {
   switch (action.type) {
     case LIST_SECTORES:
       switch (action.stage) {
@@ -17,10 +27,6 @@ export function list(state = { list: [], requested: false, status: [] }, action)
         default:
           return state;
       }
-    case ADD_STATUS_ADMIN:
-      return update(state, { status: { $push: [action.payload] } });
-    case CLEAR_STATUS_ADMIN:
-      return update(state, { status: { $set: [] } });
     default:
       return state;
   }
@@ -47,4 +53,5 @@ export function hash(state = {}, action) {
 export default combineReducers({
   list,
   hash,
+  adminStatus,
 });
