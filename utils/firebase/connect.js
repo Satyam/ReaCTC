@@ -6,27 +6,120 @@ import map from 'lodash/map';
 
 import firebaseShape from './shape';
 
-const connect = listeners => (BaseComponent) => {
+/*
+  In a fashion similar to react-redux `connect`, `firebaseConnect`
+  is a High-order Component that adds to the properties it receives
+  from ancestor components properties created from data fetched from a Firebase database.
+  It returns a function that can be applied to the base component to be wrapped
+  and returns the wrapped component.
+
+  It takes two optional arguments:
+
+  * `firebaseDataMap`: a function that receives the properties from the components
+    higher up in the hierarchy and returns a mapping object whose keys are the
+    names of the properties to be produced.
+    The mapping object values can be either:
+
+    * a string representing the path to the value to be retrieved from Firebase.
+    * an object containing the following properties:
+
+      * `path`: a string representing the path to the value to be retrieved
+      * `eventType`: one of "value", "child_added", "child_changed",
+          "child_removed", or "child_moved". defaults to "value"
+      * `fn`: a function that will receive the data fetched and should return
+        whatever it is to be stored in the property.
+        If the eventType is any of the *child_xxxx* ones, `fn` will receive
+        a second argument as described in the
+        [reference](https://firebase.google.com/docs/reference/js/firebase.database.Reference#on)
+
+    `firebaseConnect` will set value listeners on these references and will
+    refresh the base component when the value changes.
+
+  * `firebaseActionsMap`: a function that receives:
+
+    * A reference to the firebase database, i.e.: `firebase.database()`
+    * The properties from the components up in the hierarchy.
+
+    It should return a mapping object whose keys are the
+    names of the properties to be produced, usually of the form `onXxxxx`
+    and its values the functions to be assigned to those properties.
+```js
+const firebaseDataMap = (props) => ({
+  valueXxx: `path/subPath/${props.xxx}`, // simple form with path
+  listXxx: {
+    path: 'path/someList',
+    fn: result => result.map(value => value.item1),
+  }
+})
+
+const firebaseActionsMap = (database, props) => ({
+  onUpdateXxx: (newValue) => {
+    database.ref(`path/subPath/${props.xxx}`).set(newValue);
+  },
+})
+
+export default firebaseConnect(firebaseDataMap, firebaseActionsMap)(BaseComponent);
+```
+*/
+const firebaseConnect = (firebaseDataMap, firebaseActionsMap) => (BaseComponent) => {
   const factory = createEagerFactory(BaseComponent);
 
   const FirebaseConnect = class extends Component {
     constructor(props, context) {
       super(props, context);
+      this.state = {};
       this.firebase = context.firebase;
+      this.subscriptions = [];
+      const actionsMap = firebaseActionsMap && firebaseActionsMap(this.firebase.database(), props);
+      if (actionsMap && typeof actionsMap === 'object') {
+        Object.assign(this.state, actionsMap);
+      }
     }
     componentDidMount() {
       const database = this.firebase.database();
-      this.subscriptions = map(
-        listeners(this.props),
-        (ref, prop) =>
-          ref &&
-          database.ref(ref).on('value', (snapshot) => {
-            this.setState({ [prop]: snapshot.val() });
-          })
-      );
+      const dataMap = firebaseDataMap(this.props);
+      if (dataMap && typeof dataMap === 'object') {
+        this.subscriptions = map(dataMap, (path, prop) => {
+          switch (typeof path) {
+            case 'string': {
+              const callback = (snapshot) => {
+                this.setState(prop === '$' ? snapshot.val() : { [prop]: snapshot.val() });
+              };
+              database.ref(path).on('value', callback);
+              return {
+                path,
+                eventType: 'value',
+                callback,
+              };
+            }
+            case 'object': {
+              if (!path) return null;
+              const callback = (snapshot, key) => {
+                this.setState(
+                  prop === '$'
+                    ? path.fn(snapshot.val(), key)
+                    : { [prop]: path.fn(snapshot.val(), key) }
+                );
+              };
+              database.ref(path.path).on(path.eventType || 'value', callback);
+              return {
+                path: path.path,
+                eventType: path.eventType || 'value',
+                callback,
+              };
+            }
+            default:
+              return null;
+          }
+        });
+      }
     }
     componentWillUnmount() {
-      this.subscriptions.forEach(subs => subs && subs.off());
+      const database = this.firebase.database();
+      this.subscriptions.forEach((subs) => {
+        if (!subs) return;
+        database.ref(subs.path).off(subs.eventType, subs.callback);
+      });
     }
 
     render() {
@@ -43,4 +136,4 @@ const connect = listeners => (BaseComponent) => {
   return FirebaseConnect;
 };
 
-export default connect;
+export default firebaseConnect;
