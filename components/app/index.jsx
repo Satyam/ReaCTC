@@ -46,7 +46,7 @@ export default class AppComponent extends Component {
               onRightIconClick={this.onToggleTeletipoHandler}
             >
               {photoURL
-                ? <img alt={username} width="30" height="30" src={photoURL} />
+                ? <img className={styles.photo} alt={username} src={photoURL} />
                 : <FontIcon value="person" />}
               {username}
             </AppBar>

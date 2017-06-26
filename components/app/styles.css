@@ -2,17 +2,23 @@
 @import "react-toolbox/lib/variables";
 
 .bottomDrawerOpen {
-    position:fixed;
-    height:7em;
-    bottom:0;
-    left:0;
-    right:0;
-    margin-bottom:0;
-    background-color: var(--color-background);
+  position: fixed;
+  height: 7em;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: 0;
+  background-color: var(--color-background);
 }
 .bottomDrawerClosed {
-  display:none;
+  display: none;
 }
-.contentWithDrawerOpen{
-  margin-bottom:7em;
+.contentWithDrawerOpen {
+  margin-bottom: 7em;
+}
+
+.photo {
+  margin-right: 0.5em;
+  width: 30px;
+  height: 30px;
 }
