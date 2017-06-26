@@ -2,24 +2,16 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddleware from '_utils/promiseMiddleware';
 
-// import sectores from './sectores';
-// import celdas from './celdas';
-// import senales from './senales';
 import requests from './requests';
-import estado from './estado';
 import mensajes from './mensajes';
-// import enclavamientos from './enclavamientos';
-import user from './user';
+import sectores from './sectores';
+import estado from './estado';
 
 const reducers = combineReducers({
-  // sectores,
-  // celdas,
-  // senales,
+  sectores,
   requests,
-  estado,
   mensajes,
-  // enclavamientos,
-  user,
+  estado,
 });
 
 export default ({ initialState, firebase }) => {
