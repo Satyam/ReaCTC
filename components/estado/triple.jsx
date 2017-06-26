@@ -13,7 +13,7 @@ export const IZQ = 'izq';
 export const CENTRO = 'centro';
 export const DER = 'der';
 
-export default function TripleComponent({
+export default function EstadoTripleComponent({
   coords,
   posicion,
   manual,
@@ -66,7 +66,7 @@ export default function TripleComponent({
   );
 }
 
-TripleComponent.propTypes = {
+EstadoTripleComponent.propTypes = {
   coords: PropTypes.string,
   posicion: PropTypes.string,
   manual: PropTypes.bool,

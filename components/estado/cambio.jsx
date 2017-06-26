@@ -12,7 +12,7 @@ import styles from './styles.css';
 export const DESVIADO = 'desviado';
 export const NORMAL = 'normal';
 
-export default function CambioComponent({
+export default function EstadoCambioComponent({
   coords,
   posicion,
   manual,
@@ -55,7 +55,7 @@ export default function CambioComponent({
   );
 }
 
-CambioComponent.propTypes = {
+EstadoCambioComponent.propTypes = {
   coords: PropTypes.string,
   posicion: PropTypes.string,
   manual: PropTypes.bool,

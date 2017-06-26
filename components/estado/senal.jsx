@@ -11,7 +11,7 @@ import { Container, Row, Col } from 'react-grid-system';
 
 import styles from './styles.css';
 
-export function LuzComponent({
+export function EstadoLuzComponent({
   luz,
   manual,
   estado,
@@ -51,7 +51,7 @@ export function LuzComponent({
   );
 }
 
-LuzComponent.propTypes = {
+EstadoLuzComponent.propTypes = {
   luz: PropTypes.string,
   manual: PropTypes.bool,
   estado: PropTypes.string,
@@ -66,9 +66,9 @@ export const Luz = withHandlers({
   onSetAlto: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'alto'),
   onSetPrecaucion: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'precaucion'),
   onSetLibre: props => ev => isPlainClick(ev) && props.onSetEstado(props.luz, 'libre'),
-})(LuzComponent);
+})(EstadoLuzComponent);
 
-export default function SenalComponent({
+export default function EstadoSenalComponent({
   coords,
   dir,
   izq,
@@ -123,12 +123,18 @@ export default function SenalComponent({
   );
 }
 
-SenalComponent.propTypes = {
+EstadoSenalComponent.propTypes = {
   coords: PropTypes.string,
   dir: PropTypes.string,
-  primaria: PropTypes.object,
-  izq: PropTypes.object,
-  der: PropTypes.object,
+  primaria: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
+  izq: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
+  der: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
   onSetEstado: PropTypes.func,
   onSetManual: PropTypes.func,
 };
