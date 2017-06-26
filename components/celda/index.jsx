@@ -23,6 +23,7 @@ const renderers = {
 };
 
 export default function CeldaComponent({ idCelda, celda, estado, onClick }) {
+  if (!celda) return null;
   const [x, y] = splitCoords(celda.coords);
   const label = celda.descr || `[${x},${y}]`;
   const Renderer = renderers[celda.tipo];

@@ -6,6 +6,7 @@ import { CENTRO_CELDA, ANG } from '../common';
 import styles from './styles.css';
 
 export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
+  if (!dir) return null;
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -54,9 +55,15 @@ export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
 }
 
 SenalComponent.propTypes = {
-  dir: PropTypes.string.isRequired,
-  primaria: PropTypes.object,
-  izq: PropTypes.object,
-  der: PropTypes.object,
+  dir: PropTypes.string,
+  primaria: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
+  izq: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
+  der: PropTypes.shape({
+    estado: PropTypes.string,
+  }),
   onClick: PropTypes.func.isRequired,
 };
