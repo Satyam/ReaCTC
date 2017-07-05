@@ -8,9 +8,9 @@ const root = process.cwd();
 const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
-  ['webClient', 'webServer', 'firebase'].map((bundle) => {
+  ['webServer', 'webClient', 'firebase'].map((bundle) => {
     const aliases = {
-      _client: absPath('client'),
+      _webClient: absPath('webClient'),
       _firebase: absPath('firebase'),
       _server: absPath('server'),
       _store: absPath(
