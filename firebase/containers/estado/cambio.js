@@ -1,6 +1,10 @@
+import { connect } from 'react-redux';
 import firebaseConnect from '_utils/firebase/connect';
+import { compose } from 'recompose';
 
 import isPlainClick from '_utils/isPlainClick';
+
+import { setCambio, setCambioManual } from '_store/actions';
 
 import Cambio, { DESVIADO, NORMAL } from '_components/estado/cambio';
 
@@ -8,14 +12,10 @@ export const firebaseDataMap = ({ idCelda }) => ({
   $: `celdas/${idCelda}`,
 });
 
-export const firebaseActionsMap = (database, { idCelda }) => {
-  const posicion = database.ref(`celdas/${idCelda}/posicion`);
-  const manual = database.ref(`celdas/${idCelda}/manual`);
-  return {
-    onSetCambioNormal: ev => isPlainClick(ev) && posicion.set(NORMAL),
-    onSetCambioDesviado: ev => isPlainClick(ev) && posicion.set(DESVIADO),
-    onSetManual: value => manual.set(value),
-  };
-};
+export const mapDispatchToProps = (dispatch, { idCelda }) => ({
+  onSetCambioNormal: ev => isPlainClick(ev) && dispatch(setCambio(idCelda, NORMAL)),
+  onSetCambioDesviado: ev => isPlainClick(ev) && dispatch(setCambio(idCelda, DESVIADO)),
+  onSetManual: value => dispatch(setCambioManual(idCelda, value)),
+});
 
-export default firebaseConnect(firebaseDataMap, firebaseActionsMap)(Cambio);
+export default compose(connect(null, mapDispatchToProps), firebaseConnect(firebaseDataMap))(Cambio);

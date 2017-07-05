@@ -6,12 +6,14 @@ import requests from './requests';
 import mensajes from './mensajes';
 import sectores from './sectores';
 import estado from './estado';
+import enclavamientos from './enclavamientos';
 
 const reducers = combineReducers({
   sectores,
   requests,
   mensajes,
   estado,
+  enclavamientos,
 });
 
 export default ({ initialState, firebase }) => {

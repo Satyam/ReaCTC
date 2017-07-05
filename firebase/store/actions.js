@@ -5,3 +5,4 @@ export * from './user/actions';
 export * from './estado/actions';
 export * from './celdas/actions';
 export * from './senales/actions';
+export * from './enclavamientos/actions';
