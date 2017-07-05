@@ -1,5 +1,9 @@
-export default (database) => {
-  database.ref('celdas').on(
+import map from 'lodash/map';
+import { setLuzEstado } from '_store/actions';
+
+export default (database, dispatch) => {
+  const celdas = database.ref('celdas');
+  celdas.on(
     'child_removed',
     (sectorSnapshot) => {
       sectorSnapshot.child('senales').forEach((celdaSnapshot) => {
