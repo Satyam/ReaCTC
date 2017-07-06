@@ -7,9 +7,9 @@ import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from 
 export function adminStatus(state = [], action) {
   switch (action.type) {
     case ADD_STATUS_ADMIN:
-      return update(state, { status: { $push: [action.payload] } });
+      return update(state, { $push: [action.payload] });
     case CLEAR_STATUS_ADMIN:
-      return update(state, { status: { $set: [] } });
+      return update(state, { $set: [] });
     default:
       return state;
   }
