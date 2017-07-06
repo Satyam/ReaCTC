@@ -11,22 +11,21 @@ export default function loadModule(componentName, props) {
       /* eslint-disable no-underscore-dangle */
       this.setState({ Component: module.__esModule ? module.default : module });
       /* eslint-enable no-underscore-dangle */
-    }
+    };
     componentDidMount() {
       // Unfortunately, the names of the imported modules have to be
       // named explicitely for webpack to know what to bundle
       switch (componentName) {
         case 'Mimico':
-          import(/* webpackChunkName: "Mimico" */ '_containers/mimico')
-            .then(this.setComponent);
+          import(/* webpackChunkName: "Mimico" */ '_containers/mimico').then(this.setComponent);
           break;
         case 'Login':
-          import(/* webpackChunkName: "Login" */ '_containers/login')
-            .then(this.setComponent);
+          import(/* webpackChunkName: "Login" */ '_containers/login').then(this.setComponent);
           break;
         case 'AdminSectores':
-          import(/* webpackChunkName: "AdminSectores" */ '_containers/adminSectores')
-            .then(this.setComponent);
+          import(/* webpackChunkName: "AdminSectores" */ '_containers/adminSectores').then(
+            this.setComponent
+          );
           break;
         default:
           break;
