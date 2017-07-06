@@ -16,12 +16,11 @@ export function clickSenal(idSenal) {
 export function setLuzEstado(idSenal, luz, estado) {
   return (dispatch, getState, firebase) => {
     const database = firebase.database();
-    return database.ref(`senales/${idSenal}/${luz}`).once('value').then((snapshot) => {
-      const senal = snapshot.val();
+    return database.ref(`senales/${idSenal}/${luz}`).once('value').then((senal) => {
       if (senal.estado === estado) {
         return Promise.resolve();
       }
-      if (selIsPending(getState(), idSenal)) {
+      if (selIsPending(getState(), idSenal, luz)) {
         return Promise.reject(`Senal ${idSenal}/${luz} error: loop por enclavamiento`);
       }
       return dispatch(doSetLuzEstado(idSenal, luz, estado)).then(() => dispatch(clearAllPending()));
@@ -31,7 +30,7 @@ export function setLuzEstado(idSenal, luz, estado) {
 
 export function doSetLuzEstado(idSenal, luz, estado) {
   return (dispatch, getState, firebase) =>
-    dispatch(setPending(idSenal))
+    dispatch(setPending(idSenal, luz))
       .then(() => firebase.database().ref(`senales/${idSenal}/${luz}/estado`).set(estado))
       .then(() => dispatch(setEnclavamientos(idSenal, estado)));
 }

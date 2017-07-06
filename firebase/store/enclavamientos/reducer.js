@@ -14,7 +14,7 @@ export default (
   const payload = action.payload;
   switch (action.type) {
     case SET_PENDING:
-      return update(state, { pending: { $push: [payload.idCelda] } });
+      return update(state, { pending: { $push: [payload.join('|')] } });
     case CLEAR_ALL_PENDING:
       return update(state, { pending: { $set: [] } });
     default:

@@ -4,14 +4,12 @@ import { doSetCambio, doSetLuzEstado } from '_store/actions';
 
 import { SET_PENDING, CLEAR_ALL_PENDING } from './constants';
 
-export function setPending(idCelda) {
+export function setPending(...payload) {
   return dispatch =>
     Promise.resolve(
       dispatch({
         type: SET_PENDING,
-        payload: {
-          idCelda,
-        },
+        payload,
       })
     );
 }
@@ -40,13 +38,16 @@ export function setEnclavamientos(idCelda, extra) {
                   switch (enclavamiento.tipo) {
                     case 'apareados':
                       const otherIdCelda = enclavamiento.celda;
-                      return dispatch(setPending(otherIdCelda)).then(() =>
-                        database
-                          .ref(`celdas/${otherIdCelda}/manual`)
-                          .once('value')
-                          .then(snapshot => snapshot.val())
-                          .then(manual => !manual && doSetCambio(otherIdCelda, extra))
-                      );
+                      return database
+                        .ref(`celdas/${otherIdCelda}/manual`)
+                        .once('value')
+                        .then(snapshot => snapshot.val())
+                        .then((manual) => {
+                          console.log('manual', otherIdCelda, enclavamiento[extra], manual);
+                          return (
+                            !manual && dispatch(doSetCambio(otherIdCelda, enclavamiento[extra]))
+                          );
+                        });
                     case 'senalCambio': {
                       const luces = enclavamiento[extra];
                       const idSenal = enclavamiento.senal;
