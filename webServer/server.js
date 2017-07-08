@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import denodeify from 'denodeify';
 
-import dataServers from '_server';
+import dataServers from './dataServers';
 
 import { setStrategy, signup, login, logout, userData } from './userAccess';
 
@@ -46,8 +46,7 @@ app.use(
 );
 
 app.get(`${REST_API_PATH}/user/data/:username`, userData);
-app.use('/bundles', express.static(absPath('bundles')));
-app.use(express.static(absPath('webServer/public')));
+app.use(express.static(absPath('public')));
 
 app.get('/kill', (req, res) => {
   res.send('I am dead');

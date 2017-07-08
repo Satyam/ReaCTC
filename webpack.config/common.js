@@ -12,7 +12,6 @@ module.exports = version =>
     const aliases = {
       _webClient: absPath('webClient'),
       _firebase: absPath('firebase'),
-      _server: absPath('server'),
       _store: absPath(
         {
           webClient: 'webClient/store',
@@ -60,7 +59,7 @@ module.exports = version =>
         ],
       },
       output: {
-        path: absPath('bundles'),
+        path: absPath('public/bundles'),
         filename: '[name].js',
         chunkFilename: `${bundle}.[name].js`,
         publicPath: '/bundles/',
