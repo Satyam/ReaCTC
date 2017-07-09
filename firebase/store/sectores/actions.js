@@ -7,19 +7,15 @@ import { addStatusAdmin, clearStatusAdmin } from '_webClient/store/sectores/acti
 export { addStatusAdmin, clearStatusAdmin };
 
 export function deleteSectores(idSectores) {
-  return (dispatch, getState, firebase) => {
-    const database = firebase.database();
-    return Promise.all(
-      idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove())
-    ).then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')));
-  };
+  return (dispatch, getState, database) => Promise.all(
+    idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove())
+  ).then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')));
 }
 
 const identifier = /^\w+$/;
 
 export function addSector(file) {
-  return (dispatch, getState, firebase) => {
-    const database = firebase.database();
+  return (dispatch, getState, database) => {
     const reader = new FileReader();
 
     reader.onload = (e) => {

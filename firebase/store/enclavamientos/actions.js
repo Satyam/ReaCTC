@@ -19,15 +19,13 @@ export function clearAllPending() {
 }
 
 export function setEnclavamientos(idCelda, extra) {
-  return (dispatch, getState, firebase) => {
-    const database = firebase.database();
-    return database
-      .ref(`celdas/${idCelda}/enclavamientos`)
-      .once('value')
-      .then(idEnclvSnapshot => idEnclvSnapshot && idEnclvSnapshot.val())
-      .then(
-        enclavamientos =>
-          enclavamientos &&
+  return (dispatch, getState, database) => database
+    .ref(`celdas/${idCelda}/enclavamientos`)
+    .once('value')
+    .then(idEnclvSnapshot => idEnclvSnapshot && idEnclvSnapshot.val())
+    .then(
+      enclavamientos =>
+        enclavamientos &&
           Promise.all(
             enclavamientos.map(idEnclavamiento =>
               database
@@ -71,6 +69,5 @@ export function setEnclavamientos(idCelda, extra) {
                 })
             )
           )
-      );
-  };
+    );
 }

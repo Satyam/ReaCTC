@@ -17,7 +17,7 @@ const reducers = combineReducers({
 });
 
 export default ({ initialState, firebase }) => {
-  const middlewares = [reduxThunk.withExtraArgument(firebase), promiseMiddleware];
+  const middlewares = [reduxThunk.withExtraArgument(firebase.database()), promiseMiddleware];
   const enhancers = [];
 
   if (process.env.NODE_ENV !== 'production') {

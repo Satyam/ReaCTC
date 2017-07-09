@@ -1,8 +1,7 @@
 export function login() {
-  return (dispatch, getState, firebase) =>
-    firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  return () => firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
 }
 
 export function logout() {
-  return (dispatch, getState, firebase) => firebase.auth().signInAnonymously();
+  return () => firebase.auth().signInAnonymously();
 }
