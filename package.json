@@ -4,7 +4,7 @@
   "description": "Control de Tráfico Centralizado",
   "main": "webClient/index.jsx",
   "scripts": {
-    "start": "node bundles/webServer.js",
+    "start": "node public/bundles/webServer.js",
     "debug": "node --inspect --debug-brk bundles/webServer.js",
     "lint": "eslint --ext .jsx,.js . || exit 0",
     "test": "jest --config jest/config.json",
@@ -12,7 +12,8 @@
     "watch": "webpack --debug --config webpack.config/development.js --watch &",
     "production": "webpack -p --config webpack.config/production.js",
     "clean": "rm bundles/*",
-    "toFirebase": "node webServer/data/toFirebase.js"
+    "firebase": "firebase serve --only functions,hosting",
+    "toFirebase": "node data/toFirebase.js"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -25,11 +26,11 @@
     "css-loader": "^0.28.4",
     "enzyme": "^2.9.1",
     "enzyme-to-json": "^1.5.1",
-    "eslint": "^4.1.1",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "firebase-tools": "^3.9.1",
@@ -45,7 +46,7 @@
     "redux-devtools": "^3.4.0",
     "redux-mock-store": "^1.2.3",
     "style-loader": "^0.18.2",
-    "webpack": "^3.0.0"
+    "webpack": "^3.1.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
@@ -60,7 +61,7 @@
     "immutability-helper": "^2.2.3",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.29",
+    "mongodb": "^2.2.30",
     "normalizr": "^3.2.3",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
@@ -80,12 +81,7 @@
     "type": "git",
     "url": "https://github.com/Satyam/ReaCTC.git"
   },
-  "keywords": [
-    "CTC",
-    "mímico",
-    "control",
-    "ferroviario"
-  ],
+  "keywords": ["CTC", "mímico", "control", "ferroviario"],
   "author": "Daniel Barreiro",
   "license": "MIT",
   "bugs": {

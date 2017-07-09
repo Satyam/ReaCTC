@@ -1,7 +1,7 @@
-import { CLICK_CELDA } from './constants';
-
 import { selIsPending } from '_store/selectors';
 import { setEnclavamientos, setPending, clearAllPending } from '_store/actions';
+
+import { CLICK_CELDA } from './constants';
 
 export function clickCelda(idCelda, tipo) {
   return {
@@ -13,17 +13,9 @@ export function clickCelda(idCelda, tipo) {
   };
 }
 
-export function setCambio(idCelda, posicion) {
-  return dispatch =>
-    dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
-}
-
 export function doSetCambio(idCelda, posicion) {
-  return (dispatch, getState, database) => database
-    .ref(`celdas/${idCelda}`)
-    .once('value')
-    .then(snapshot => snapshot.val())
-    .then((celda) => {
+  return (dispatch, getState, database) =>
+    database.ref(`celdas/${idCelda}`).once('value').then(snapshot => snapshot.val()).then((celda) => {
       if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
         return Promise.reject(`Celda ${idCelda}  no es un cambio`);
       }
@@ -37,6 +29,11 @@ export function doSetCambio(idCelda, posicion) {
         .then(() => database.ref(`celdas/${idCelda}/posicion`).set(posicion))
         .then(() => dispatch(setEnclavamientos(idCelda, posicion)));
     });
+}
+
+export function setCambio(idCelda, posicion) {
+  return dispatch =>
+    dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
 }
 
 export function setCambioManual(idCelda, manual) {

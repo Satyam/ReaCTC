@@ -19,13 +19,14 @@ export function clearAllPending() {
 }
 
 export function setEnclavamientos(idCelda, extra) {
-  return (dispatch, getState, database) => database
-    .ref(`celdas/${idCelda}/enclavamientos`)
-    .once('value')
-    .then(idEnclvSnapshot => idEnclvSnapshot && idEnclvSnapshot.val())
-    .then(
-      enclavamientos =>
-        enclavamientos &&
+  return (dispatch, getState, database) =>
+    database
+      .ref(`celdas/${idCelda}/enclavamientos`)
+      .once('value')
+      .then(idEnclvSnapshot => idEnclvSnapshot && idEnclvSnapshot.val())
+      .then(
+        enclavamientos =>
+          enclavamientos &&
           Promise.all(
             enclavamientos.map(idEnclavamiento =>
               database
@@ -34,18 +35,17 @@ export function setEnclavamientos(idCelda, extra) {
                 .then(enclvSnapshot => enclvSnapshot.val())
                 .then((enclavamiento) => {
                   switch (enclavamiento.tipo) {
-                    case 'apareados':
+                    case 'apareados': {
                       const otherIdCelda = enclavamiento.celda;
                       return database
                         .ref(`celdas/${otherIdCelda}/manual`)
                         .once('value')
                         .then(snapshot => snapshot.val())
-                        .then((manual) => {
-                          console.log('manual', otherIdCelda, enclavamiento[extra], manual);
-                          return (
+                        .then(
+                          manual =>
                             !manual && dispatch(doSetCambio(otherIdCelda, enclavamiento[extra]))
-                          );
-                        });
+                        );
+                    }
                     case 'senalCambio': {
                       const luces = enclavamiento[extra];
                       const idSenal = enclavamiento.senal;
@@ -69,5 +69,5 @@ export function setEnclavamientos(idCelda, extra) {
                 })
             )
           )
-    );
+      );
 }

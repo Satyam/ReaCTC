@@ -1,7 +1,4 @@
-import map from 'lodash/map';
-import { setLuzEstado } from '_store/actions';
-
-export default (database, dispatch) => {
+export default (database) => {
   const celdas = database.ref('celdas');
   celdas.on(
     'child_removed',
