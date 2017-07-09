@@ -5,3 +5,4 @@ cordova/hooks
 cordova/platforms
 cordova/plugins
 cordova/www
+firebase/functions/node_modules
