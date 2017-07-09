@@ -13,7 +13,7 @@ import firebaseShape from './shape';
   It returns a function that can be applied to the base component to be wrapped
   and returns the wrapped component.
 
-  It takes two optional arguments:
+  It takes a single argument:
 
   * `firebaseDataMap`: a function that receives the properties from the components
     higher up in the hierarchy and returns a mapping object whose keys are the
@@ -35,14 +35,6 @@ import firebaseShape from './shape';
     `firebaseConnect` will set value listeners on these references and will
     refresh the base component when the value changes.
 
-  * `firebaseActionsMap`: a function that receives:
-
-    * A reference to the firebase database, i.e.: `firebase.database()`
-    * The properties from the components up in the hierarchy.
-
-    It should return a mapping object whose keys are the
-    names of the properties to be produced, usually of the form `onXxxxx`
-    and its values the functions to be assigned to those properties.
 ```js
 const firebaseDataMap = (props) => ({
   valueXxx: `path/subPath/${props.xxx}`, // simple form with path
@@ -52,16 +44,10 @@ const firebaseDataMap = (props) => ({
   }
 })
 
-const firebaseActionsMap = (database, props) => ({
-  onUpdateXxx: (newValue) => {
-    database.ref(`path/subPath/${props.xxx}`).set(newValue);
-  },
-})
-
-export default firebaseConnect(firebaseDataMap, firebaseActionsMap)(BaseComponent);
+export default firebaseConnect(firebaseDataMap)(BaseComponent);
 ```
 */
-const firebaseConnect = (firebaseDataMap, firebaseActionsMap) => (BaseComponent) => {
+const firebaseConnect = firebaseDataMap => (BaseComponent) => {
   const factory = createEagerFactory(BaseComponent);
 
   const FirebaseConnect = class extends Component {
@@ -70,10 +56,6 @@ const firebaseConnect = (firebaseDataMap, firebaseActionsMap) => (BaseComponent)
       this.state = {};
       this.firebase = context.firebase;
       this.subscriptions = [];
-      const actionsMap = firebaseActionsMap && firebaseActionsMap(this.firebase.database(), props);
-      if (actionsMap && typeof actionsMap === 'object') {
-        Object.assign(this.state, actionsMap);
-      }
     }
     componentDidMount() {
       const database = this.firebase.database();
