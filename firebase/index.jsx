@@ -23,16 +23,18 @@ function setTriggers(database, dispatch, getState) {
   celdasTriggers(database, dispatch, getState);
 }
 
-const dest = document.getElementById('contents');
-const store = createStore({ firebase });
-setTriggers(firebase.database(), store.dispatch, store.getState);
-render(
-  <FirebaseProvider firebase={firebase}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </FirebaseProvider>,
-  dest
-);
+document.addEventListener('DOMContentLoaded', () => {
+  const dest = document.getElementById('contents');
+  const store = createStore({ firebase });
+  setTriggers(firebase.database(), store.dispatch, store.getState);
+  render(
+    <FirebaseProvider firebase={firebase}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </FirebaseProvider>,
+    dest
+  );
+});
