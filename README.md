@@ -83,7 +83,7 @@ La configuración de las celdas está formada por la propiedad `celdas` que apun
 * `coords`: un par de números separados por coma indicando las coordenadas `X` e `Y` de la celda, contando desde cero con la celda `"0,0"` ubicada arriba a la izquierda.
 * `tipo`: indica el tipo de celda.  El resto de las propiedades de la celda depende del tipo, según se verá a continuación.
 
-La mayoría de las celdas pueden tener otras propiedades opcionales independientemente de su tipo, a saber [senales](#senales) o [enclavamientos](#enclavamientos).
+La mayoría de las celdas pueden tener otras propiedades opcionales independientemente de su tipo, a saber [senales](#se%C3%B1ales) o [enclavamientos](#enclavamientos).
 
 Por ejemplo, el tipo más simple de celda es el que contiene una simple línea:
 
@@ -138,7 +138,7 @@ Contiene una vía con una entrada, la `punta` y dos `ramas`, una `normal` y otra
 
 La propiedad opcional `posicion` indica la posición del cambio y su valor debe corresponder a alguna de las ramas.  Por defecto, es `normal`.
 
-La propiedad opcional `manual` excluye al cambio de cualquier automatismo (ver [Enclavamientos](#Enclavamientos) más adelante) y sólo responderá a comandos manuales.  Habitualmente, este valor es establecido dinámicamente desde el tablero mímico. Por defecto es `false`.  Si se indica, el valor `true` of `false` no debe ir entrecomillado, dado que es un booleano, no una cadena de caracteres (o sea: `"manual": true,`)
+La propiedad opcional `manual` excluye al cambio de cualquier automatismo (ver [Enclavamientos](#enclavamientos) más adelante) y sólo responderá a comandos manuales.  Habitualmente, este valor es establecido dinámicamente desde el tablero mímico. Por defecto es `false`.  Si se indica, el valor `true` of `false` no debe ir entrecomillado, dado que es un booleano, no una cadena de caracteres (o sea: `"manual": true,`)
 
 Ej:
 
