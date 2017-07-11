@@ -10,9 +10,9 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "functions": {
-      "source": "firebase/functions"
-    }
+    ]
+  },
+  "functions": {
+    "source": "firebase/functions"
   }
 }

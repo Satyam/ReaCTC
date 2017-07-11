@@ -3,13 +3,24 @@ const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
 exports.onDeleteSector = functions.database.ref('/sectores/{idSector}').onDelete((event) => {
-  console.log('onDelete', event.params.idSector, event.data.val());
+  const idCeldas = event.data.previous.child('celdas').val();
+  const root = event.data.adminRef.root;
+  if (idCeldas) {
+    idCeldas.forEach(idCelda => root.child(`/celdas/${idCelda}`).remove());
+  }
+});
+
+exports.onDeleteCelda = functions.database.ref('/celdas/{idCelda}').onDelete((event) => {
+  const idSenales = event.data.previous.child('senales').val();
+  const root = event.data.adminRef.root;
+  if (idSenales) {
+    idSenales.forEach(idSenal => root.child(`/senales/${idSenal}`).remove());
+  }
+  const idEnclavamientos = event.data.previous.child('enclavamientos').val();
+  if (idEnclavamientos) {
+    idEnclavamientos.forEach(idEnclavamiento =>
+      root.child(`/enclavamientos/${idEnclavamiento}`).remove()
+    );
+  }
 });
