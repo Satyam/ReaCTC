@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import { Input } from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
@@ -43,6 +44,9 @@ export default class LoginComponent extends Component {
     const { username, password, confirmation, fail, signup } = this.state;
     return (
       <div className={styles.form}>
+        <Helmet>
+          <title>Login</title>
+        </Helmet>
         <Input
           type="text"
           label="User Name"

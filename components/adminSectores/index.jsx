@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import without from 'lodash/without';
 import isPlainClick from '_utils/isPlainClick';
+import { Helmet } from 'react-helmet';
 
 import { BrowseButton, Button } from 'react-toolbox/lib/button';
 import { List, ListCheckbox } from 'react-toolbox/lib/list';
@@ -69,8 +70,12 @@ export default class AdminSectoresComponent extends Component {
   render() {
     const delList = this.state.delList;
     const { sectores, status } = this.props;
-    return (sectores || null) && (
+    return (
+      (sectores || null) &&
       <div>
+        <Helmet>
+          <title>Admin Sectores</title>
+        </Helmet>
         <div className={styles.form}>
           <List className={styles.list}>
             {sectores.map(sector =>
@@ -111,9 +116,15 @@ export default class AdminSectoresComponent extends Component {
               </TableHead>
               {status.map((row, index) =>
                 (<TableRow className={styles[row.nivel]} key={index}>
-                  <TableCell><FontIcon value={icons[row.nivel]} /></TableCell>
-                  <TableCell>{row.entity}</TableCell>
-                  <TableCell>{row.message}</TableCell>
+                  <TableCell>
+                    <FontIcon value={icons[row.nivel]} />
+                  </TableCell>
+                  <TableCell>
+                    {row.entity}
+                  </TableCell>
+                  <TableCell>
+                    {row.message}
+                  </TableCell>
                 </TableRow>)
               )}
             </Table>

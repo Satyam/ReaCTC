@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { AppBar } from 'react-toolbox/lib/app_bar';
 import { FontIcon } from 'react-toolbox/lib/font_icon';
@@ -35,6 +36,7 @@ export default class AppComponent extends Component {
     const title = descr ? `CTC - ${descr}` : 'CTC';
     return (
       <div>
+        <Helmet titleTemplate="CTC - %s" />
         <Errors />
         {username &&
           <div>
