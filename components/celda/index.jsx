@@ -11,6 +11,7 @@ import styles from './styles.css';
 
 import Linea from './linea';
 import Cambio from './cambio';
+import Triple from './triple';
 import Paragolpe from './paragolpe';
 import Cruce from './cruce';
 
@@ -19,7 +20,7 @@ const renderers = {
   cambio: Cambio,
   paragolpe: Paragolpe,
   cruce: Cruce,
-  triple: Cambio,
+  triple: Triple,
 };
 
 export default function CeldaComponent({ idCelda, celda, estado, onClick }) {
@@ -43,7 +44,9 @@ export default function CeldaComponent({ idCelda, celda, estado, onClick }) {
         })}
       />
       <Renderer celda={celda} />
-      <text className={styles.text} x="5" y="95">{label}</text>
+      <text className={styles.text} x="5" y="95">
+        {label}
+      </text>
       {celda.senales
         ? celda.senales.map(idSenal => <Senal idSenal={idSenal} key={idSenal} />)
         : null}

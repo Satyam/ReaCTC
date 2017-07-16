@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { sectorType } from '_components/shapes';
 import { Helmet } from 'react-helmet';
 
 import Celda from '_containers/celda';
@@ -22,9 +22,5 @@ export default function SectorComponent({ ancho, alto, celdas, descrCorta }) {
     </div>
   );
 }
-SectorComponent.propTypes = {
-  ancho: PropTypes.number,
-  alto: PropTypes.number,
-  celdas: PropTypes.arrayOf(PropTypes.string),
-  descrCorta: PropTypes.string,
-};
+
+SectorComponent.propTypes = sectorType;

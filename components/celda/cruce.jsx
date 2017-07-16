@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { cruceShape } from '_components/shapes';
 
 import Tramo from './tramo';
-import { DIR } from '../common';
 
 export default function Cruce({ celda }) {
   return (
@@ -16,22 +15,5 @@ export default function Cruce({ celda }) {
 }
 
 Cruce.propTypes = {
-  celda: PropTypes.shape({
-    l1: PropTypes.shape({
-      desde: PropTypes.shape({
-        dir: PropTypes.oneOf(DIR),
-      }),
-      hacia: PropTypes.shape({
-        dir: PropTypes.oneOf(DIR),
-      }),
-    }),
-    l2: PropTypes.shape({
-      desde: PropTypes.shape({
-        dir: PropTypes.oneOf(DIR),
-      }),
-      hacia: PropTypes.shape({
-        dir: PropTypes.oneOf(DIR),
-      }),
-    }),
-  }),
+  celda: cruceShape,
 };

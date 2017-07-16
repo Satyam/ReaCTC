@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { senalType } from '_components/shapes';
 
 import { CENTRO_CELDA, ANG } from '../common';
 import styles from './styles.css';
@@ -54,16 +55,6 @@ export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
   );
 }
 
-SenalComponent.propTypes = {
-  dir: PropTypes.string,
-  primaria: PropTypes.shape({
-    estado: PropTypes.string,
-  }),
-  izq: PropTypes.shape({
-    estado: PropTypes.string,
-  }),
-  der: PropTypes.shape({
-    estado: PropTypes.string,
-  }),
+SenalComponent.propTypes = Object.assign({}, senalType, {
   onClick: PropTypes.func.isRequired,
-};
+});
