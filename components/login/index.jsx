@@ -85,5 +85,5 @@ export default class LoginComponent extends Component {
 LoginComponent.propTypes = {
   username: PropTypes.string,
   onLogin: PropTypes.func,
-  location: PropTypes.object,
+  location: PropTypes.shape({ search: PropTypes.string }),
 };

@@ -47,7 +47,9 @@ MenuComponent.propTypes = {
     })
   ),
   username: PropTypes.string,
-  location: PropTypes.object,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
   onClick: PropTypes.func,
   onLogin: PropTypes.func,
   onLogout: PropTypes.func,
