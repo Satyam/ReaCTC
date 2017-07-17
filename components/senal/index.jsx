@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { senalType } from '_components/shapes';
+import { senalShape } from '_components/shapes';
 
 import { CENTRO_CELDA, ANG } from '../common';
 import styles from './styles.css';
 
-export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
-  if (!dir) return null;
+export default function SenalComponent({ senal }) {
+  if (!senal) return null;
+  const { dir, primaria, izq, der, onClick } = senal;
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -55,6 +56,9 @@ export default function SenalComponent({ dir, primaria, izq, der, onClick }) {
   );
 }
 
-SenalComponent.propTypes = Object.assign({}, senalType, {
-  onClick: PropTypes.func.isRequired,
-});
+SenalComponent.propTypes = Object.assign(
+  { senal: senalShape },
+  {
+    onClick: PropTypes.func.isRequired,
+  }
+);

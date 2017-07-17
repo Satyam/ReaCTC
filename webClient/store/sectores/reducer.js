@@ -38,11 +38,11 @@ export function hash(state = {}, action) {
     case GET_SECTOR:
       switch (action.stage) {
         case REQUEST_SENT:
-          return update(state, { [payload.idSector]: { $set: {} } });
+        case FAILURE_RECEIVED:
+          // See selSectorRequested in ./selectors
+          return update(state, { [payload.idSector]: { $set: null } });
         case REPLY_RECEIVED:
           return update(state, { $merge: payload.entities.sectores });
-        case FAILURE_RECEIVED:
-          return update(state, { [payload.idSector]: { $set: null } });
         default:
           return state;
       }

@@ -17,5 +17,5 @@ export function selSectorRequested(state, idSector) {
 }
 
 export function selSector(state, idSector) {
-  return state[NAME].hash[idSector] || {};
+  return state[NAME].hash[idSector];
 }

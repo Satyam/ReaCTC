@@ -9,7 +9,7 @@ import { clickSenal } from '_store/actions';
 import Senal from '_components/senal';
 
 export const firebaseDataMap = ({ idSenal }) => ({
-  $: `senales/${idSenal}`,
+  senal: `senales/${idSenal}`,
 });
 
 export const mapDispatchToProps = (dispatch, { idSector, coords, dir }) => ({
