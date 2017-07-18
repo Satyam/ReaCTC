@@ -9,17 +9,25 @@ export const tramoShape = PropTypes.shape({
   dir: PropTypes.oneOf(DIR).isRequired,
 }).isRequired;
 
-export const sectorType = {
+export const sectorListEntryType = {
   idSector: PropTypes.string.isRequired,
-  alto: PropTypes.number.isRequired,
-  ancho: PropTypes.number.isRequired,
-  celdas: PropTypes.arrayOf(PropTypes.string),
   descrCorta: PropTypes.string,
   descr: PropTypes.string,
 };
 
+export const sectorType = Object.assign(
+  {
+    alto: PropTypes.number.isRequired,
+    ancho: PropTypes.number.isRequired,
+    celdas: PropTypes.arrayOf(PropTypes.string),
+  },
+  sectorListEntryType
+);
+
+export const sectorListEntryShape = PropTypes.shape(sectorListEntryType);
 export const sectorShape = PropTypes.shape(sectorType);
 
+export const sectoresListShape = PropTypes.arrayOf(sectorListEntryShape);
 export const sectoresShape = PropTypes.objectOf(sectorShape);
 
 export const celdaType = {

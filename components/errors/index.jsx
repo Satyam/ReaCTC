@@ -10,14 +10,12 @@ export default function ErrorsComponent({ errors, onCloseErrors }) {
     ? <List>
       <ListItem caption="Click here to close all" onClick={closeErrorsHandler} />
       <ListDivider />
-      {errors.map((err, idx) =>
-        <ListItem key={idx} leftIcon="warning" caption={JSON.stringify(err)} />
-      )}
+      {errors.map(err => <ListItem leftIcon="warning" caption={JSON.stringify(err)} />)}
     </List>
     : null;
 }
 
 ErrorsComponent.propTypes = {
-  errors: PropTypes.array,
+  errors: PropTypes.arrayOf(PropTypes.object),
   onCloseErrors: PropTypes.func,
 };

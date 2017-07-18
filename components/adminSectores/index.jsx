@@ -10,6 +10,8 @@ import { Navigation } from 'react-toolbox/lib/navigation';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import { FontIcon } from 'react-toolbox/lib/font_icon';
 
+import { sectorListEntryShape, sectoresListShape } from '_components/shapes';
+
 import styles from './styles.css';
 
 export function Sector({ sector, checked, onChange }) {
@@ -27,11 +29,7 @@ export function Sector({ sector, checked, onChange }) {
 }
 
 Sector.propTypes = {
-  sector: PropTypes.shape({
-    idSector: PropTypes.string,
-    descrCorta: PropTypes.string,
-    descr: PropTypes.string,
-  }),
+  sector: sectorListEntryShape,
   checked: PropTypes.bool,
   onChange: PropTypes.func,
 };
@@ -70,8 +68,8 @@ export default class AdminSectoresComponent extends Component {
   render() {
     const delList = this.state.delList;
     const { sectores, status } = this.props;
+    if (!sectores) return null;
     return (
-      (sectores || null) &&
       <div>
         <Helmet>
           <title>Admin Sectores</title>
@@ -114,8 +112,8 @@ export default class AdminSectoresComponent extends Component {
                 <TableCell>Dónde</TableCell>
                 <TableCell>Mensaje</TableCell>
               </TableHead>
-              {status.map((row, index) =>
-                (<TableRow className={styles[row.nivel]} key={index}>
+              {status.map(row =>
+                (<TableRow className={styles[row.nivel]}>
                   <TableCell>
                     <FontIcon value={icons[row.nivel]} />
                   </TableCell>
@@ -136,13 +134,7 @@ export default class AdminSectoresComponent extends Component {
 }
 
 AdminSectoresComponent.propTypes = {
-  sectores: PropTypes.arrayOf(
-    PropTypes.shape({
-      idSector: PropTypes.string,
-      descrCorta: PropTypes.string,
-      descr: PropTypes.string,
-    })
-  ),
+  sectores: sectoresListShape,
   status: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.string,

@@ -7,8 +7,9 @@ const merge = require('lodash/merge');
 const readDir = denodeify(fs.readdir);
 const readFile = denodeify(fs.readFile);
 const writeFile = denodeify(fs.writeFile);
-
+/* eslint-disable import/no-dynamic-require */
 const sectorSchema = require(join(process.cwd(), 'utils/sectorSchema'));
+/* eslint-enable import/no-dynamic-require */
 
 readDir(join(__dirname, 'sectores'))
   .then(files => files.filter(file => extname(file) === '.json'))
