@@ -6,9 +6,9 @@ import { senalShape } from '_components/shapes';
 import { CENTRO_CELDA, ANG } from '../common';
 import styles from './styles.css';
 
-export default function SenalComponent({ senal }) {
+export default function SenalComponent({ senal, onClick }) {
   if (!senal) return null;
-  const { dir, primaria, izq, der, onClick } = senal;
+  const { dir, primaria, izq, der } = senal;
   /*
   Todos estos calculos son a ojo, lo cual hace bastante irrelevante las
   constances como ANCHO_CELDA y demas porque deberían hacerse proporcional
@@ -56,9 +56,7 @@ export default function SenalComponent({ senal }) {
   );
 }
 
-SenalComponent.propTypes = Object.assign(
-  { senal: senalShape },
-  {
-    onClick: PropTypes.func.isRequired,
-  }
-);
+SenalComponent.propTypes = {
+  senal: senalShape,
+  onClick: PropTypes.func.isRequired,
+};
