@@ -1,3 +1,8 @@
 {
-  "presets": [["es2015", {"modules": false}], "react", "stage-1"]
+  "presets": [["es2015", { "modules": false }], "react", "stage-1"],
+  "env": {
+    "jest": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }

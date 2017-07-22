@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`composition - fetchMock calls 1`] = `
+Array [
+  Array [
+    "http://localhost:8080/data/v2/sectores/",
+    Object {
+      "body": undefined,
+      "credentials": "include",
+      "headers": Object {
+        "Accept": "application/json",
+        "Authorization": null,
+        "Content-Type": "application/json",
+      },
+      "method": "get",
+    },
+  ],
+  Array [
+    "http://localhost:8080/data/v2/sectores/",
+    Object {
+      "body": undefined,
+      "credentials": "include",
+      "headers": Object {
+        "Accept": "application/json",
+        "Authorization": null,
+        "Content-Type": "application/json",
+      },
+      "method": "get",
+    },
+  ],
+]
+`;
+
+exports[`composition regular render 1`] = `<Connect(AdminSectoresComponent) />`;
+
+exports[`composition- store getActions 1`] = `
+Array [
+  Object {
+    "stage": "Stage: request sent",
+    "type": "sectores / list sectores",
+  },
+]
+`;
+
+exports[`mapDispatchToProps - onClearStatusAdmin - fetchMock calls 1`] = `Array []`;
+
+exports[`mapDispatchToProps - onClearStatusAdmin - returned data 1`] = `
+Object {
+  "type": "sectores / clear status admin",
+}
+`;
+
+exports[`mapDispatchToProps - onClearStatusAdmin - store getActions 1`] = `
+Array [
+  Object {
+    "type": "sectores / clear status admin",
+  },
+]
+`;
+
+exports[`mapDispatchToProps - onDeleteSectores - fetchMock calls 1`] = `
+Array [
+  Array [
+    "http://localhost:8080/data/v2/sectores/1,2,3",
+    Object {
+      "body": undefined,
+      "credentials": "include",
+      "headers": Object {
+        "Accept": "application/json",
+        "Authorization": null,
+        "Content-Type": "application/json",
+      },
+      "method": "delete",
+    },
+  ],
+]
+`;
+
+exports[`mapDispatchToProps - onDeleteSectores - returned data 1`] = `undefined`;
+
+exports[`mapDispatchToProps - onDeleteSectores - store getActions 1`] = `
+Array [
+  Object {
+    "stage": "Stage: request sent",
+    "type": "sectores / delete sector",
+  },
+  Object {
+    "payload": Object {},
+    "stage": "Stage: reply received",
+    "type": "sectores / delete sector",
+  },
+  Object {
+    "payload": Object {
+      "entity": "1,2,3",
+      "message": "Borrados",
+      "nivel": "normal",
+    },
+    "type": "sectores / add status admin",
+  },
+]
+`;
+
+exports[`storeInitializer - data 1`] = `
+Object {
+  "payload": Object {
+    "list": Array [
+      Object {
+        "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
+        "descrCorta": "Constitución",
+        "idSector": "constitucion",
+      },
+      Object {
+        "descr": "Mentira, apenas una línea",
+        "descrCorta": "Retiro",
+        "idSector": "retiro",
+      },
+    ],
+  },
+  "stage": "Stage: reply received",
+  "type": "sectores / list sectores",
+}
+`;
+
+exports[`storeInitializer - fetchMock calls 1`] = `
+Array [
+  Array [
+    "http://localhost:8080/data/v2/sectores/",
+    Object {
+      "body": undefined,
+      "credentials": "include",
+      "headers": Object {
+        "Accept": "application/json",
+        "Authorization": null,
+        "Content-Type": "application/json",
+      },
+      "method": "get",
+    },
+  ],
+]
+`;
+
+exports[`storeInitializer - store getActions 1`] = `
+Array [
+  Object {
+    "stage": "Stage: request sent",
+    "type": "sectores / list sectores",
+  },
+  Object {
+    "payload": Object {
+      "list": Array [
+        Object {
+          "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
+          "descrCorta": "Constitución",
+          "idSector": "constitucion",
+        },
+        Object {
+          "descr": "Mentira, apenas una línea",
+          "descrCorta": "Retiro",
+          "idSector": "retiro",
+        },
+      ],
+    },
+    "stage": "Stage: reply received",
+    "type": "sectores / list sectores",
+  },
+]
+`;
