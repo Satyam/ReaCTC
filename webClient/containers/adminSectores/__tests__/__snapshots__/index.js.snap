@@ -31,8 +31,6 @@ Array [
 ]
 `;
 
-exports[`composition regular render 1`] = `<Connect(AdminSectoresComponent) />`;
-
 exports[`composition- store getActions 1`] = `
 Array [
   Object {

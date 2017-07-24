@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import jestFetchMock from 'jest-fetch-mock';
 import configureStore from 'redux-mock-store';
 import reduxThunk from 'redux-thunk';
@@ -127,9 +127,16 @@ describe('composition', () => {
   it('regular render', () => {
     const fetchMock = fetch.mockResponse(JSON.stringify(listSectores), { status: 200 });
     const mockStore = configureStore([reduxThunk, promiseMiddleware]);
-    const store = mockStore({ sectores: { list: { list: [], requested: false } } });
-
-    expect(shallow(<HoC />, { context: { store } })).toMatchSnapshot();
+    const store = mockStore({
+      sectores: {
+        list: { list: [], requested: false },
+        adminStatus: [],
+      },
+    });
+    const wrapper = mount(React.createElement(HoC), { context: { store } });
+    expect(wrapper.find('initStore(Connect(AdminSectoresComponent))').exists()).toBeTruthy();
+    expect(wrapper.find('Connect(AdminSectoresComponent)').exists()).toBeTruthy();
+    expect(wrapper.find('AdminSectoresComponent').exists()).toBeTruthy();
     expect(fetchMock.mock.calls).toMatchSnapshot('composition - fetchMock calls');
     expect(store.getActions()).toMatchSnapshot('composition- store getActions');
   });
