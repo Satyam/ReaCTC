@@ -17,4 +17,5 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-bundles
+public/bundles
+flow-typed

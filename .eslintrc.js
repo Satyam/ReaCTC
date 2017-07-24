@@ -2,12 +2,13 @@ const config = require('./config.js');
 const mapValues = require('lodash/mapValues');
 
 module.exports = {
-  extends: 'airbnb',
+  extends: ['airbnb', 'plugin:flowtype/recommended'],
+  plugins: ['flowtype'],
   env: {
     node: true,
     jest: true,
   },
-  parser: "babel-eslint",
+  parser: 'babel-eslint',
   settings: {
     'import/resolver': {
       webpack: {
@@ -26,7 +27,12 @@ module.exports = {
   ),
   rules: {
     'no-console': 0,
-    'import/no-extraneous-dependencies': [2, { devDependencies: true }],
+    'import/no-extraneous-dependencies': [
+      2,
+      {
+        devDependencies: true,
+      },
+    ],
     'comma-dangle': [
       'error',
       {
@@ -38,5 +44,37 @@ module.exports = {
       },
     ],
     'react/require-default-props': 0,
+    'flowtype/no-types-missing-file-annotation': 0,
+    'react/sort-comp': [
+      'error',
+      {
+        order: ['static-methods', 'lifecycle', 'everything-else', 'render'],
+        groups: {
+          lifecycle: [
+            'props',
+            'state',
+            'displayName',
+            'propTypes',
+            'contextTypes',
+            'childContextTypes',
+            'mixins',
+            'statics',
+            'defaultProps',
+            'constructor',
+            'getDefaultProps',
+            'getInitialState',
+            'state',
+            'getChildContext',
+            'componentWillMount',
+            'componentDidMount',
+            'componentWillReceiveProps',
+            'shouldComponentUpdate',
+            'componentWillUpdate',
+            'componentDidUpdate',
+            'componentWillUnmount',
+          ],
+        },
+      },
+    ],
   },
 };

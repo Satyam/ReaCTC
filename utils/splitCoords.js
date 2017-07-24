@@ -1,4 +1,4 @@
-export default function splitCoords(coords) {
-  const parts = coords.split(',');
-  return [parseInt(parts[0], 10), parseInt(parts[1], 10)];
+// @flow
+export default function splitCoords(coords: string): Array<number> {
+  return coords.split(',').map(part => parseInt(part, 10));
 }

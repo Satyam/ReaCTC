@@ -13,6 +13,8 @@
     "production": "webpack -p --config webpack.config/production.js",
     "clean": "rm bundles/*",
     "firebase": "firebase serve --only functions,hosting",
+    "flow": "flow || exit 0",
+    "flow-typed": "flow-typed",
     "pt": "webpack --target='node' pt.js pt1.js && node --inspect --debug-brk pt1.js"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "babel-node-debug": "^2.0.0",
     "babel-plugin-dynamic-import-node": "^1.0.2",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "check-prop-types": "^1.1.0",
@@ -32,11 +35,14 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "firebase-tools": "^3.9.1",
+    "flow-bin": "^0.51.0",
+    "flow-typed": "^2.1.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^20.0.4",
     "jest-fetch-mock": "^1.2.0",
@@ -85,12 +91,7 @@
     "type": "git",
     "url": "https://github.com/Satyam/ReaCTC.git"
   },
-  "keywords": [
-    "CTC",
-    "mímico",
-    "control",
-    "ferroviario"
-  ],
+  "keywords": ["CTC", "mímico", "control", "ferroviario"],
   "author": "Daniel Barreiro",
   "license": "MIT",
   "bugs": {

@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import without from 'lodash/without';
@@ -14,7 +15,15 @@ import { sectorListEntryShape, sectoresListShape } from '_components/shapes';
 
 import styles from './styles.css';
 
-export function Sector({ sector, checked, onChange }) {
+export function Sector({
+  sector,
+  checked,
+  onChange,
+}: {
+  sector: any,
+  checked: boolean,
+  onChange: Function,
+}) {
   function onChangeHandler(mark) {
     onChange(sector.idSector, mark);
   }
@@ -40,12 +49,24 @@ const icons = {
   error: 'error',
 };
 
+type InputFileEvent = UIEvent & { target: HTMLInputElement & { files: Array<string> } };
+
 export default class AdminSectoresComponent extends Component {
-  constructor(props) {
-    super(props);
+  props: {
+    sectores: any,
+    status: Array<any>,
+    onDeleteSectores: Function,
+    onUploadSector: Function,
+    onClearStatusAdmin: Function,
+  };
+  state: {
+    delList: Array<string>,
+  };
+  constructor(...args: Array<any>) {
+    super(...args);
     this.state = { delList: [] };
   }
-  onChangeHandler = (idSector, checked) => {
+  onChangeHandler = (idSector: string, checked: boolean) => {
     const list = this.state.delList;
     this.setState({ delList: checked ? list.concat(idSector) : without(list, idSector) });
   };
@@ -53,14 +74,14 @@ export default class AdminSectoresComponent extends Component {
     this.props.onDeleteSectores(this.state.delList);
     this.setState({ delList: [] });
   };
-  onUploadHandler = (ev) => {
+  onUploadHandler = (ev: InputFileEvent) => {
     ev.stopPropagation();
     const file = ev.target.files[0];
     if (file) {
       this.props.onUploadSector(file);
     }
   };
-  onClearStatusHandler = (ev) => {
+  onClearStatusHandler = (ev: KeyboardEvent) => {
     if (isPlainClick(ev)) {
       this.props.onClearStatusAdmin();
     }

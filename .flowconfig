@@ -1,0 +1,17 @@
+[ignore]
+<PROJECT_ROOT>/node_modules/protobufjs/src/bower.json
+[include]
+
+[libs]
+
+[options]
+module.name_mapper='^_webClient/\(.*\)' ->  '<PROJECT_ROOT>/webClient/\1'
+module.name_mapper='^_firebase/\(.*\)' ->  '<PROJECT_ROOT>/firebase/\1'
+module.name_mapper='^_store/\(.*\)' ->  '<PROJECT_ROOT>/webClient/store/\1'
+module.name_mapper='^_components/\(.*\)' ->  '<PROJECT_ROOT>/components/\1'
+module.name_mapper='^_containers/\(.*\)' ->  '<PROJECT_ROOT>/webClient/containers/\1'
+module.name_mapper='^_utils/\(.*\)' ->  '<PROJECT_ROOT>/utils/\1'
+module.name_mapper='^_platform/restAPI' ->  '<PROJECT_ROOT>/webClient/restAPI.js'
+module.name_mapper='^_jest/\(.*\)' ->  '<PROJECT_ROOT>/jest/\1'
+module.name_mapper='\\.(css|less)$' ->  'identity-obj-proxy'
+[lints]
