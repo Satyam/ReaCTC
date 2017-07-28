@@ -58,9 +58,24 @@ export default class AppComponent extends Component {
                   <Menu onClose={this.onToggleMenuHandler} />
                 </NavDrawer>
                 <Panel>
-                  <Route path="/sector/:idSector" component={loadModule('Mimico')} />
-                  <Route path="/login" component={loadModule('Login')} />
-                  <Route path="/admin/sectores" component={loadModule('AdminSectores')} />
+                  <Route
+                    path="/sector/:idSector"
+                    component={loadModule(() =>
+                      import(/* webpackChunkName: "Mimico" */ '_containers/mimico')
+                    )}
+                  />
+                  <Route
+                    path="/login"
+                    component={loadModule(() =>
+                      import(/* webpackChunkName: "Login" */ '_containers/login')
+                    )}
+                  />
+                  <Route
+                    path="/admin/sectores"
+                    component={loadModule(() =>
+                      import(/* webpackChunkName: "AdminSectores" */ '_containers/adminSectores')
+                    )}
+                  />
                 </Panel>
               </Layout>
             </div>

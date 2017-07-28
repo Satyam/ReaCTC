@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default function loadModule(componentName, props) {
+export default function loadModule(loader, props) {
   return class ModuleLoader extends Component {
     constructor(...args) {
       super(...args);
@@ -15,28 +15,14 @@ export default function loadModule(componentName, props) {
     componentDidMount() {
       // Unfortunately, the names of the imported modules have to be
       // named explicitely for webpack to know what to bundle
-      switch (componentName) {
-        case 'Mimico':
-          import(/* webpackChunkName: "Mimico" */ '_containers/mimico').then(this.setComponent);
-          break;
-        case 'Login':
-          import(/* webpackChunkName: "Login" */ '_containers/login').then(this.setComponent);
-          break;
-        case 'AdminSectores':
-          import(/* webpackChunkName: "AdminSectores" */ '_containers/adminSectores').then(
-            this.setComponent
-          );
-          break;
-        default:
-          break;
-      }
+      loader().then(this.setComponent);
     }
     render() {
       const C = this.state.Component;
-      return C && React.createElement(C, props);
+      return C ? <C {...props} /> : <img alt="loading" src="icons/loading.gif" />;
     }
     static propTypes = {
-      componentName: PropTypes.string,
+      loader: PropTypes.func,
     };
   };
 }
