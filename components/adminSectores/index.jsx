@@ -19,10 +19,10 @@ export function Sector({
   sector,
   checked,
   onChange,
-}: {
-  sector: any,
+  }: {
+  sector: SectorListEntry,
   checked: boolean,
-  onChange: Function,
+  onChange: (IdType, boolean) => void,
 }) {
   function onChangeHandler(mark) {
     onChange(sector.idSector, mark);
@@ -49,18 +49,18 @@ const icons = {
   error: 'error',
 };
 
-type InputFileEvent = UIEvent & { target: HTMLInputElement & { files: Array<string> } };
+type InputFileEvent = UIEvent & { target: HTMLInputElement & { files: string[] } };
 
 export default class AdminSectoresComponent extends Component {
   props: {
-    sectores: any,
-    status: Array<any>,
-    onDeleteSectores: Function,
-    onUploadSector: Function,
-    onClearStatusAdmin: Function,
+    sectores: SectorListEntry[],
+    status: AdminStatusItem[],
+    onDeleteSectores: (IdType[]) => void,
+    onUploadSector: string => void,
+    onClearStatusAdmin: void => void,
   };
   state: {
-    delList: Array<string>,
+    delList: IdType[],
   };
   constructor(...args: Array<any>) {
     super(...args);
@@ -76,7 +76,7 @@ export default class AdminSectoresComponent extends Component {
   };
   onUploadHandler = (ev: InputFileEvent) => {
     ev.stopPropagation();
-    const file = ev.target.files[0];
+    const file: string = ev.target.files[0];
     if (file) {
       this.props.onUploadSector(file);
     }

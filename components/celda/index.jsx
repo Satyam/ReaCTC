@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -15,19 +16,30 @@ import Triple from './triple';
 import Paragolpe from './paragolpe';
 import Cruce from './cruce';
 
-const renderers = {
-  linea: Linea,
-  cambio: Cambio,
-  paragolpe: Paragolpe,
-  cruce: Cruce,
-  triple: Triple,
-};
-
-export default function CeldaComponent({ idCelda, celda, estado, onClick }) {
+export default function CeldaComponent({
+  idCelda,
+  celda,
+  estado,
+  onClick,
+  }: {
+  idCelda: IdType,
+  celda?: CeldaType,
+  estado: {
+    tipo: ?string,
+    idCelda?: IdType,
+  },
+  onClick: string => void,
+}) {
   if (!celda) return null;
   const [x, y] = splitCoords(celda.coords);
   const label = celda.descr || `[${x},${y}]`;
-  const Renderer = renderers[celda.tipo];
+  const Renderer = {
+    linea: Linea,
+    cambio: Cambio,
+    paragolpe: Paragolpe,
+    cruce: Cruce,
+    triple: Triple,
+  }[celda.tipo];
   return (
     <g
       transform={`translate(${x * ANCHO_CELDA}, ${y * ANCHO_CELDA})`}

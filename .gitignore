@@ -18,4 +18,4 @@ node_modules
 .lock-wscript
 
 public/bundles
-flow-typed
+flow-typed/npm

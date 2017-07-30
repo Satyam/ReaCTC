@@ -1,10 +1,13 @@
+// @flow
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
 
+import type { Reducer } from 'redux';
+
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
 
-export function adminStatus(state = [], action) {
+export const adminStatus: Reducer<AdminStatusItem[], any> = (state = [], action) => {
   switch (action.type) {
     case ADD_STATUS_ADMIN:
       return update(state, { $push: [action.payload] });
@@ -13,8 +16,17 @@ export function adminStatus(state = [], action) {
     default:
       return state;
   }
-}
-export function list(state = { list: [], requested: false }, action) {
+};
+
+type SectorListState = {
+  list: Array<SectorListEntry>,
+  requested: boolean,
+};
+
+export const list: Reducer<SectorListState, any> = (
+  state = { list: [], requested: false },
+  action
+) => {
   switch (action.type) {
     case LIST_SECTORES:
       switch (action.stage) {
@@ -30,9 +42,11 @@ export function list(state = { list: [], requested: false }, action) {
     default:
       return state;
   }
-}
+};
 
-export function hash(state = {}, action) {
+type SectorHashState = { [IdType]: SectorType };
+
+export const hash: Reducer<SectorHashState, any> = (state = {}, action): SectorHashState => {
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR:
@@ -49,7 +63,7 @@ export function hash(state = {}, action) {
     default:
       return state;
   }
-}
+};
 export default combineReducers({
   list,
   hash,

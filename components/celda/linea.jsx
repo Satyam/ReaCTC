@@ -3,11 +3,11 @@ import { lineaShape } from '_components/shapes';
 
 import Tramo from './tramo';
 
-export default function Linea({ celda }) {
+export default function Linea({ celda }: { celda: LineaType }) {
   return (
     <g>
-      <Tramo dest={celda.desde.dir} />
-      <Tramo dest={celda.hacia.dir} />
+      <Tramo dir={celda.desde.dir} />
+      <Tramo dir={celda.hacia.dir} />
     </g>
   );
 }
