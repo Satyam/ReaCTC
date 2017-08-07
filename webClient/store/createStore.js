@@ -2,14 +2,14 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddleware from '_utils/promiseMiddleware';
 
-import sectores from './sectores';
-import celdas from './celdas';
-import senales from './senales';
-import requests from './requests';
-import estado from './estado';
-import mensajes from './mensajes';
-import enclavamientos from './enclavamientos';
-import user from './user';
+import sectores from './sectores/reducer';
+import celdas from './celdas/reducer';
+import senales from './senales/reducer';
+import requests from './requests/reducer';
+import estado from './estado/reducer';
+import mensajes from './mensajes/reducer';
+import enclavamientos from './enclavamientos/reducer';
+import user from './user/reducer';
 
 const reducers = combineReducers({
   sectores,
