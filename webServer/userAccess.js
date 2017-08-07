@@ -1,7 +1,9 @@
+import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 import denodeify from 'denodeify';
+import bodyParser from 'body-parser';
 import pick from 'lodash/pick';
 
 // https://www.djamware.com/post/58eba06380aca72673af8500/node-express-mongoose-and-passportjs-rest-api-authentication
@@ -13,7 +15,7 @@ const compareHash = denodeify(bcrypt.compare);
 const SECRET = 'CTC clave secreta: pepino'; // todo el string es el secreto;
 let usersCollection;
 
-export function setStrategy(passport, db) {
+export function setStrategy(db) {
   usersCollection = db.collection('users');
   const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeader(),
@@ -103,4 +105,16 @@ export function userData(req, res) {
     .catch((err) => {
       res.status(500).send(err);
     });
+}
+
+export function authenticate(req, res, next) {
+  return passport.authenticate('jwt', { session: false })(req, res, next);
+}
+
+export function userRoutes(app, path) {
+  app.use(passport.initialize());
+  app.use(`${path}/signup`, bodyParser.json(), signup);
+  app.use(`${path}/login`, bodyParser.json(), login);
+  app.use(`${path}/logout`, logout);
+  app.get(`${path}/data/:username`, authenticate, userData);
 }

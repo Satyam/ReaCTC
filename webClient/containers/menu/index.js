@@ -9,7 +9,8 @@ import { selSectores, selUsername } from '_store/selectors';
 
 import Menu from '_components/menu';
 
-export const storeInitializer = dispatch => dispatch(listSectores());
+export const storeInitializer = (dispatch, getState) =>
+  selUsername(getState()) && dispatch(listSectores());
 
 export const mapStateToProps = state => ({
   sectores: selSectores(state),

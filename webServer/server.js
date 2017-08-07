@@ -2,7 +2,6 @@ import http from 'http';
 import { join } from 'path';
 import express, { Router as createRouter } from 'express';
 import compression from 'compression';
-import passport from 'passport';
 import { MongoClient } from 'mongodb';
 import morgan from 'morgan';
 
@@ -11,7 +10,7 @@ import denodeify from 'denodeify';
 
 import dataServers from './dataServers';
 
-import { setStrategy, signup, login, logout, userData } from './userAccess';
+import { userRoutes, setStrategy, authenticate } from './userAccess';
 
 const absPath = relPath => join(ROOT_DIR, relPath);
 
@@ -20,8 +19,6 @@ const server = http.createServer(app);
 
 const listen = denodeify(server.listen.bind(server));
 const close = denodeify(server.close.bind(server));
-
-const dataRouter = createRouter();
 
 app.use(compression());
 app.use(morgan('dev'));
@@ -32,20 +29,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(`${REST_API_PATH}/user/signup`, bodyParser.json(), signup);
-app.use(`${REST_API_PATH}/user/login`, bodyParser.json(), login);
-app.use(`${REST_API_PATH}/user/logout`, logout);
+userRoutes(app, `${REST_API_PATH}/user`);
 
-app.use(passport.initialize());
+const dataRouter = createRouter();
 
-app.use(
-  REST_API_PATH,
-  passport.authenticate('jwt', { session: false }),
-  bodyParser.json(),
-  dataRouter
-);
+app.use(REST_API_PATH, authenticate, bodyParser.json(), dataRouter);
 
-app.get(`${REST_API_PATH}/user/data/:username`, userData);
 app.use(express.static(absPath('public')));
 
 app.get('/kill', (req, res) => {
@@ -58,7 +47,7 @@ app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
 export function start() {
   return MongoClient.connect('mongodb://localhost:27017/CTC')
-    .then(db => dataServers(db, dataRouter).then(() => setStrategy(passport, db)))
+    .then(db => dataServers(db, dataRouter).then(() => setStrategy(db)))
     .then(() => listen(PORT));
 }
 export function stop() {

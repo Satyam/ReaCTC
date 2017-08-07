@@ -50,9 +50,8 @@ export function ensureUser() {
   return (dispatch, getState) => {
     const storeUsername = selUsername(getState());
     const lastAccess = parseInt(localStorage.getItem('lastAccess'), 10);
-    const storageUsername = lastAccess + SESSION_TIMEOUT < Date.now()
-      ? ''
-      : localStorage.getItem('username');
+    const storageUsername =
+      lastAccess + SESSION_TIMEOUT < Date.now() ? '' : localStorage.getItem('username');
     if (storeUsername) {
       if (storageUsername) {
         if (storeUsername === storageUsername) {
@@ -69,11 +68,13 @@ export function ensureUser() {
 }
 
 export function logout() {
-  localStorage.removeItem('authorization');
-  localStorage.removeItem('username');
-  localStorage.removeItem('lastAccess');
-  return {
-    type: LOGOUT,
-    promise: api.read('logout'),
+  return (dispatch) => {
+    localStorage.removeItem('authorization');
+    localStorage.removeItem('username');
+    localStorage.removeItem('lastAccess');
+    return dispatch({
+      type: LOGOUT,
+      promise: api.read('logout'),
+    }).then(() => dispatch(login('guest', 'guest')));
   };
 }
