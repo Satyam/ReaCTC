@@ -8,14 +8,18 @@ export default function loadModule(loader, props) {
       this.state = { Component: null };
     }
     setComponent = (module) => {
-      /* eslint-disable no-underscore-dangle */
-      this.setState({ Component: module.__esModule ? module.default : module });
-      /* eslint-enable no-underscore-dangle */
+      if (this.mounted) {
+        /* eslint-disable no-underscore-dangle */
+        this.setState({ Component: module.__esModule ? module.default : module });
+        /* eslint-enable no-underscore-dangle */
+      }
     };
     componentDidMount() {
-      // Unfortunately, the names of the imported modules have to be
-      // named explicitely for webpack to know what to bundle
+      this.mounted = true;
       loader().then(this.setComponent);
+    }
+    componentWillUnmount() {
+      this.mounted = false;
     }
     render() {
       const C = this.state.Component;
