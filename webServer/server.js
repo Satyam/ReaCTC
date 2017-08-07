@@ -56,36 +56,9 @@ app.get('/kill', (req, res) => {
 
 app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
-const handleRequest = actions => (req, res) => {
-  const o = {
-    keys: req.params || {},
-    data: req.body,
-    options: req.query || {},
-    user: req.user || {},
-  };
-
-  return []
-    .concat(actions)
-    .reduce((p, next) => p.then(next), Promise.resolve(o))
-    .then(reply => res.json(reply))
-    .catch((reason) => {
-      res.status(reason.code || 500).send(reason.toString());
-    });
-};
-const equivalent = {
-  create: 'post',
-  read: 'get',
-  update: 'put',
-  delete: 'delete',
-};
-
-function addRoute(operation, path, actions) {
-  dataRouter[equivalent[operation]](path, handleRequest(actions));
-}
-
 export function start() {
   return MongoClient.connect('mongodb://localhost:27017/CTC')
-    .then(db => dataServers(db, addRoute).then(() => setStrategy(passport, db)))
+    .then(db => dataServers(db, dataRouter).then(() => setStrategy(passport, db)))
     .then(() => listen(PORT));
 }
 export function stop() {
