@@ -40,7 +40,6 @@ export function deleteSectores({ keys }) {
 }
 
 export function addSector({ data }) {
-  console.log('addSector', data);
   return collection.insertOne(Object.assign(data, { _id: data.idSector })).catch((err) => {
     if (err.name === 'MongoError' && err.code === 11000) {
       return Promise.reject({
