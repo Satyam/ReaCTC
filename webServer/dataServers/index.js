@@ -27,12 +27,16 @@ const equivalent = {
 };
 
 export default function (db, dataRouter) {
-  function addToDataRouter(prefix, routes) {
+  const addToDataRouter = prefix => (routes) => {
     forEach(routes, (operations, route) => {
       forEach(operations, (actions, operation) =>
         dataRouter[equivalent[operation]](join(prefix, route), handleRequest(actions))
       );
     });
-  }
-  return Promise.all([sectores(db).then(routes => addToDataRouter('/sectores', routes))]);
+  };
+  return Promise.all([
+    // this repeats for each data server:
+    sectores(db).then(addToDataRouter('/sectores')),
+    // and so on ....
+  ]);
 }
