@@ -9,6 +9,10 @@ const initStore = initializer => (BaseComponent) => {
   const factory = createEagerFactory(BaseComponent);
 
   const StoreInitializer = class extends Component {
+    static getStoreInitializer() {
+      return initializer;
+    }
+
     constructor(props, context) {
       super(props, context);
       this.store = context.store;
@@ -20,17 +24,17 @@ const initStore = initializer => (BaseComponent) => {
     componentDidMount() {
       this.mounted = true;
     }
-    componentWillUnmount() {
-      this.mounted = false;
-    }
-
     componentWillReceiveProps(nextProps) {
       const store = this.store;
       this.isInitialized(init(store.dispatch, store.getState, nextProps, this.props));
     }
 
-    static getStoreInitializer() {
-      return initializer;
+    shouldComponentUpdate() {
+      return this.shouldUpdate;
+    }
+
+    componentWillUnmount() {
+      this.mounted = false;
     }
 
     isInitialized(initRet) {
@@ -44,9 +48,6 @@ const initStore = initializer => (BaseComponent) => {
           });
         }
       }
-    }
-    shouldComponentUpdate() {
-      return this.shouldUpdate;
     }
 
     render() {

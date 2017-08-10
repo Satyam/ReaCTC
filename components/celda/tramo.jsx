@@ -8,7 +8,7 @@ import styles from './styles.css';
 export default function Tramo({
   dir,
   estilo = 'tramo-normal',
-  }: TramoType & { estilo?: EstilosTramo }) {
+}: TramoType & { estilo?: EstilosTramo }) {
   return (
     <line x1={CENTRO_CELDA} y1={CENTRO_CELDA} x2={X[dir]} y2={Y[dir]} className={styles[estilo]} />
   );

@@ -19,7 +19,7 @@ export function Sector({
   sector,
   checked,
   onChange,
-  }: {
+}: {
   sector: SectorListEntry,
   checked: boolean,
   onChange: (IdType, boolean) => void,

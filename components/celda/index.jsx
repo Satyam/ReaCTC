@@ -21,7 +21,7 @@ export default function CeldaComponent({
   celda,
   estado,
   onClick,
-  }: {
+}: {
   idCelda: IdType,
   celda?: CeldaType,
   estado: {
