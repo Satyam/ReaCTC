@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
-import { GET_SECTOR } from '_store/sectores/constants';
+import { GET_SECTOR } from '_store/constants';
 import { SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
 export default (state = {}, action) => {

@@ -2,9 +2,7 @@ import update from 'immutability-helper';
 
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
-import { CLICK_SENAL } from '_store/senales/constants';
-
-import { CLICK_CELDA } from '_store/celdas/constants';
+import { CLICK_SENAL, CLICK_CELDA } from '_store/constants';
 
 import { CLOSE_ESTADO } from './constants';
 
