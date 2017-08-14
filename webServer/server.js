@@ -8,7 +8,8 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import denodeify from 'denodeify';
 
-import dataServers from './dataServers';
+import restServers from './restServers';
+import socketServers from './socketServers';
 
 import { userRoutes, setStrategy, authenticate } from './userAccess';
 
@@ -46,9 +47,12 @@ app.get('/kill', (req, res) => {
 app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
 export function start() {
-  return MongoClient.connect('mongodb://localhost:27017/CTC')
-    .then(db => dataServers(db, dataRouter).then(() => setStrategy(db)))
-    .then(() => listen(PORT));
+  return MongoClient.connect('mongodb://localhost:27017/CTC').then(db =>
+    restServers(db, dataRouter)
+      .then(() => socketServers(db, server))
+      .then(() => setStrategy(db))
+      .then(() => listen(PORT))
+  );
 }
 export function stop() {
   return close();
