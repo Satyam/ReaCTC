@@ -8,14 +8,17 @@ const root = process.cwd();
 const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
-  ['webClient', 'firebase', 'webServer'].map((bundle) => {
+  ['webClient', 'firebase', 'webServer', 'wsClient'].map((bundle) => {
     const aliases = {
       _webClient: absPath('webClient'),
+      _wsClient: absPath('wsClient'),
       _firebase: absPath('firebase'),
       _store: absPath(
         {
           webClient: 'webClient/store',
           firebase: 'firebase/store',
+          webServer: 'webClient/store',
+          wsClient: 'wsClient/store',
         }[bundle]
       ),
       _components: absPath('components'),
@@ -23,6 +26,7 @@ module.exports = version =>
         {
           webClient: 'webClient/containers',
           firebase: 'firebase/containers',
+          wsClient: 'webClient/containers',
         }[bundle]
       ),
       _utils: absPath('utils'),
@@ -54,6 +58,7 @@ module.exports = version =>
               webClient: 'webClient/index.jsx',
               webServer: 'webServer/index.js',
               firebase: 'firebase/index.jsx',
+              wsClient: 'webClient/index.jsx',
             }[bundle]
           ),
         ],
@@ -67,6 +72,7 @@ module.exports = version =>
       },
       target: {
         webClient: 'web',
+        wsClient: 'web',
         webServer: 'node',
         firebase: 'web',
       }[bundle],
@@ -104,11 +110,7 @@ module.exports = version =>
       externals: [
         (context, request, callback) => {
           switch (bundle) {
-            case 'webClient':
-              return callback();
-            case 'firebase':
-              return callback();
-            default:
+            case 'webServer':
               switch (request[0]) {
                 case '.': {
                   const fullPath = join(context, request);
@@ -127,6 +129,8 @@ module.exports = version =>
                   break;
                 }
               }
+              return callback();
+            default:
               return callback();
           }
         },
