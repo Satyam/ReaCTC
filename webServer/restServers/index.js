@@ -3,22 +3,15 @@ import { join } from 'path';
 
 import sectores from './sectores';
 
-const handleRequest = actions => (req, res) => {
-  const o = {
-    keys: req.params || {},
-    data: req.body,
-    options: req.query || {},
-    user: req.user || {},
-  };
-
-  return []
+const handleRequest = actions => (req, res) =>
+  []
     .concat(actions)
-    .reduce((p, next) => p.then(next), Promise.resolve(o))
+    .reduce((p, next) => p.then(next), Promise.resolve(req))
     .then(reply => res.json(reply))
     .catch((reason) => {
       res.status(reason.code || 500).send(reason.toString());
     });
-};
+
 const equivalent = {
   create: 'post',
   read: 'get',

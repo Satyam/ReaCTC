@@ -31,16 +31,16 @@ export function listSectores() {
   return collection.find({}, { idSector: 1, descrCorta: 1, descr: 1, _id: 0 }).toArray();
 }
 
-export function getSector({ keys }) {
-  return collection.find({ _id: keys.idSector }).next();
+export function getSector({ params }) {
+  return collection.find({ _id: params.idSector }).next();
 }
 
-export function deleteSectores({ keys }) {
-  return collection.deleteMany({ idSector: { $in: keys.idSector.split(',') } });
+export function deleteSectores({ params }) {
+  return collection.deleteMany({ idSector: { $in: params.idSector.split(',') } });
 }
 
-export function addSector({ data }) {
-  return collection.insertOne(Object.assign(data, { _id: data.idSector })).catch((err) => {
+export function addSector({ body }) {
+  return collection.insertOne(Object.assign(body, { _id: body.idSector })).catch((err) => {
     if (err.name === 'MongoError' && err.code === 11000) {
       return Promise.reject({
         code: 409,
