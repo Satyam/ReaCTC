@@ -16,13 +16,13 @@ export default function loadModule(loader, props) {
     setComponent = (module) => {
       if (this.mounted) {
         /* eslint-disable no-underscore-dangle */
-        this.setState({ Component: module.__esModule ? module.default : module });
+        this.setState({ Component: module.default || module });
         /* eslint-enable no-underscore-dangle */
       }
     };
     render() {
       const C = this.state.Component;
-      return C ? <C {...props} /> : <img alt="loading" src="icons/loading.gif" />;
+      return C ? <C {...props} /> : <img alt="loading" src="/icons/loading.gif" />;
     }
   };
 }
