@@ -18,7 +18,7 @@ let usersCollection;
 export function setStrategy(db) {
   usersCollection = db.collection('users');
   const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
     secretOrKey: SECRET,
   };
   passport.use(
