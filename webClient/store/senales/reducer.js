@@ -1,4 +1,5 @@
 import update from 'immutability-helper';
+import indexById from '_utils/indexById';
 
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
@@ -10,8 +11,8 @@ export default (state = {}, action) => {
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR: {
-      const senales = payload.entities.senales;
-      return senales ? update(state, { $merge: senales }) : state;
+      const senales = payload.senales;
+      return senales ? update(state, { $merge: indexById(senales) }) : state;
     }
     case SET_ESTADO_LUZ:
       return update(state, {

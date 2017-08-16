@@ -2,6 +2,7 @@
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
+import indexById from '_utils/indexById';
 
 import type { Reducer } from 'redux';
 
@@ -56,7 +57,7 @@ export const hash: Reducer<SectorHashState, any> = (state = {}, action): SectorH
           // See selSectorRequested in ./selectors
           return update(state, { [payload.idSector]: { $set: null } });
         case REPLY_RECEIVED:
-          return update(state, { $merge: payload.entities.sectores });
+          return update(state, { $merge: indexById([payload.sectores]) });
         default:
           return state;
       }

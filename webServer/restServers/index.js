@@ -2,6 +2,9 @@ import forEach from 'lodash/forEach';
 import { join } from 'path';
 
 import sectores from './sectores';
+import celdas from './celdas';
+import senales from './senales';
+import enclavamientos from './enclavamientos';
 
 const handleRequest = actions => (req, res) =>
   []
@@ -30,6 +33,9 @@ export default function (db, dataRouter) {
   return Promise.all([
     // this repeats for each data server:
     sectores(db).then(addToDataRouter('/sectores')),
+    celdas(db).then(addToDataRouter('/celdas')),
+    senales(db).then(addToDataRouter('/senales')),
+    enclavamientos(db).then(addToDataRouter('/enclavamientos')),
     // and so on ....
   ]);
 }
