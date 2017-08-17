@@ -1,56 +1,31 @@
-import values from 'lodash/values';
-
-import { addCeldas, getCeldas } from './celdas';
-import { addSenales, getSenales } from './senales';
-import { addEnclavamientos, getEnclavamientos } from './enclavamientos';
-
-let collection;
+import * as sectores from '../dbOperations/sectores';
 
 export function listSectores() {
-  return collection.find({}, { idSector: 1, descrCorta: 1, descr: 1, _id: 0 }).toArray();
+  return sectores.listSectores();
 }
 
 export function getSector(req) {
-  const idSector = req.params.idSector;
-  return Promise.all([
-    collection.find({ _id: idSector }).next(),
-    getCeldas(idSector),
-    getSenales(idSector),
-    getEnclavamientos(idSector),
-  ]).then(finds => ({
-    sectores: finds[0],
-    celdas: finds[1],
-    senales: finds[2],
-    enclavamientos: finds[3],
-  }));
+  return sectores.getSector(req.params.idSector);
 }
 
 export function deleteSectores({ params }) {
-  return collection.deleteMany({ idSector: { $in: params.idSector.split(',') } });
+  return sectores.deleteSectores(params.idSector.split(','));
 }
 
-export function addSector(req) {
-  const sectores = values(req.body.sectores)[0];
-  return Promise.all([
-    collection.insertOne(Object.assign(sectores, { _id: sectores.idSector })).catch((err) => {
-      if (err.name === 'MongoError' && err.code === 11000) {
-        return Promise.reject({
-          code: 409,
-          msg: 'idSector duplicado',
-        });
-      }
-      throw err;
-    }),
-    addCeldas(req),
-    addSenales(req),
-    addEnclavamientos(req),
-  ]);
+export function addSector({ body }) {
+  return sectores.addSector(body).catch((err) => {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      return Promise.reject({
+        code: 409,
+        msg: 'idSector duplicado',
+      });
+    }
+    throw err;
+  });
 }
 
-export default (db) => {
-  collection = db.collection('sectores');
-  return Promise.resolve({
+export default db =>
+  sectores.init(db).then(() => ({
     '/:idSector': { read: getSector, delete: deleteSectores },
     '/': { read: listSectores, create: addSector },
-  });
-};
+  }));

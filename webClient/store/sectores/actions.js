@@ -1,7 +1,4 @@
 import restAPI from '_platform/restAPI';
-import { normalize } from 'normalizr';
-
-import sectorSchema from '_utils/sectorSchema';
 
 import {
   NAME,
@@ -98,31 +95,24 @@ export function addSector(file) {
         Array.isArray(sCfg.celdas) &&
         sCfg.celdas.length >= 1
       ) {
-        const normalized = normalize(sCfg, sectorSchema).entities;
-        if (typeof normalized.sectores === 'object' && typeof normalized.celdas === 'object') {
-          return dispatch({
-            type: ADD_SECTOR,
-            promise: api.create('/', normalized).then(
-              () =>
-                dispatch(
-                  addStatusAdmin('normal', file.name, `Agregado ${normalized.sectores.descrCorta}`)
-                ),
-              (err) => {
-                if (err.code === 409) {
-                  return dispatch(
-                    addStatusAdmin(
-                      'warn',
-                      file.name,
-                      `{idSector: ${normalized.sectores.idSector}} duplicado en ${normalized
-                        .sectores.descrCorta}`
-                    )
-                  );
-                }
-                return Promise.reject(err);
+        return dispatch({
+          type: ADD_SECTOR,
+          promise: api.create('/', sCfg).then(
+            () => dispatch(addStatusAdmin('normal', file.name, `Agregado ${sCfg.descrCorta}`)),
+            (err) => {
+              if (err.code === 409) {
+                return dispatch(
+                  addStatusAdmin(
+                    'warn',
+                    file.name,
+                    `{idSector: ${sCfg.idSector}} duplicado en ${sCfg.descrCorta}`
+                  )
+                );
               }
-            ),
-          }).then(() => dispatch(listSectores()));
-        }
+              return Promise.reject(err);
+            }
+          ),
+        }).then(() => dispatch(listSectores()));
       }
       return dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
     };
