@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import indexById from '_utils/indexById';
+import indexBy from '_utils/indexBy';
 
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
@@ -11,7 +11,7 @@ export default (state = {}, action) => {
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR: {
-      return update(state, { $merge: indexById(payload.celdas) });
+      return update(state, { $merge: indexBy(payload.celdas, 'idCelda') });
     }
     case SET_CAMBIO:
       return update(state, {

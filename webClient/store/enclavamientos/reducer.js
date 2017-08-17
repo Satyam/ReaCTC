@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import indexById from '_utils/indexById';
+import indexBy from '_utils/indexBy';
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { GET_SECTOR } from '_store/constants';
@@ -19,7 +19,7 @@ export default (
       const enclavamientos = payload.enclavamientos;
       return enclavamientos
         ? update(state, {
-          hash: { $merge: indexById(enclavamientos) },
+          hash: { $merge: indexBy(enclavamientos, 'idEnclavamiento') },
         })
         : state;
     }
