@@ -26,6 +26,10 @@ module.exports = {
     mapValues(config, () => false)
   ),
   rules: {
+    // See: https://github.com/facebookincubator/create-react-app/issues/2631#issuecomment-312894470
+    'jsx-a11y/href-no-hash': 'off',
+    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }],
+    // Up to here
     'no-console': 0,
     'import/no-extraneous-dependencies': [
       2,
