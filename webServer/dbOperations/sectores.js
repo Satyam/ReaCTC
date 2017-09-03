@@ -26,7 +26,7 @@ export function getSector(idSector) {
 
 export function deleteSectores(idSectores) {
   console.log('deleting', idSectores);
-  return collection.deleteMany({ _id: { $in: idSectores } });
+  return collection.deleteMany({ idSector: { $in: idSectores } });
 }
 
 export function addSector(sector) {

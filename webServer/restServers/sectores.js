@@ -14,10 +14,11 @@ export function deleteSectores({ params }) {
 
 export function addSector({ body }) {
   return sectores.addSector(body).catch((err) => {
+    console.error(err);
     if (err.name === 'MongoError' && err.code === 11000) {
       return Promise.reject({
         code: 409,
-        msg: 'idSector duplicado',
+        msg: err.message,
       });
     }
     throw err;

@@ -1,8 +1,9 @@
 import WebSocket from 'ws';
 
 import sectores from './sectores';
+import celdas from './celdas';
 
-const operators = {};
+let operators = {};
 
 export default function socketServers(db, server) {
   const wss = new WebSocket.Server({ server });
@@ -43,6 +44,9 @@ export default function socketServers(db, server) {
   });
   return Promise.all([
     // this repeats for each data server:
-    sectores(db).then(routes => Object.assign(operators, routes)),
-  ]);
+    sectores(db),
+    celdas(db),
+  ]).then((routes) => {
+    operators = Object.assign(...routes);
+  });
 }

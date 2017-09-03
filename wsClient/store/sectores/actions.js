@@ -21,7 +21,6 @@ export function getSector(idSector) {
     }
     return dispatch({
       type: GET_SECTOR,
-      // promise: api.read(idSector).then(response => normalize(response, sectorSchema)),
       payload: {
         idSector,
       },
@@ -37,7 +36,6 @@ export function listSectores() {
     }
     return dispatch({
       type: LIST_SECTORES,
-      // promise: api.read(),
       wsMode: 'me',
     });
   };
