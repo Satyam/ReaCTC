@@ -7,7 +7,7 @@ import Celda from '_containers/celda';
 import { ANCHO_CELDA } from '../common';
 
 export default function SectorComponent({ sector }) {
-  if (!sector) return <img alt="loading..." src="/loading.gif" />;
+  if (!sector) return <img alt="loading..." src="/icons/loading.gif" />;
   const { ancho, alto, celdas, descrCorta } = sector;
   return (
     <div>
