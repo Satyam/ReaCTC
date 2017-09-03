@@ -17,7 +17,7 @@ export const mapStateToProps: MapStateToProps<*, Object, Object> = state => ({
   status: selStatusAdmin(state),
 });
 
-export const mapDispatchToProps: MapDispatchToProps<*, Object, Object> = dispatch => ({
+export const mapDispatchToProps: MapDispatchToProps<{}, Object, Object> = dispatch => ({
   onDeleteSectores: idSectores => dispatch(deleteSectores(idSectores)),
   onUploadSector: fileName => dispatch(addSector(fileName)),
   onClearStatusAdmin: () => dispatch(clearStatusAdmin()),

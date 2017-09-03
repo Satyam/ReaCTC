@@ -30,10 +30,10 @@ export default (base, host = `${HOST}:${PORT}`) => {
         // prettier-ignore
         response => (
           response.ok
-          ? response
-          : Promise.reject(
-            new ServerError(response.status, response.statusText, method, plainJoin(base, path))
-          )
+            ? response
+            : Promise.reject(
+              new ServerError(response.status, response.statusText, method, plainJoin(base, path))
+            )
         )
       )
       .then(response => response.json());
@@ -50,10 +50,11 @@ export default (base, host = `${HOST}:${PORT}`) => {
     // )
     // --
   };
-  return (clients[key] = {
+  clients[key] = {
     create: restClient('post'),
     read: restClient('get'),
     update: restClient('put'),
     delete: restClient('delete'),
-  });
+  };
+  return clients[key];
 };
