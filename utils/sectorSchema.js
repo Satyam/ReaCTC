@@ -3,12 +3,16 @@ const { schema } = require('normalizr');
 const senal = new schema.Entity(
   'senales',
   {},
-  { idAttribute: (value, parent) => `${parent.idSector}:${parent.coords}:${value.dir}` }
+  {
+    processStrategy: (value, parent) => Object.assign(value, { idSector: parent.idSector }),
+    idAttribute: (value, parent) => `${parent.idSector}:${parent.coords}:${value.dir}`,
+  }
 );
 const enclavamiento = new schema.Entity(
   'enclavamientos',
   {},
   {
+    processStrategy: (value, parent) => Object.assign(value, { idSector: parent.idSector }),
     idAttribute: (value, parent) =>
       `${parent.idSector}:${parent.coords}>${value.celda || value.senal}`,
   }
