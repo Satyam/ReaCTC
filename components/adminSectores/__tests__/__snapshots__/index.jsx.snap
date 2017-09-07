@@ -5,6 +5,7 @@ exports[`AdminSectoresComponent snapshot testing with no properties 1`] = `null`
 exports[`AdminSectoresComponent snapshot testing with two sectors 1`] = `
 <div>
   <HelmetWrapper
+    defer={true}
     encodeSpecialCharacters={true}
   >
     <title>
