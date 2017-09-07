@@ -35,13 +35,12 @@ export default function promiseMiddleware() {
               Array.isArray(response) ? { list: response } : response
             ),
           }),
-        (error) => {
+        error =>
           next({
             ...act,
             stage: FAILURE_RECEIVED,
             error: error.toString(),
-          });
-        }
+          })
       );
     }
     return next(action);
