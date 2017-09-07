@@ -1,8 +1,6 @@
-import map from 'lodash/map';
+import { selCelda } from '_store/selectors';
 
-import { selCelda, selEnclavamientos, selIsPending, selSenalIsManual } from '_store/selectors';
-
-import { clearAllPending, setPending, setLuzEstado } from '_store/actions';
+import { setEnclavamientos } from '_store/actions';
 
 import { CLICK_CELDA, SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
@@ -16,47 +14,21 @@ export function clickCelda(idCelda, tipo) {
   };
 }
 
-export function setEnclavamientos(idCelda) {
-  return (dispatch, getState) => {
-    const celda = selCelda(getState(), idCelda);
-    return celda.manual
-      ? Promise.resolve()
-      : Promise.all(
-        celda.enclavamientos.map((idEnclavamiento) => {
-          const enclavamiento = selEnclavamientos(getState(), idEnclavamiento);
-          switch (enclavamiento.tipo) {
-            case 'apareados':
-              return dispatch(
-                /* eslint-disable no-use-before-define */
-                setCambio(enclavamiento.celda, enclavamiento[celda.posicion])
-                /* eslint-enable no-use-before-define */
-              );
-            case 'senalCambio': {
-              const caso = enclavamiento[celda.posicion];
-              const idSenal = enclavamiento.senal;
-              return Promise.all(
-                map(
-                  caso,
-                  // prettier-ignore
-                  (estado, luz) => (
-                    selSenalIsManual(getState(), idSenal, luz)
-                      ? Promise.resolve()
-                      : dispatch(setLuzEstado(idSenal, luz, estado))
-                  )
-                )
-              );
-            }
-            default:
-              return Promise.reject(
-                `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-              );
-          }
-        })
-      );
-  };
+const locks = new Set();
+
+function lock(id) {
+  locks.add(id);
 }
 
-export function setCambio(idCelda, posicion) {
+function isLocked(id) {
+  return locks.has(id);
+}
+
+function clearLocks() {
+  locks.clear();
+}
+
+export function doSetCambio(idCelda, posicion) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
     if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
@@ -65,10 +37,12 @@ export function setCambio(idCelda, posicion) {
     if (celda.posicion === posicion) {
       return Promise.resolve();
     }
-    if (selIsPending(getState(), idCelda)) {
+    // if (selIsPending(getState(), idCelda)) {
+    if (isLocked(idCelda)) {
       return Promise.reject(`Celda ${idCelda} error: loop por enclavamiento`);
     }
-    return Promise.resolve(dispatch(setPending(idCelda)))
+    //    return Promise.resolve(dispatch(setPending(idCelda)))
+    return Promise.resolve(lock(idCelda))
       .then(() =>
         dispatch({
           type: SET_CAMBIO,
@@ -78,9 +52,14 @@ export function setCambio(idCelda, posicion) {
           },
         })
       )
-      .then(() => dispatch(setEnclavamientos(idCelda)))
-      .then(() => dispatch(clearAllPending()));
+      .then(() => dispatch(setEnclavamientos(idCelda)));
   };
+}
+
+export function setCambio(idCelda, posicion) {
+  return dispatch =>
+    // dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
+    dispatch(doSetCambio(idCelda, posicion)).then(clearLocks);
 }
 
 export function setCambioManual(idCelda, manual) {

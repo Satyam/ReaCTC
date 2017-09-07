@@ -1,3 +1,5 @@
+import { clearAllPending } from '_store/actions';
+
 import { CLICK_SENAL, SET_ESTADO_LUZ, SET_LUZ_MANUAL } from './constants';
 
 export function clickSenal(idSenal) {
@@ -10,7 +12,7 @@ export function clickSenal(idSenal) {
     },
   };
 }
-export function setLuzEstado(idSenal, luz, estado) {
+export function doSetLuzEstado(idSenal, luz, estado) {
   return {
     type: SET_ESTADO_LUZ,
     payload: {
@@ -20,6 +22,12 @@ export function setLuzEstado(idSenal, luz, estado) {
     },
   };
 }
+
+export function setLuzEstado(idSenal, luz, estado) {
+  return dispatch =>
+    dispatch(doSetLuzEstado(idSenal, luz, estado)).then(() => dispatch(clearAllPending()));
+}
+
 export function setLuzManual(idSenal, luz, manual) {
   return {
     type: SET_LUZ_MANUAL,
