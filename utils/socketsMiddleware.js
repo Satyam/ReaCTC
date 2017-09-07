@@ -1,19 +1,31 @@
 /* globals WebSocket:false */
+import uniqueId from 'lodash/uniqueId';
+
 import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from './promiseMiddleware';
 
 const socket = new WebSocket(`${HOST}:${PORT}`.replace('http://', 'ws://'));
 
-export default (store) => {
+const pendingReplies = {};
+
+export default ({ dispatch }) => {
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     console.log('received', data);
+    const uid = data.meta;
+    if (uid) {
+      const completion = pendingReplies[uid];
+      if (completion) {
+        pendingReplies[uid] = undefined;
+        completion[data.error ? 1 : 0](data);
+      }
+    }
     if (data.error) {
-      store.dispatch({
+      dispatch({
         ...data,
         stage: FAILURE_RECEIVED,
       });
     } else {
-      store.dispatch({
+      dispatch({
         ...data,
         stage: REPLY_RECEIVED,
       });
@@ -24,7 +36,7 @@ export default (store) => {
   };
   socket.onclose = (ev) => {
     console.error('socket closed', ev);
-    store.dispatch({
+    dispatch({
       type: 'error',
       stage: FAILURE_RECEIVED,
       error: ev.code,
@@ -32,8 +44,25 @@ export default (store) => {
     });
   };
   return next => (action) => {
-    const { wsMode, ...act } = action;
-    if (wsMode) {
+    const { wsMode, stage, ...act } = action;
+    console.log('sent request', action.type, wsMode, stage);
+    if (wsMode && !stage) {
+      if (wsMode !== 'others') {
+        return new Promise((...completion) => {
+          const uid = uniqueId();
+          pendingReplies[uid] = completion;
+          socket.send(
+            JSON.stringify({
+              ...action,
+              meta: uid,
+            })
+          );
+          next({
+            ...act,
+            stage: REQUEST_SENT,
+          });
+        });
+      }
       socket.send(JSON.stringify(action));
       return next({
         ...act,
