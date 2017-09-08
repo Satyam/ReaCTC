@@ -1,5 +1,5 @@
 /* globals WebSocket:false */
-import uniqueId from 'lodash/uniqueId';
+import cuid from 'cuid';
 
 import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from './promiseMiddleware';
 
@@ -15,7 +15,7 @@ export default ({ dispatch }) => {
     if (uid) {
       const completion = pendingReplies[uid];
       if (completion) {
-        pendingReplies[uid] = undefined;
+        delete pendingReplies[uid];
         completion[data.error ? 1 : 0](data);
       }
     }
@@ -49,7 +49,7 @@ export default ({ dispatch }) => {
     if (wsMode && !stage) {
       if (wsMode !== 'others') {
         return new Promise((...completion) => {
-          const uid = uniqueId();
+          const uid = cuid();
           pendingReplies[uid] = completion;
           socket.send(
             JSON.stringify({
