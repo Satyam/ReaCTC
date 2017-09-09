@@ -7,13 +7,13 @@ let operators = {};
 
 export default function socketServers(db, server) {
   const wss = new WebSocket.Server({ server });
-  wss.on('connection', (ws /* , req */) => {
+  wss.on('connection', (ws, req) => {
     ws.on('message', (message) => {
       console.log('received: %s', message);
       const { wsMode, ...action } = JSON.parse(message);
       const operator = operators[action.type];
       (operator
-        ? operator(action.payload).then((data) => {
+        ? operator(action.payload, req).then((data) => {
           if (Array.isArray(data)) {
             action.payload = {
               ...action.payload,
