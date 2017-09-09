@@ -1,9 +1,5 @@
 import * as sectores from '../dbOperations/sectores';
 
-export function listSectores() {
-  return sectores.listSectores();
-}
-
 export function getSector(req) {
   return sectores.getSector(req.params.idSector);
 }
@@ -28,5 +24,5 @@ export function addSector({ body }) {
 export default db =>
   sectores.init(db).then(() => ({
     '/:idSector': { read: getSector, delete: deleteSectores },
-    '/': { read: listSectores, create: addSector },
+    '/': { read: sectores.listSectores, create: addSector },
   }));
