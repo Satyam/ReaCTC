@@ -8,7 +8,7 @@ const root = process.cwd();
 const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
-  ['webClient', 'firebase', 'webServer', 'wsClient'].map((bundle) => {
+  ['webClient', 'firebase', 'webServer', 'wsClient', 'preact'].map((bundle) => {
     const aliases = {
       _webClient: absPath('webClient'),
       _wsClient: absPath('wsClient'),
@@ -19,6 +19,7 @@ module.exports = version =>
           firebase: 'firebase/store',
           webServer: 'webClient/store',
           wsClient: 'wsClient/store',
+          preact: 'firebase/store',
         }[bundle]
       ),
       _components: absPath('components'),
@@ -27,12 +28,15 @@ module.exports = version =>
           webClient: 'webClient/containers',
           firebase: 'firebase/containers',
           wsClient: 'webClient/containers',
+          preact: 'firebase/containers',
         }[bundle]
       ),
       _utils: absPath('utils'),
       _test: absPath('test'),
       _platform: absPath('webClient'),
       _jest: absPath('jest'),
+      react: bundle === 'preact' ? 'preact-compat' : 'react',
+      'react-dom': bundle === 'preact' ? 'preact-compat' : 'react-dom',
     };
     const plugins = [
       new webpack.optimize.ModuleConcatenationPlugin(),
@@ -59,6 +63,7 @@ module.exports = version =>
               webServer: 'webServer/index.js',
               firebase: 'firebase/index.jsx',
               wsClient: 'webClient/index.jsx',
+              preact: 'firebase/index.jsx',
             }[bundle]
           ),
         ],
@@ -75,6 +80,7 @@ module.exports = version =>
         wsClient: 'web',
         webServer: 'node',
         firebase: 'web',
+        preact: 'web',
       }[bundle],
       devtool: 'source-map',
       module: {
