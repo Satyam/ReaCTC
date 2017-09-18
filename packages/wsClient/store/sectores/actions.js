@@ -1,4 +1,4 @@
-import restAPI from '_platform/restAPI';
+import restAPI from '_utils/restAPI';
 
 import {
   NAME,
@@ -8,9 +8,9 @@ import {
   ADD_SECTOR,
   ADD_STATUS_ADMIN,
   CLEAR_STATUS_ADMIN,
-} from './constants';
+} from '_store/constants';
 
-import { selSectorRequested, selSectoresRequested } from './selectors';
+import { selSectorRequested, selSectoresRequested } from '_store/selectors';
 
 const api = restAPI(NAME);
 
@@ -21,10 +21,10 @@ export function getSector(idSector) {
     }
     return dispatch({
       type: GET_SECTOR,
-      promise: api.read(idSector),
       payload: {
         idSector,
       },
+      wsMode: 'me',
     });
   };
 }
@@ -36,7 +36,7 @@ export function listSectores() {
     }
     return dispatch({
       type: LIST_SECTORES,
-      promise: api.read(),
+      wsMode: 'me',
     });
   };
 }
@@ -63,6 +63,9 @@ export function deleteSectores(idSectores) {
     dispatch({
       type: DELETE_SECTOR,
       promise: api.delete(idSectores.join(',')),
+      payload: {
+        idSectores,
+      },
     })
       .then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')))
       .then(() => dispatch(listSectores()));
