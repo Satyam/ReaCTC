@@ -36,7 +36,7 @@ const dataRouter = createRouter();
 
 app.use(REST_API_PATH, authenticate, bodyParser.json(), dataRouter);
 
-app.use(express.static(absPath('public')));
+app.use(express.static(absPath('public'), { index: false }));
 
 app.get('/kill', (req, res) => {
   res.send('I am dead');
@@ -44,8 +44,8 @@ app.get('/kill', (req, res) => {
   process.exit();
 });
 
-app.get('*', (req, res) => res.sendFile(absPath('public/index.html')));
-// app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
+// app.get('*', (req, res) => res.sendFile(absPath('public/index.html')));
+app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
 export function start() {
   return MongoClient.connect('mongodb://localhost:27017/CTC').then(db =>
