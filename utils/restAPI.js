@@ -1,9 +1,10 @@
+/* eslint-env browser */
 import ServerError from '_utils/serverError';
 // import dbg from 'debug';
 import plainJoin from '_utils/plainJoin';
 
-// dbg.enable('RoxyMusic:webClient/restAPI');
-// const debug = dbg('RoxyMusic:webClient/restAPI');
+// dbg.enable('RoxyMusic:restAPI');
+// const debug = dbg('RoxyMusic:restAPI');
 
 const clients = {};
 

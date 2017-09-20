@@ -33,7 +33,6 @@ module.exports = version =>
       ),
       _utils: absPath('utils'),
       _test: absPath('test'),
-      _platform: absPath('webClient'),
       _jest: absPath('jest'),
       react: bundle === 'preact' ? 'preact-compat' : 'react',
       'react-dom': bundle === 'preact' ? 'preact-compat' : 'react-dom',

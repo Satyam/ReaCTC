@@ -9,7 +9,6 @@ module.exports = {
     '^_components/(.*)': '<rootDir>/components/$1',
     '^_containers/(.*)': '<rootDir>/webClient/containers/$1',
     '^_utils/(.*)': '<rootDir>/utils/$1',
-    '^_platform/restAPI': '<rootDir>/webClient/restAPI.js',
     '^_jest/(.*)': '<rootDir>/jest/$1',
     '\\.(css|less)$': 'identity-obj-proxy',
   },
