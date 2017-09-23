@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import initStore from '_utils/initStore';
+import initStore from 'init-store';
 
 import { getSector } from '_store/actions';
 import { selSector } from '_store/selectors';

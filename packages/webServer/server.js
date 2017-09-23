@@ -44,7 +44,7 @@ app.get('/kill', (req, res) => {
   process.exit();
 });
 
-app.get('*', (req, res) => res.sendFile(absPath('public/index.html')));
+app.get('*', (req, res) => res.sendFile(absPath('packages/webServer/index.html')));
 // app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
 export function start() {

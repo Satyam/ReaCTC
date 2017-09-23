@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
-import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
-import indexBy from '_utils/indexBy';
+import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from 'redux-middleware';
+import { indexBy } from 'ctc-utils';
 
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
 

@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
-import indexBy from '_utils/indexBy';
+import { indexBy } from 'ctc-utils';
 
-import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
+import { REPLY_RECEIVED } from 'redux-middleware';
 
 import { GET_SECTOR } from '_store/constants';
 import { SET_ESTADO_LUZ, SET_LUZ_MANUAL } from './constants';

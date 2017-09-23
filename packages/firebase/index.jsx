@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import FirebaseProvider from '_utils/firebase/provider';
+import { FirebaseProvider } from 'firebase-connect';
 
 import App from '_containers/app';
 import createStore from '_store/createStore';

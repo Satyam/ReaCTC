@@ -5,21 +5,11 @@ const mapValues = require('lodash/mapValues');
 const join = path.join;
 const pkgRoot = process.cwd();
 const absRoot = path.resolve(pkgRoot, '../..');
-const absPath = (relative = '') => join(absRoot, relative);
 const pkgPath = (relative = '') => join(pkgRoot, relative);
 
 const config = require('../../../config.js');
 
 module.exports = (version) => {
-  const aliases = {
-    _webClient: pkgPath('.'),
-    _wsClient: absPath('packages/wsClient'),
-    _store: pkgPath('store'),
-    _components: absPath('components'),
-    _containers: pkgPath('containers'),
-    _utils: absPath('utils'),
-    _test: absPath('test'),
-  };
   const plugins = [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin(
@@ -72,7 +62,9 @@ module.exports = (version) => {
     },
     plugins,
     resolve: {
-      alias: aliases,
+      alias: {
+        _containers: pkgPath('containers'),
+      },
       extensions: ['.js', '.jsx'],
     },
     stats: { children: false },

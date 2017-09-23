@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import firebaseConnect from '_utils/firebase/connect';
+import { firebaseConnect } from 'firebase-connect';
 import { compose } from 'recompose';
 
-import isPlainClick from '_utils/isPlainClick';
+import { isPlainClick } from 'ctc-utils';
 
 import { setCambio, setCambioManual } from '_store/actions';
 

@@ -1,0 +1,17 @@
+{
+  "name": "module-loader",
+  "version": "1.0.0",
+  "description": "React component to load modules dynamically",
+  "main": "dist/index.js",
+  "module": "src/index.jsx",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Daniel Barreiro",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.6.1"
+  }
+}

@@ -1,0 +1,583 @@
+{
+  "celdas": {
+    "constitucion:5,0": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "S"
+      },
+      "coords": "5,0",
+      "idSector": "constitucion"
+    },
+    "constitucion:6,0": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "S"
+      },
+      "coords": "6,0",
+      "idSector": "constitucion"
+    },
+    "constitucion:5,1": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "5,1",
+      "idSector": "constitucion"
+    },
+    "constitucion:6,1": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "N"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,1",
+      "idSector": "constitucion"
+    },
+    "constitucion:4,2": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NE"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "4,2",
+      "idSector": "constitucion"
+    },
+    "constitucion:7,2": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "7,2",
+      "idSector": "constitucion"
+    },
+    "constitucion:3,3": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NE"
+      },
+      "hacia": {
+        "dir": "SW"
+      },
+      "coords": "3,3",
+      "idSector": "constitucion"
+    },
+    "constitucion:4,3": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "SW"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "4,3",
+      "idSector": "constitucion"
+    },
+    "constitucion:5,3": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "senales": ["constitucion:5,3:E"],
+      "coords": "5,3",
+      "idSector": "constitucion"
+    },
+    "constitucion:6,3": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "6,3",
+      "idSector": "constitucion"
+    },
+    "constitucion:7,3": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "7,3",
+      "idSector": "constitucion"
+    },
+    "constitucion:8,3": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "SE"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "NW"
+        },
+        "desviado": {
+          "dir": "W"
+        }
+      },
+      "senales": ["constitucion:8,3:SE"],
+      "coords": "8,3",
+      "enclavamientos": ["constitucion:8,3>constitucion:8,3:SE"],
+      "idSector": "constitucion"
+    },
+    "constitucion:0,4": {
+      "tipo": "paragolpe",
+      "desde": {
+        "dir": "E"
+      },
+      "coords": "0,4",
+      "idSector": "constitucion"
+    },
+    "constitucion:1,4": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "1,4",
+      "idSector": "constitucion"
+    },
+    "constitucion:2,4": {
+      "tipo": "triple",
+      "posicion": "centro",
+      "punta": {
+        "dir": "W"
+      },
+      "ramas": {
+        "centro": {
+          "dir": "E"
+        },
+        "izq": {
+          "dir": "NE"
+        },
+        "der": {
+          "dir": "SE"
+        }
+      },
+      "senales": ["constitucion:2,4:W"],
+      "coords": "2,4",
+      "enclavamientos": ["constitucion:2,4>constitucion:2,4:W"],
+      "idSector": "constitucion"
+    },
+    "constitucion:3,4": {
+      "tipo": "cruce",
+      "l1": {
+        "desde": {
+          "dir": "SW"
+        },
+        "hacia": {
+          "dir": "NE"
+        }
+      },
+      "l2": {
+        "desde": {
+          "dir": "W"
+        },
+        "hacia": {
+          "dir": "E"
+        }
+      },
+      "coords": "3,4",
+      "idSector": "constitucion"
+    },
+    "constitucion:4,4": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "W"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "SE"
+        }
+      },
+      "senales": ["constitucion:4,4:W"],
+      "coords": "4,4",
+      "enclavamientos": [
+        "constitucion:4,4>constitucion:5,5",
+        "constitucion:4,4>constitucion:4,4:W"
+      ],
+      "idSector": "constitucion"
+    },
+    "constitucion:5,4": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "E"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "W"
+        },
+        "desviado": {
+          "dir": "SW"
+        }
+      },
+      "coords": "5,4",
+      "enclavamientos": ["constitucion:5,4>constitucion:4,5"],
+      "idSector": "constitucion"
+    },
+    "constitucion:6,4": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,4",
+      "idSector": "constitucion"
+    },
+    "constitucion:9,4": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "9,4",
+      "idSector": "constitucion"
+    },
+    "constitucion:0,5": {
+      "tipo": "paragolpe",
+      "desde": {
+        "dir": "E"
+      },
+      "coords": "0,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:1,5": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "E"
+      },
+      "coords": "1,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:2,5": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "W"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "NE"
+        }
+      },
+      "coords": "2,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:3,5": {
+      "tipo": "cruce",
+      "l1": {
+        "desde": {
+          "dir": "NW"
+        },
+        "hacia": {
+          "dir": "SE"
+        }
+      },
+      "l2": {
+        "desde": {
+          "dir": "W"
+        },
+        "hacia": {
+          "dir": "E"
+        }
+      },
+      "coords": "3,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:4,5": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "W"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "E"
+        },
+        "desviado": {
+          "dir": "NE"
+        }
+      },
+      "coords": "4,5",
+      "enclavamientos": ["constitucion:4,5>constitucion:5,4"],
+      "idSector": "constitucion"
+    },
+    "constitucion:5,5": {
+      "tipo": "cambio",
+      "posicion": "normal",
+      "punta": {
+        "dir": "E"
+      },
+      "ramas": {
+        "normal": {
+          "dir": "W"
+        },
+        "desviado": {
+          "dir": "NW"
+        }
+      },
+      "coords": "5,5",
+      "enclavamientos": ["constitucion:5,5>constitucion:4,4"],
+      "idSector": "constitucion"
+    },
+    "constitucion:6,5": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "W"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "6,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:7,5": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "7,5",
+      "idSector": "constitucion"
+    },
+    "constitucion:10,5": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "NW"
+      },
+      "hacia": {
+        "dir": "SE"
+      },
+      "coords": "10,5",
+      "idSector": "constitucion"
+    },
+    "retiro:0,0": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "E"
+      },
+      "hacia": {
+        "dir": "W"
+      },
+      "coords": "0,0",
+      "idSector": "retiro"
+    },
+    "retiro:1,0": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "E"
+      },
+      "hacia": {
+        "dir": "W"
+      },
+      "coords": "1,0",
+      "idSector": "retiro"
+    },
+    "retiro:2,0": {
+      "tipo": "linea",
+      "desde": {
+        "dir": "E"
+      },
+      "hacia": {
+        "dir": "W"
+      },
+      "coords": "2,0",
+      "idSector": "retiro"
+    }
+  },
+  "senales": {
+    "constitucion:5,3:E": {
+      "primaria": {
+        "estado": "libre"
+      },
+      "dir": "E"
+    },
+    "constitucion:8,3:SE": {
+      "dir": "SE",
+      "primaria": {
+        "estado": "libre"
+      },
+      "izq": {
+        "estado": "alto"
+      }
+    },
+    "constitucion:2,4:W": {
+      "dir": "W",
+      "primaria": {
+        "estado": "alto"
+      },
+      "izq": {
+        "estado": "libre"
+      },
+      "der": {
+        "estado": "precaucion"
+      }
+    },
+    "constitucion:4,4:W": {
+      "primaria": {
+        "estado": "alto"
+      },
+      "der": {
+        "estado": "precaucion"
+      },
+      "dir": "W"
+    }
+  },
+  "enclavamientos": {
+    "constitucion:8,3>constitucion:8,3:SE": {
+      "tipo": "senalCambio",
+      "senal": "constitucion:8,3:SE",
+      "normal": {
+        "primaria": "libre",
+        "izq": "alto"
+      },
+      "desviado": {
+        "primaria": "alto",
+        "izq": "precaucion"
+      }
+    },
+    "constitucion:2,4>constitucion:2,4:W": {
+      "tipo": "senalCambio",
+      "senal": "constitucion:2,4:W",
+      "izq": {
+        "izq": "libre",
+        "primaria": "alto",
+        "der": "alto"
+      },
+      "centro": {
+        "izq": "alto",
+        "primaria": "libre",
+        "der": "alto"
+      },
+      "der": {
+        "izq": "alto",
+        "primaria": "alto",
+        "der": "libre"
+      }
+    },
+    "constitucion:4,4>constitucion:5,5": {
+      "tipo": "apareados",
+      "celda": "constitucion:5,5",
+      "normal": "normal",
+      "desviado": "desviado"
+    },
+    "constitucion:4,4>constitucion:4,4:W": {
+      "tipo": "senalCambio",
+      "senal": "constitucion:4,4:W",
+      "normal": {
+        "primaria": "libre",
+        "der": "alto"
+      },
+      "desviado": {
+        "primaria": "alto",
+        "der": "precaucion"
+      }
+    },
+    "constitucion:5,4>constitucion:4,5": {
+      "tipo": "apareados",
+      "celda": "constitucion:4,5",
+      "normal": "normal",
+      "desviado": "desviado"
+    },
+    "constitucion:4,5>constitucion:5,4": {
+      "tipo": "apareados",
+      "celda": "constitucion:5,4",
+      "normal": "normal",
+      "desviado": "desviado"
+    },
+    "constitucion:5,5>constitucion:4,4": {
+      "tipo": "apareados",
+      "celda": "constitucion:4,4",
+      "normal": "normal",
+      "desviado": "desviado"
+    }
+  },
+  "sectores": {
+    "constitucion": {
+      "idSector": "constitucion",
+      "descrCorta": "Constitución",
+      "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
+      "ancho": 16,
+      "alto": 7,
+      "celdas": [
+        "constitucion:5,0",
+        "constitucion:6,0",
+        "constitucion:5,1",
+        "constitucion:6,1",
+        "constitucion:4,2",
+        "constitucion:7,2",
+        "constitucion:3,3",
+        "constitucion:4,3",
+        "constitucion:5,3",
+        "constitucion:6,3",
+        "constitucion:7,3",
+        "constitucion:8,3",
+        "constitucion:0,4",
+        "constitucion:1,4",
+        "constitucion:2,4",
+        "constitucion:3,4",
+        "constitucion:4,4",
+        "constitucion:5,4",
+        "constitucion:6,4",
+        "constitucion:9,4",
+        "constitucion:0,5",
+        "constitucion:1,5",
+        "constitucion:2,5",
+        "constitucion:3,5",
+        "constitucion:4,5",
+        "constitucion:5,5",
+        "constitucion:6,5",
+        "constitucion:7,5",
+        "constitucion:10,5"
+      ]
+    },
+    "retiro": {
+      "idSector": "retiro",
+      "descrCorta": "Retiro",
+      "descr": "Mentira, apenas una línea",
+      "ancho": 3,
+      "alto": 1,
+      "celdas": ["retiro:0,0", "retiro:1,0", "retiro:2,0"]
+    }
+  }
+}

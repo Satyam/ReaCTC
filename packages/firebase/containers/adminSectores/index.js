@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import map from 'lodash/map';
 import pick from 'lodash/pick';
-import firebaseConnect from '_utils/firebase/connect';
+import { firebaseConnect } from 'firebase-connect';
 
 import { deleteSectores, addSector, clearStatusAdmin } from '_store/actions';
 import { selStatusAdmin } from '_store/selectors';

@@ -1,0 +1,17 @@
+{
+  "name": "sector-schema",
+  "version": "1.0.0",
+  "description": "normalizer schema to reformat CTC sector information",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Daniel Barreiro",
+  "license": "MIT",
+  "dependencies": {
+    "normalizr": "^3.2.3"
+  }
+}

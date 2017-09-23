@@ -5,20 +5,11 @@ const mapValues = require('lodash/mapValues');
 const join = path.join;
 const pkgRoot = process.cwd();
 const absRoot = path.resolve(pkgRoot, '../..');
-const absPath = (relative = '') => join(absRoot, relative);
 const pkgPath = (relative = '') => join(pkgRoot, relative);
 
 const config = require('../../../config.js');
 
 module.exports = (version) => {
-  const aliases = {
-    _webClient: absPath('packages/webClient'),
-    _wsClient: absPath('packages/wsClient'),
-    _store: absPath('packages/webClient/store'),
-    _utils: absPath('utils'),
-    _test: absPath('test'),
-    _jest: absPath('jest'),
-  };
   const plugins = [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin(
@@ -55,7 +46,6 @@ module.exports = (version) => {
     },
     plugins,
     resolve: {
-      alias: aliases,
       extensions: ['.js', '.jsx'],
     },
     externals: [
@@ -71,8 +61,7 @@ module.exports = (version) => {
           case '/':
             break;
           default: {
-            const firstPart = request.split('/')[0];
-            if (Object.keys(aliases).indexOf(firstPart) === -1) {
+            if (request[0] === '_') {
               return callback(null, `commonjs ${request}`);
             }
             break;

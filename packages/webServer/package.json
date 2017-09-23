@@ -1,10 +1,11 @@
 {
-  "name": "ReaCTC-webserver",
+  "name": "ReaCTC-webServer",
   "version": "1.0.0",
   "description": "Express Server for ReaCTC clients using REST and webSockets",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
+    "start": "node bundles/main.js",
     "build": "webpack --debug --config webpack.config/development.js",
     "watch": "webpack --debug --config webpack.config/development.js --watch &",
     "production": "webpack -p --config webpack.config/production.js"
@@ -15,6 +16,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-node": "^1.1.0",
+    "babel-plugin-module-resolver": "^2.7.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-1": "^6.24.1",

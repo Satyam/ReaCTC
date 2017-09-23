@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
+import { REPLY_RECEIVED } from 'redux-middleware';
 
 import { ADD_MENSAJE } from './constants';
 

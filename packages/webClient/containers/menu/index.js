@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import initStore from '_utils/initStore';
-import isPlainClick from '_utils/isPlainClick';
+import initStore from 'init-store';
+import { isPlainClick } from 'ctc-utils';
 import { listSectores } from '_store/actions';
 import { selSectores, selUsername } from '_store/selectors';
 

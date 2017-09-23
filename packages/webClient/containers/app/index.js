@@ -2,7 +2,7 @@ import { withRouter, matchPath } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import initStore from '_utils/initStore';
+import initStore from 'init-store';
 import { selSector, selUsername } from '_store/selectors';
 import { logout, ensureUser } from '_store/actions';
 

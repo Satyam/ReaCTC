@@ -4,5 +4,21 @@
     "jest": {
       "plugins": ["transform-es2015-modules-commonjs"]
     }
-  }
+  },
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "_webClient": "./packages/webClient",
+          "_wsClient": "./packages/wsClient",
+          "_store": "./packages/webClient/store",
+          "_components": "./components",
+          "_containers": "./packages/webClient/containers",
+          "_test": "./test",
+          "_jest": "./jest"
+        }
+      }
+    ]
+  ]
 }

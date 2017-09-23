@@ -1,0 +1,14 @@
+{
+  "name": "ctc-utils",
+  "version": "1.0.0",
+  "description": "Various utilities used all over the application",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Daniel Barreiro",
+  "license": "MIT"
+}

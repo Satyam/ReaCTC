@@ -11,16 +11,6 @@ const pkgPath = (relative = '') => join(pkgRoot, relative);
 const config = require('../../../config.js');
 
 module.exports = (version) => {
-  const aliases = {
-    _webClient: absPath('packages/webClient'),
-    _wsClient: absPath('packages/wsClient'),
-    _store: pkgPath('store'),
-    _components: absPath('components'),
-    _containers: absPath('packages/webClient/containers'),
-    _utils: absPath('utils'),
-    _test: absPath('test'),
-    _jest: absPath('jest'),
-  };
   const plugins = [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin(
@@ -73,7 +63,6 @@ module.exports = (version) => {
     },
     plugins,
     resolve: {
-      alias: aliases,
       extensions: ['.js', '.jsx'],
     },
     stats: { children: false },

@@ -1,15 +1,16 @@
 import { normalize } from 'normalizr';
 import map from 'lodash/map';
-import sectorSchema from '_utils/sectorSchema';
+import sectorSchema from 'sector-schema';
 
 import { addStatusAdmin, clearStatusAdmin } from '_webClient/store/sectores/actions';
 
 export { addStatusAdmin, clearStatusAdmin };
 
 export function deleteSectores(idSectores) {
-  return (dispatch, getState, database) => Promise.all(
-    idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove())
-  ).then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')));
+  return (dispatch, getState, database) =>
+    Promise.all(
+      idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove())
+    ).then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')));
 }
 
 const identifier = /^\w+$/;

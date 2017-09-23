@@ -1,4 +1,4 @@
-import firebaseConnect from '_utils/firebase/connect';
+import { firebaseConnect } from 'firebase-connect';
 
 import Sector from '_components/sector';
 

@@ -1,7 +1,7 @@
 // @flow
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import initStore from '_utils/initStore';
+import initStore from 'init-store';
 
 import { listSectores, deleteSectores, addSector, clearStatusAdmin } from '_store/actions';
 import { selSectores, selStatusAdmin } from '_store/selectors';

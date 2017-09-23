@@ -1,9 +1,6 @@
 coverage
 bundles
+dist
 tmp
-cordova/hooks
-cordova/platforms
-cordova/plugins
-cordova/www
-firebase/functions/node_modules
 flow-typed
+node_modules

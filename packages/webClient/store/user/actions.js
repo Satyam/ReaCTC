@@ -1,4 +1,4 @@
-import restAPI from '_utils/restAPI';
+import restAPI from 'rest-api';
 
 import { NAME, LOGIN, LOGOUT, SIGNUP, GET_DATA } from './constants';
 

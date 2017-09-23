@@ -1,0 +1,29 @@
+{
+  "name": "init-store",
+  "version": "1.0.0",
+  "description": "React HoC to asynchronously load store with initial data",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Barreiro",
+  "license": "MIT",
+  "dependencies": {
+    "babel-plugin-dynamic-import-node": "^1.1.0",
+    "classnames": "^2.2.5",
+    "ctc-utils": "^1.0.0",
+    "enzyme": "^2.9.1",
+    "lodash": "^4.17.4",
+    "module-loader": "^1.0.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-grid-system": "^2.9.6",
+    "react-helmet": "^5.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-toolbox": "^2.0.0-beta.12",
+    "recompose": "^0.25.0"
+  }
+}

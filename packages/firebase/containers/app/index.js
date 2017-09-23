@@ -1,8 +1,7 @@
 import { withRouter, matchPath } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import firebaseConnect from '_utils/firebase/connect';
-import firebaseUserConnect from '_utils/firebase/user';
+import { firebaseConnect, firebaseUserConnect } from 'firebase-connect';
 
 import App from '_components/app';
 

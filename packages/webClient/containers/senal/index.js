@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import isPlainClick from '_utils/isPlainClick';
+import { isPlainClick } from 'ctc-utils';
 
 import { selSenal } from '_store/selectors';
 

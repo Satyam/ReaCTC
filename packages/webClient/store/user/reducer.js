@@ -1,7 +1,7 @@
 // import update from 'immutability-helper';
 import pick from 'lodash/pick';
 
-import { REPLY_RECEIVED, REQUEST_SENT } from '_utils/promiseMiddleware';
+import { REPLY_RECEIVED, REQUEST_SENT } from 'redux-middleware';
 
 import { LOGIN, SIGNUP, LOGOUT, GET_DATA } from './constants';
 

@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import jestFetchMock from 'jest-fetch-mock';
 import configureStore from 'redux-mock-store';
 import reduxThunk from 'redux-thunk';
-import promiseMiddleware from '_utils/promiseMiddleware';
+import { promiseMiddleware } from 'redux-middleware';
 import localStorage from '_jest/localStorage';
 
 import HoC, { mapStateToProps, mapDispatchToProps, storeInitializer } from '..';

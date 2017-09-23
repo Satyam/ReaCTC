@@ -4,7 +4,7 @@ import { clickCelda } from '_store/actions';
 
 import { selCelda, selEstado } from '_store/selectors';
 
-import isPlainClick from '_utils/isPlainClick';
+import { isPlainClick } from 'ctc-utils';
 
 import Celda from '_components/celda';
 

@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
+import { REPLY_RECEIVED } from 'redux-middleware';
 
 import { CLICK_SENAL, CLICK_CELDA } from '_store/constants';
 

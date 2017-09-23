@@ -4,10 +4,9 @@ import { withRouter } from 'react-router-dom';
 import map from 'lodash/map';
 import pick from 'lodash/pick';
 
-import isPlainClick from '_utils/isPlainClick';
+import { isPlainClick } from 'ctc-utils';
 
-import firebaseConnect from '_utils/firebase/connect';
-import firebaseUserConnect from '_utils/firebase/user';
+import { firebaseConnect, firebaseUserConnect } from 'firebase-connect';
 
 import { login, logout } from '_store/actions';
 

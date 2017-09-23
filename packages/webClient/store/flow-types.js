@@ -1,5 +1,5 @@
 // @flow
-import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
+import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from 'redux-middleware';
 
 export type ActionBase = {
   +type: string,

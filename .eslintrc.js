@@ -11,17 +11,13 @@ module.exports = {
   parser: 'babel-eslint',
   settings: {
     'import/resolver': {
-      webpack: {
-        config: 'webpack.config/development.js',
-        'config-index': 0,
-      },
+      'babel-module': {},
     },
     'import/core-modules': ['electron'],
   },
   globals: Object.assign(
     {
       ROOT_DIR: false,
-      BUNDLE: false,
     },
     mapValues(config, () => false)
   ),

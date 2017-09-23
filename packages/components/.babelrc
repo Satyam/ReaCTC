@@ -1,0 +1,28 @@
+{
+  "presets": [["es2015", { "modules": false }], "react", "stage-1", "flow"],
+  "env": {
+    "jest": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "lint": {
+      "plugins": ["dynamic-import-node"]
+    }
+  },
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "_webClient": "../webClient",
+          "_wsClient": "../wsClient",
+          "_store": "../webClient/store",
+          "_components": "../components/src",
+          "_containers": "../webClient/containers",
+          "_test": "../../test",
+          "_jest": "../../jest"
+        },
+        "transformFunctions": ["import"]
+      }
+    ]
+  ]
+}

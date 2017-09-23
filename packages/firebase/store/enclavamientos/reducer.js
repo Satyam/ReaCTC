@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
+import { REPLY_RECEIVED } from 'redux-middleware';
 
 import { SET_PENDING, CLEAR_ALL_PENDING } from './constants';
 

@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
-import indexBy from '_utils/indexBy';
-import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
+import { indexBy } from 'ctc-utils';
+import { REPLY_RECEIVED } from 'redux-middleware';
 
 import { GET_SECTOR } from '_store/constants';
 import { SET_PENDING, CLEAR_ALL_PENDING } from './constants';

@@ -1,0 +1,20 @@
+{
+  "name": "firebase-connect",
+  "version": "1.0.0",
+  "description": "High Order React component to connect to Firebase",
+  "main": "dist/index.js",
+  "module": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "Daniel Barreiro",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "recompose": "^0.25.0"
+  }
+}
