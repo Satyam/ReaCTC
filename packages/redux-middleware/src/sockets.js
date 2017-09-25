@@ -1,13 +1,12 @@
-/* globals WebSocket:false */
 import cuid from 'cuid';
 
 import { REQUEST_SENT, REPLY_RECEIVED, FAILURE_RECEIVED } from './constants';
 
-const socket = new WebSocket(`${HOST}:${PORT}`.replace('http://', 'ws://'));
-
 const pendingReplies = {};
 
 export default ({ dispatch }) => {
+  const socket = new window.WebSocket(`${HOST}:${PORT}`.replace('http://', 'ws://'));
+
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     console.log('received', data);

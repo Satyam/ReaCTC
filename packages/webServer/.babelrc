@@ -3,22 +3,24 @@
   "env": {
     "jest": {
       "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "lint": {
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "alias": {
+              "_webClient": "../webClient",
+              "_wsClient": "../wsClient",
+              "_store": "../webClient/store",
+              "_components": "../components/src",
+              "_containers": "../webClient/containers",
+              "_test": "../../test",
+              "_jest": "../../jest"
+            }
+          }
+        ]
+      ]
     }
-  },
-  "plugins": [
-    [
-      "module-resolver",
-      {
-        "alias": {
-          "_webClient": "../webClient",
-          "_wsClient": "../wsClient",
-          "_store": "../webClient/store",
-          "_components": "../components/src",
-          "_containers": "../webClient/containers",
-          "_test": "../../test",
-          "_jest": "../../jest"
-        }
-      }
-    ]
-  ]
+  }
 }

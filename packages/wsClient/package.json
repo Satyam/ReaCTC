@@ -1,5 +1,5 @@
 {
-  "name": "ReaCTC-socketsClient",
+  "name": "ReaCTC-wsClient",
   "version": "1.0.0",
   "description": "Control de Tráfico Centralizado - Web Client using WebSockets",
   "main": "index.jsx",

@@ -1,0 +1,151 @@
+
+> ReaCTC@1.0.0 build /home/satyam/rctc
+> lerna run build
+
+
+> ctc-utils@1.0.0 build /home/satyam/rctc/packages/ctc-utils
+> webpack
+
+Hash: 14db97f818f9355140c7
+Version: webpack 3.6.0
+Time: 6716ms
+   Asset     Size  Chunks             Chunk Names
+index.js  4.44 kB       0  [emitted]  main
+   [0] ./src/index.js 1.18 kB {0} [built]
+
+> module-loader@1.0.0 build /home/satyam/rctc/packages/module-loader
+> webpack
+
+Hash: cae217f272b54ac23b1d
+Version: webpack 3.6.0
+Time: 13201ms
+   Asset    Size  Chunks             Chunk Names
+index.js  161 kB       0  [emitted]  main
+  [18] ./src/index.jsx 2.96 kB {0} [built]
+    + 36 hidden modules
+
+> init-store@1.0.0 build /home/satyam/rctc/packages/init-store
+> webpack
+
+Hash: 199ad93104ab01751347
+Version: webpack 3.6.0
+Time: 13547ms
+   Asset    Size  Chunks             Chunk Names
+index.js  173 kB       0  [emitted]  main
+  [20] ./src/index.js 4.88 kB {0} [built]
+    + 46 hidden modules
+
+> firebase-connect@1.0.0 build /home/satyam/rctc/packages/firebase-connect
+> webpack
+
+Hash: 8c263af3e95268714a41
+Version: webpack 3.6.0
+Time: 17679ms
+   Asset    Size  Chunks                    Chunk Names
+index.js  291 kB       0  [emitted]  [big]  main
+  [32] ./src/shape.js 264 bytes {0} [built]
+  [54] (webpack)/buildin/module.js 506 bytes {0} [built]
+  [63] ./src/index.js 170 bytes {0} [built]
+  [64] ./src/connect.js 7.19 kB {0} [built]
+ [100] (webpack)/buildin/global.js 808 bytes {0} [built]
+ [172] ./src/user.js 4.83 kB {0} [built]
+ [176] ./src/provider.js 2.56 kB {0} [built]
+    + 170 hidden modules
+
+> rest-api@1.0.0 build /home/satyam/rctc/packages/rest-api
+> webpack
+
+Hash: 6ebcea6e4ebdf540e0da
+Version: webpack 3.6.0
+Time: 7800ms
+   Asset     Size  Chunks             Chunk Names
+index.js  8.48 kB       0  [emitted]  main
+   [0] ./src/index.js 2.08 kB {0} [built]
+   [1] ./src/serverError.js 2.34 kB {0} [built]
+   [2] ./src/plainJoin.js 426 bytes {0} [built]
+
+> redux-middleware@1.0.0 build /home/satyam/rctc/packages/redux-middleware
+> webpack
+
+Hash: 1d1e506236ebcbad700c
+Version: webpack 3.6.0
+Time: 14982ms
+   Asset    Size  Chunks             Chunk Names
+index.js  121 kB       0  [emitted]  main
+  [14] (webpack)/buildin/module.js 506 bytes {0} [built]
+  [22] ./src/constants.js 158 bytes {0} [built]
+  [45] ./src/index.js 144 bytes {0} [built]
+  [46] ./src/promise.js 1.18 kB {0} [built]
+  [61] (webpack)/buildin/global.js 808 bytes {0} [built]
+ [144] ./src/sockets.js 2.57 kB {0} [built]
+    + 140 hidden modules
+
+> sector-schema@1.0.0 build /home/satyam/rctc/packages/sector-schema
+> webpack
+
+Hash: 340637b36a71ff1ee5e7
+Version: webpack 3.6.0
+Time: 9211ms
+   Asset     Size  Chunks             Chunk Names
+index.js  35.8 kB       0  [emitted]  main
+   [2] ./src/index.js 1.18 kB {0} [built]
+    + 8 hidden modules
+
+> ReaCTC-webServer@1.0.0 build /home/satyam/rctc/packages/webServer
+> webpack --debug --config webpack.config/development.js
+
+Hash: b8d7354f9d0b3240ee60
+Version: webpack 3.6.0
+Time: 11245ms
+      Asset    Size  Chunks                    Chunk Names
+    main.js  368 kB       0  [emitted]  [big]  main
+main.js.map  476 kB       0  [emitted]         main
+   [2] /home/satyam/rctc/node_modules/require_optional 160 bytes {0} [built]
+  [12] multi babel-polyfill ./index.js 40 bytes {0} [built]
+ [214] ./index.js + 9 modules 15.7 kB {0} [built]
+ [296] (webpack)/buildin/amd-define.js 88 bytes {0} [built]
+    + 326 hidden modules
+
+WARNING in /home/satyam/rctc/node_modules/require_optional/index.js
+82:18-42 Critical dependency: the request of a dependency is an expression
+
+WARNING in /home/satyam/rctc/node_modules/require_optional/index.js
+90:20-44 Critical dependency: the request of a dependency is an expression
+
+WARNING in /home/satyam/rctc/node_modules/require_optional/index.js
+97:35-67 Critical dependency: the request of a dependency is an expression
+
+> ReaCTC-webClient@1.0.0 build /home/satyam/rctc/packages/webClient
+> webpack --debug --config webpack.config/development.js
+
+***************************
+/home/satyam/rctc/packages/webClient/webpack.config /home/satyam/rctc/packages/webClient
+***************************
+Hash: 3e7f371df62c0198552c
+Version: webpack 3.6.0
+Time: 78125ms
+               Asset     Size  Chunks                    Chunk Names
+           Mimico.js   151 kB       0  [emitted]         Mimico
+    AdminSectores.js  61.9 kB       1  [emitted]         AdminSectores
+            Login.js  43.5 kB       2  [emitted]         Login
+             main.js  2.35 MB       3  [emitted]  [big]  main
+       Mimico.js.map   214 kB       0  [emitted]         Mimico
+AdminSectores.js.map  69.9 kB       1  [emitted]         AdminSectores
+        Login.js.map  57.9 kB       2  [emitted]         Login
+         main.js.map  3.45 MB       3  [emitted]         main
+  [72] ./store/selectors.js + 6 modules 1.47 kB {3} [built]
+  [76] (webpack)/buildin/global.js 808 bytes {3} [built]
+  [90] /home/satyam/rctc/node_modules/react-redux/es/index.js + 14 modules 40.3 kB {3} [built]
+  [94] (webpack)/buildin/module.js 506 bytes {3} [built]
+ [102] /home/satyam/rctc/node_modules/react-router-dom/es/index.js + 30 modules 82.9 kB {3} [built]
+ [128] ./store/sectores/constants.js 358 bytes {3} [built]
+ [129] ./store/celdas/constants.js 188 bytes {3} [built]
+ [130] ./store/senales/constants.js 194 bytes {3} [built]
+ [145] ./store/actions.js + 11 modules 15.6 kB {3} [built]
+ [192] /home/satyam/rctc/node_modules/redux/es/index.js + 6 modules 21.9 kB {3} [built]
+ [216] ../init-store/src/index.js 4.88 kB {3} [built]
+ [292] ./store/sectores/selectors.js 451 bytes {3} [built]
+ [293] ./store/user/selectors.js 202 bytes {3} [built]
+ [357] multi babel-polyfill ./index.jsx 40 bytes {3} [built]
+ [560] ./index.jsx + 23 modules 31.8 kB {3} [built]
+    + 906 hidden modules
