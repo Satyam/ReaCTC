@@ -1,5 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import enzyme, { mount } from 'enzyme';
+import EnzymeAdapter from 'enzyme-adapter-react-16';
 import jestFetchMock from 'jest-fetch-mock';
 import configureStore from 'redux-mock-store';
 import reduxThunk from 'redux-thunk';
@@ -7,6 +8,8 @@ import promiseMiddleware from '_utils/promiseMiddleware';
 import localStorage from '_jest/localStorage';
 
 import HoC, { mapStateToProps, mapDispatchToProps, storeInitializer } from '..';
+
+enzyme.configure({ adapter: new EnzymeAdapter() });
 
 global.fetch = jestFetchMock;
 global.localStorage = localStorage;

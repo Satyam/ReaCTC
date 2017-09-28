@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdminSectoresComponent snapshot testing with no properties 1`] = `null`;
+exports[`AdminSectoresComponent snapshot testing with no properties 1`] = `""`;
 
 exports[`AdminSectoresComponent snapshot testing with two sectors 1`] = `
 <div>
@@ -24,6 +24,7 @@ exports[`AdminSectoresComponent snapshot testing with two sectors 1`] = `
     >
       <Sector
         checked={false}
+        key="constitucion"
         onChange={[Function]}
         sector={
           Object {
@@ -35,6 +36,7 @@ exports[`AdminSectoresComponent snapshot testing with two sectors 1`] = `
       />
       <Sector
         checked={false}
+        key="retiro"
         onChange={[Function]}
         sector={
           Object {

@@ -1,7 +1,10 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import enzyme, { shallow, mount } from 'enzyme';
+import EnzymeAdapter from 'enzyme-adapter-react-16';
 
 import AdminSectoresComponent, { Sector } from '../';
+
+enzyme.configure({ adapter: new EnzymeAdapter() });
 
 describe('Sector', () => {
   const sampleSector = {
