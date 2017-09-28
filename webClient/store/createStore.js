@@ -1,6 +1,7 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddleware from '_utils/promiseMiddleware';
+import socketsMiddleware from '_utils/socketsMiddleware';
 
 import sectores from './sectores/reducer';
 import celdas from './celdas/reducer';
@@ -26,6 +27,7 @@ export default (history, initialState) => {
   const middlewares = [reduxThunk, promiseMiddleware];
   const enhancers = [];
 
+  if (BUNDLE === 'wsClient') middlewares.push(socketsMiddleware);
   if (process.env.NODE_ENV !== 'production') {
     if (BUNDLE === 'cordova' /* || BUNDLE === 'webServer' */) {
       middlewares.push(

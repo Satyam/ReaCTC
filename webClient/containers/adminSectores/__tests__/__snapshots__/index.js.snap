@@ -36,6 +36,7 @@ Array [
   Object {
     "stage": "Stage: request sent",
     "type": "sectores / list sectores",
+    "wsMode": false,
   },
 ]
 `;
@@ -79,11 +80,24 @@ exports[`mapDispatchToProps - onDeleteSectores - returned data 1`] = `undefined`
 exports[`mapDispatchToProps - onDeleteSectores - store getActions 1`] = `
 Array [
   Object {
+    "payload": Object {
+      "idSectores": Array [
+        1,
+        2,
+        3,
+      ],
+    },
     "stage": "Stage: request sent",
     "type": "sectores / delete sector",
   },
   Object {
-    "payload": Object {},
+    "payload": Object {
+      "idSectores": Array [
+        1,
+        2,
+        3,
+      ],
+    },
     "stage": "Stage: reply received",
     "type": "sectores / delete sector",
   },
@@ -116,6 +130,7 @@ Object {
   },
   "stage": "Stage: reply received",
   "type": "sectores / list sectores",
+  "wsMode": false,
 }
 `;
 
@@ -142,6 +157,7 @@ Array [
   Object {
     "stage": "Stage: request sent",
     "type": "sectores / list sectores",
+    "wsMode": false,
   },
   Object {
     "payload": Object {
@@ -160,6 +176,7 @@ Array [
     },
     "stage": "Stage: reply received",
     "type": "sectores / list sectores",
+    "wsMode": false,
   },
 ]
 `;

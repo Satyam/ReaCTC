@@ -11,14 +11,13 @@ module.exports = version =>
   ['webClient', 'firebase', 'webServer', 'wsClient', 'preact'].map((bundle) => {
     const aliases = {
       _webClient: absPath('webClient'),
-      _wsClient: absPath('wsClient'),
       _firebase: absPath('firebase'),
       _store: absPath(
         {
           webClient: 'webClient/store',
           firebase: 'firebase/store',
           webServer: 'webClient/store',
-          wsClient: 'wsClient/store',
+          wsClient: 'webClient/store',
           preact: 'firebase/store',
         }[bundle]
       ),

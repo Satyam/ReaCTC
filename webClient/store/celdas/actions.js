@@ -1,6 +1,6 @@
-import { selCelda } from '_store/selectors';
+import { selCelda, selIsPending } from '_store/selectors';
 
-import { setEnclavamientos } from '_store/actions';
+import { setEnclavamientos, setPending, clearAllPending } from '_store/actions';
 
 import { CLICK_CELDA, SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
@@ -14,20 +14,6 @@ export function clickCelda(idCelda, tipo) {
   };
 }
 
-const locks = new Set();
-
-function lock(id) {
-  locks.add(id);
-}
-
-function isLocked(id) {
-  return locks.has(id);
-}
-
-function clearLocks() {
-  locks.clear();
-}
-
 export function doSetCambio(idCelda, posicion) {
   return (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
@@ -37,12 +23,10 @@ export function doSetCambio(idCelda, posicion) {
     if (celda.posicion === posicion) {
       return Promise.resolve();
     }
-    // if (selIsPending(getState(), idCelda)) {
-    if (isLocked(idCelda)) {
+    if (selIsPending(getState(), idCelda)) {
       return Promise.reject(`Celda ${idCelda} error: loop por enclavamiento`);
     }
-    //    return Promise.resolve(dispatch(setPending(idCelda)))
-    return Promise.resolve(lock(idCelda))
+    return Promise.resolve(dispatch(setPending(idCelda)))
       .then(() =>
         dispatch({
           type: SET_CAMBIO,
@@ -50,6 +34,7 @@ export function doSetCambio(idCelda, posicion) {
             idCelda,
             posicion,
           },
+          wsMode: BUNDLE === 'wsClient' && 'all',
         })
       )
       .then(() => dispatch(setEnclavamientos(idCelda)));
@@ -58,8 +43,7 @@ export function doSetCambio(idCelda, posicion) {
 
 export function setCambio(idCelda, posicion) {
   return dispatch =>
-    // dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
-    dispatch(doSetCambio(idCelda, posicion)).then(clearLocks);
+    dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
 }
 
 export function setCambioManual(idCelda, manual) {

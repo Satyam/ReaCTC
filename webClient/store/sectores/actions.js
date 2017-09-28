@@ -21,7 +21,8 @@ export function getSector(idSector) {
     }
     return dispatch({
       type: GET_SECTOR,
-      promise: api.read(idSector),
+      promise: BUNDLE === 'webClient' && api.read(idSector),
+      wsMode: BUNDLE === 'wsClient' && 'me',
       payload: {
         idSector,
       },
@@ -36,7 +37,8 @@ export function listSectores() {
     }
     return dispatch({
       type: LIST_SECTORES,
-      promise: api.read(),
+      promise: BUNDLE === 'webClient' && api.read(),
+      wsMode: BUNDLE === 'wsClient' && 'me',
     });
   };
 }
@@ -63,6 +65,9 @@ export function deleteSectores(idSectores) {
     dispatch({
       type: DELETE_SECTOR,
       promise: api.delete(idSectores.join(',')),
+      payload: {
+        idSectores,
+      },
     })
       .then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')))
       .then(() => dispatch(listSectores()));
