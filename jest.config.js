@@ -22,4 +22,5 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['html', 'text'],
   snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],
+  setupFiles: ['raf/polyfill'],
 };
