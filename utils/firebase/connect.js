@@ -1,7 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import setDisplayName from 'recompose/setDisplayName';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import createEagerFactory from 'recompose/createEagerFactory';
 import map from 'lodash/map';
 
 import firebaseShape from './shape';
@@ -48,8 +47,6 @@ export default firebaseConnect(firebaseDataMap)(BaseComponent);
 ```
 */
 const firebaseConnect = firebaseDataMap => (BaseComponent) => {
-  const factory = createEagerFactory(BaseComponent);
-
   const FirebaseConnect = class extends Component {
     constructor(props, context) {
       super(props, context);
@@ -105,7 +102,7 @@ const firebaseConnect = firebaseDataMap => (BaseComponent) => {
     }
 
     render() {
-      return factory(Object.assign({}, this.props, this.state));
+      return React.createElement(BaseComponent, Object.assign({}, this.props, this.state));
     }
   };
   FirebaseConnect.contextTypes = {

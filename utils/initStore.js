@@ -1,12 +1,10 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import setDisplayName from 'recompose/setDisplayName';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import createEagerFactory from 'recompose/createEagerFactory';
 
 const initStore = initializer => (BaseComponent) => {
   const init = Array.isArray(initializer) ? initializer[0] : initializer;
-  const factory = createEagerFactory(BaseComponent);
 
   const StoreInitializer = class extends Component {
     static getStoreInitializer() {
@@ -51,7 +49,7 @@ const initStore = initializer => (BaseComponent) => {
     }
 
     render() {
-      return factory(this.props);
+      return React.createElement(BaseComponent, this.props);
     }
   };
   StoreInitializer.contextTypes = {

@@ -1,14 +1,11 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import setDisplayName from 'recompose/setDisplayName';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import createEagerFactory from 'recompose/createEagerFactory';
 import reduce from 'lodash/reduce';
 
 import firebaseShape from './shape';
 
 const firebaseUserConnect = (firebaseDataMap, FirebaseActionsMap) => (BaseComponent) => {
-  const factory = createEagerFactory(BaseComponent);
-
   const FirebaseUserConnect = class extends Component {
     constructor(props, context) {
       super(props, context);
@@ -50,7 +47,7 @@ const firebaseUserConnect = (firebaseDataMap, FirebaseActionsMap) => (BaseCompon
     }
 
     render() {
-      return factory(Object.assign({}, this.props, this.state));
+      return React.createElement(BaseComponent, Object.assign({}, this.props, this.state));
     }
   };
   FirebaseUserConnect.contextTypes = {
