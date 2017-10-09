@@ -37,75 +37,67 @@ export function setStrategy(db) {
   );
 }
 
-export function signup(req, res) {
+export async function signup(req, res) {
   const { username, password } = req.body;
   if (!username || !password) {
     res.json({ success: false, msg: 'Please pass username and password.' });
   } else {
-    genSalt(10)
-      .then(salt => createHash(password, salt, null))
-      .then(hash =>
-        usersCollection
-          .insertOne({
-            _id: username,
-            username,
-            password: hash,
-          })
-          .then(() => {
-            res.json({ success: true, msg: 'Successful created new user.' });
-          })
-          .catch((err) => {
-            if (err.code === 11000) {
-              res.json({ success: false, msg: 'Username already exists.', err });
-            } else {
-              res.status(500).send(`MongoDB error ${err.message}`);
-            }
-          })
-      )
-      .catch((err) => {
-        res.status(500).send(`bcrypt error ${err}`);
-      });
+    try {
+      const salt = await genSalt(10);
+      const hash = await createHash(password, salt, null);
+      try {
+        await usersCollection.insertOne({
+          _id: username,
+          username,
+          password: hash,
+        });
+        res.json({ success: true, msg: 'Successful created new user.' });
+      } catch (err) {
+        if (err.code === 11000) {
+          res.json({ success: false, msg: 'Username already exists.', err });
+        } else {
+          res.status(500).send(`MongoDB error ${err.message}`);
+        }
+      }
+    } catch (err) {
+      res.status(500).send(`bcrypt error ${err}`);
+    }
   }
 }
 
-export function login(req, res) {
+export async function login(req, res) {
   const { username, password } = req.body;
-  usersCollection
-    .findOne({
-      _id: username,
-    })
-    .then((user) => {
-      if (user) {
-        compareHash(password, user.password).then((isMatch) => {
-          if (isMatch) {
-            const token = jwt.sign({ username }, SECRET);
-            // return the information including token as JSON
-            res.json({ success: true, token: `JWT ${token}`, preferences: user.preferences });
-          } else {
-            res.json({ success: false, msg: 'Authentication failed. Wrong password.' });
-          }
-        });
-      } else {
-        res.json({ success: false, msg: 'Authentication failed. Username not found.' });
-      }
-    });
+  const user = await usersCollection.findOne({
+    _id: username,
+  });
+  if (user) {
+    const isMatch = await compareHash(password, user.password);
+    if (isMatch) {
+      const token = jwt.sign({ username }, SECRET);
+      // return the information including token as JSON
+      res.json({ success: true, token: `JWT ${token}`, preferences: user.preferences });
+    } else {
+      res.json({ success: false, msg: 'Authentication failed. Wrong password.' });
+    }
+  } else {
+    res.json({ success: false, msg: 'Authentication failed. Username not found.' });
+  }
 }
 
 export function logout(req, res) {
   req.logout();
   res.json({});
 }
-
-export function userData(req, res) {
-  usersCollection
-    .findOne({ _id: req.params.username })
-    .then((user) => {
-      res.json(pick(user, 'username'));
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+/* eslint-disable consistent-return */
+export async function userData(req, res) {
+  try {
+    const user = await usersCollection.findOne({ _id: req.params.username });
+    return res.json(pick(user, 'username', 'preferences'));
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
+/* eslint-enable consistent-return */
 
 export function authenticate(req, res, next) {
   return passport.authenticate('jwt', { session: false })(req, res, next);

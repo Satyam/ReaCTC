@@ -47,14 +47,14 @@ app.get('/kill', (req, res) => {
 // app.get('*', (req, res) => res.sendFile(absPath('public/index.html')));
 app.get('*', (req, res) => res.sendFile(absPath('webServer/index.html')));
 
-export function start() {
-  return MongoClient.connect('mongodb://localhost:27017/CTC').then(db =>
-    restServers(db, dataRouter)
-      .then(() => socketServers(db, server))
-      .then(() => setStrategy(db))
-      .then(() => listen(PORT))
-  );
+export async function start() {
+  const db = await MongoClient.connect('mongodb://localhost:27017/CTC');
+  await restServers(db, dataRouter);
+  await socketServers(db, server);
+  await setStrategy(db);
+  await listen(PORT);
 }
-export function stop() {
+
+export async function stop() {
   return close();
 }

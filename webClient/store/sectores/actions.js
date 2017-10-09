@@ -61,16 +61,17 @@ export function clearStatusAdmin() {
 }
 
 export function deleteSectores(idSectores) {
-  return dispatch =>
-    dispatch({
+  return async (dispatch) => {
+    await dispatch({
       type: DELETE_SECTOR,
       promise: api.delete(idSectores.join(',')),
       payload: {
         idSectores,
       },
-    })
-      .then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')))
-      .then(() => dispatch(listSectores()));
+    });
+    await dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados'));
+    await dispatch(listSectores());
+  };
 }
 
 const identifier = /^\w+$/;

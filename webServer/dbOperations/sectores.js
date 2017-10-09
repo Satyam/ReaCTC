@@ -8,20 +8,26 @@ export function listSectores() {
     .toArray();
 }
 
-export function getSector(idSector) {
-  return Promise.all([
-    collection.find({ idSector, entity: 'sector' }, { _id: 0, entity: 0 }).next(),
-    collection.find({ idSector, entity: 'celda' }, { _id: 0, entity: 0, idSector: 0 }).toArray(),
-    collection.find({ idSector, entity: 'senal' }, { _id: 0, entity: 0, idSector: 0 }).toArray(),
-    collection
-      .find({ idSector, entity: 'enclavamiento' }, { _id: 0, entity: 0, idSector: 0 })
-      .toArray(),
-  ]).then(([sectores, celdas, senales, enclavamientos]) => ({
-    sectores,
-    celdas,
-    senales,
-    enclavamientos,
-  }));
+export async function getSector(idSector) {
+  // this way, all fetches are primed in parallel
+  const fetchSectores = collection
+    .find({ idSector, entity: 'sector' }, { _id: 0, entity: 0 })
+    .next();
+  const fetchCeldas = collection
+    .find({ idSector, entity: 'celda' }, { _id: 0, entity: 0, idSector: 0 })
+    .toArray();
+  const fetchSenales = collection
+    .find({ idSector, entity: 'senal' }, { _id: 0, entity: 0, idSector: 0 })
+    .toArray();
+  const fetchEnclavamientos = collection
+    .find({ idSector, entity: 'enclavamiento' }, { _id: 0, entity: 0, idSector: 0 })
+    .toArray();
+  return {
+    sectores: await fetchSectores,
+    celdas: await fetchCeldas,
+    senales: await fetchSenales,
+    enclavamientos: await fetchEnclavamientos,
+  };
 }
 
 export function deleteSectores(idSectores) {
@@ -86,7 +92,6 @@ export function addSector(sector) {
   );
 }
 
-export function init(db) {
+export async function init(db) {
   collection = collection || db.collection('sectores');
-  return Promise.resolve();
 }

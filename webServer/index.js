@@ -1,17 +1,22 @@
 import { start, stop } from './server';
 
-start()
-  .then(() => console.log(`Server running at http://localhost:${PORT}/`))
-  .catch((err) => {
+async function startup() {
+  try {
+    await start();
+  } catch (err) {
     console.error(err);
     process.exit(1);
-  });
+  }
+  console.log(`Server running at http://localhost:${PORT}/`);
+}
 
-const shutdown = () =>
-  stop()
-    .then(() => console.log(`Server at  http://localhost:${PORT}/ closed`))
-    .then(process.exit);
+startup();
 
+const shutdown = async () => {
+  await stop();
+  console.log(`Server at  http://localhost:${PORT}/ closed`);
+  process.exit();
+};
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
