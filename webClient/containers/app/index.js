@@ -8,11 +8,11 @@ import { logout, ensureUser } from '_store/actions';
 
 import App from '_components/app';
 
-export const storeInitializer = (dispatch, getState, { location, history }) => {
+export const storeInitializer = async (dispatch, getState, { location, history }) => {
   if (matchPath(location.pathname, { path: '/logout' })) {
-    return dispatch(logout()).then(() => history.replace('/'));
-  }
-  return dispatch(ensureUser());
+    await dispatch(logout());
+    await history.replace('/');
+  } else await dispatch(ensureUser());
 };
 
 export const mapStateToProps = (state, { location }) => {

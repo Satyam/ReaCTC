@@ -19,55 +19,45 @@ export function clearAllPending() {
 }
 
 export function setEnclavamientos(idCelda, extra) {
-  return (dispatch, getState, database) =>
-    database
-      .ref(`celdas/${idCelda}/enclavamientos`)
-      .once('value')
-      .then(idEnclvSnapshot => idEnclvSnapshot && idEnclvSnapshot.val())
-      .then(
-        enclavamientos =>
-          enclavamientos &&
-          Promise.all(
-            enclavamientos.map(idEnclavamiento =>
-              database
-                .ref(`enclavamientos/${idEnclavamiento}`)
-                .once('value')
-                .then(enclvSnapshot => enclvSnapshot.val())
-                .then((enclavamiento) => {
-                  switch (enclavamiento.tipo) {
-                    case 'apareados': {
-                      const otherIdCelda = enclavamiento.celda;
-                      return database
-                        .ref(`celdas/${otherIdCelda}/manual`)
-                        .once('value')
-                        .then(snapshot => snapshot.val())
-                        .then(
-                          manual =>
-                            !manual && dispatch(doSetCambio(otherIdCelda, enclavamiento[extra]))
-                        );
-                    }
-                    case 'senalCambio': {
-                      const luces = enclavamiento[extra];
-                      const idSenal = enclavamiento.senal;
-                      return Promise.all(
-                        map(luces, (estado, luz) =>
-                          database
-                            .ref(`senales/${idSenal}/${luz}/manual`)
-                            .once('value')
-                            .then(snapshot => snapshot.val())
-                            .then(
-                              manual => !manual && dispatch(doSetLuzEstado(idSenal, luz, estado))
-                            )
-                        )
-                      );
-                    }
-                    default:
-                      return Promise.reject(
-                        `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-                      );
-                  }
-                })
-            )
-          )
-      );
+  return async (dispatch, getState, database) => {
+    const idEnclvSnapshot = await database.ref(`celdas/${idCelda}/enclavamientos`).once('value');
+    const enclavamientos = idEnclvSnapshot ? idEnclvSnapshot.val() : [];
+    Promise.all(
+      enclavamientos.map(async (idEnclavamiento) => {
+        const enclvSnapshot = await database.ref(`enclavamientos/${idEnclavamiento}`).once('value');
+        const enclavamiento = enclvSnapshot.val();
+        switch (enclavamiento.tipo) {
+          case 'apareados': {
+            const otherIdCelda = enclavamiento.celda;
+            const snapshot = await database.ref(`celdas/${otherIdCelda}/manual`).once('value');
+            const manual = snapshot.val();
+            if (!manual) {
+              await dispatch(doSetCambio(otherIdCelda, enclavamiento[extra]));
+            }
+            break;
+          }
+          case 'senalCambio': {
+            const luces = enclavamiento[extra];
+            const idSenal = enclavamiento.senal;
+            await Promise.all(
+              map(luces, async (estado, luz) => {
+                const snapshot = await database
+                  .ref(`senales/${idSenal}/${luz}/manual`)
+                  .once('value');
+                const manual = snapshot.val();
+                if (!manual) {
+                  await dispatch(doSetLuzEstado(idSenal, luz, estado));
+                }
+              })
+            );
+            break;
+          }
+          default:
+            throw new Error(
+              `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
+            );
+        }
+      })
+    );
+  };
 }

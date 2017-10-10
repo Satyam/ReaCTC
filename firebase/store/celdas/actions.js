@@ -14,26 +14,29 @@ export function clickCelda(idCelda, tipo) {
 }
 
 export function doSetCambio(idCelda, posicion) {
-  return (dispatch, getState, database) =>
-    database.ref(`celdas/${idCelda}`).once('value').then(snapshot => snapshot.val()).then((celda) => {
-      if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
-        return Promise.reject(`Celda ${idCelda}  no es un cambio`);
-      }
-      if (celda.posicion === posicion) {
-        return Promise.resolve();
-      }
-      if (selIsPending(getState(), idCelda)) {
-        return Promise.reject(`Celda ${idCelda} error: loop por enclavamiento`);
-      }
-      return dispatch(setPending(idCelda))
-        .then(() => database.ref(`celdas/${idCelda}/posicion`).set(posicion))
-        .then(() => dispatch(setEnclavamientos(idCelda, posicion)));
-    });
+  return async (dispatch, getState, database) => {
+    const snapshot = await database.ref(`celdas/${idCelda}`).once('value');
+    const celda = snapshot.val();
+    if (celda.tipo !== 'cambio' && celda.tipo !== 'triple') {
+      throw new Error(`Celda ${idCelda}  no es un cambio`);
+    }
+    if (celda.posicion === posicion) {
+      return;
+    }
+    if (selIsPending(getState(), idCelda)) {
+      throw new Error(`Celda ${idCelda} error: loop por enclavamiento`);
+    }
+    await dispatch(setPending(idCelda));
+    await database.ref(`celdas/${idCelda}/posicion`).set(posicion);
+    await dispatch(setEnclavamientos(idCelda, posicion));
+  };
 }
 
 export function setCambio(idCelda, posicion) {
-  return dispatch =>
-    dispatch(doSetCambio(idCelda, posicion)).then(() => dispatch(clearAllPending()));
+  return async (dispatch) => {
+    await dispatch(doSetCambio(idCelda, posicion));
+    await dispatch(clearAllPending());
+  };
 }
 
 export function setCambioManual(idCelda, manual) {

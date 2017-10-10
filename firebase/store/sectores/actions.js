@@ -7,9 +7,10 @@ import { addStatusAdmin, clearStatusAdmin } from '_webClient/store/sectores/acti
 export { addStatusAdmin, clearStatusAdmin };
 
 export function deleteSectores(idSectores) {
-  return (dispatch, getState, database) => Promise.all(
-    idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove())
-  ).then(() => dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados')));
+  return async (dispatch, getState, database) => {
+    await Promise.all(idSectores.map(idSector => database.ref(`sectores/${idSector}`).remove()));
+    await dispatch(addStatusAdmin('normal', idSectores.join(','), 'Borrados'));
+  };
 }
 
 const identifier = /^\w+$/;

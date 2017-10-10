@@ -77,53 +77,63 @@ export function deleteSectores(idSectores) {
 const identifier = /^\w+$/;
 
 export function addSector(file) {
-  return (dispatch) => {
-    const reader = new FileReader();
+  return dispatch =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
-    reader.onload = (e) => {
-      let sCfg;
-      try {
-        sCfg = JSON.parse(e.currentTarget.result);
-      } catch (err) {
-        return dispatch(
-          addStatusAdmin('error', file.name, `archivo no contiene JSON válido ${err}`)
-        );
-      }
-      if (
-        typeof sCfg.idSector === 'string' &&
-        identifier.test(sCfg.idSector) &&
-        typeof sCfg.descr === 'string' &&
-        typeof sCfg.descrCorta === 'string' &&
-        typeof sCfg.alto === 'number' &&
-        sCfg.alto >= 1 &&
-        typeof sCfg.ancho === 'number' &&
-        sCfg.ancho >= 1 &&
-        Array.isArray(sCfg.celdas) &&
-        sCfg.celdas.length >= 1
-      ) {
-        return dispatch({
-          type: ADD_SECTOR,
-          promise: api.create('/', sCfg).then(
-            () => dispatch(addStatusAdmin('normal', file.name, `Agregado ${sCfg.descrCorta}`)),
-            (err) => {
-              if (err.code === 409) {
-                return dispatch(
-                  addStatusAdmin(
-                    'warn',
-                    file.name,
-                    `{idSector: ${sCfg.idSector}} duplicado en ${sCfg.descrCorta}`
-                  )
-                );
+      reader.onload = async (ev) => {
+        let sCfg;
+        try {
+          sCfg = JSON.parse(ev.currentTarget.result);
+        } catch (err) {
+          await dispatch(
+            addStatusAdmin('error', file.name, `archivo no contiene JSON válido ${err}`)
+          );
+          reject(`archivo ${file.name} no contiene JSON válido ${err}`);
+        }
+        if (
+          typeof sCfg.idSector === 'string' &&
+          identifier.test(sCfg.idSector) &&
+          typeof sCfg.descr === 'string' &&
+          typeof sCfg.descrCorta === 'string' &&
+          typeof sCfg.alto === 'number' &&
+          sCfg.alto >= 1 &&
+          typeof sCfg.ancho === 'number' &&
+          sCfg.ancho >= 1 &&
+          Array.isArray(sCfg.celdas) &&
+          sCfg.celdas.length >= 1
+        ) {
+          await dispatch({
+            type: ADD_SECTOR,
+            promise: async () => {
+              try {
+                await api.create('/', sCfg);
+                await dispatch(addStatusAdmin('normal', file.name, `Agregado ${sCfg.descrCorta}`));
+              } catch (err) {
+                if (err.code === 409) {
+                  await dispatch(
+                    addStatusAdmin(
+                      'warn',
+                      file.name,
+                      `{idSector: ${sCfg.idSector}} duplicado en ${sCfg.descrCorta}`
+                    )
+                  );
+                }
+                reject(err);
+                throw new Error(err);
               }
-              return Promise.reject(err);
-            }
-          ),
-        }).then(() => dispatch(listSectores()));
-      }
-      return dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
-    };
-    reader.onerror = e => dispatch(addStatusAdmin('error', file.name, e.toString()));
+            },
+          });
+          await dispatch(listSectores());
+          resolve();
+        }
+        return dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
+      };
+      reader.onerror = async (ev) => {
+        await dispatch(addStatusAdmin('error', file.name, ev.toString()));
+        reject(ev);
+      };
 
-    reader.readAsText(file);
-  };
+      reader.readAsText(file);
+    });
 }
