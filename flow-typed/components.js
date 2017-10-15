@@ -27,6 +27,8 @@ declare type CeldaBase = {
   senales?: Array<IdType>,
 };
 
+declare type PosicionesCambioType = 'normal' | 'desviado';
+
 declare type CambioType = CeldaBase & {
   tipo: 'cambio',
   punta: TramoType,
@@ -34,8 +36,10 @@ declare type CambioType = CeldaBase & {
     normal: TramoType,
     desviado: TramoType,
   },
-  posicion?: 'normal' | 'desviado',
+  posicion?: PosicionesCambioType,
 };
+
+declare type PosicionesTripleType = 'izq' | 'centro' | 'der';
 
 declare type TripleType = CeldaBase & {
   tipo: 'triple',
@@ -45,8 +49,10 @@ declare type TripleType = CeldaBase & {
     centro: TramoType,
     der: TramoType,
   },
-  posicion?: 'izq' | 'centro' | 'der',
+  posicion?: PosicionesTripleType,
 };
+
+declare type PosicionesType = PosicionesCambioType | PosicionesTripleType;
 
 declare type CruceType = CeldaBase & {
   tipo: 'cruce',
@@ -75,6 +81,8 @@ declare type LineaType = CeldaBase & {
 
 declare type CeldaType = LineaType | ParagolpeType | CruceType | TripleType | CambioType;
 
+declare type ActiveCeldasTypeType = 'cambio' | 'senal' | 'triple';
+
 declare type LuzType = {
   estado: 'libre' | 'precaucion' | 'alto',
 };
@@ -98,8 +106,16 @@ declare type CambioSenalType = EnclavamientoType & {
   senal: IdType,
 };
 
+declare type AdminStatusNivel = 'normal' | 'warn' | 'error';
+
 declare type AdminStatusItem = {
-  nivel: 'normal' | 'warn' | 'error',
+  nivel: AdminStatusNivel,
   entity: string,
   message: string,
 };
+
+declare var BUNDLE: string;
+declare var HOST: string;
+declare var PORT: string;
+declare var SESSION_TIMEOUT: number;
+declare var REST_API_PATH: string;

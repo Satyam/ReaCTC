@@ -1,11 +1,13 @@
+// @flow
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMiddleware';
 import indexBy from '_utils/indexBy';
 
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
+import type { AdminStatusReducer, SectoresListReducer } from './flowtypes';
 
-export const adminStatus = (state = [], action) => {
+export const adminStatus: AdminStatusReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_STATUS_ADMIN:
       return update(state, { $push: [action.payload] });
@@ -16,7 +18,7 @@ export const adminStatus = (state = [], action) => {
   }
 };
 
-export const list = (state = { list: [], requested: false }, action) => {
+export const list: SectoresListReducer = (state = { list: [], requested: false }, action) => {
   switch (action.type) {
     case LIST_SECTORES:
       switch (action.stage) {
@@ -34,7 +36,7 @@ export const list = (state = { list: [], requested: false }, action) => {
   }
 };
 
-export const hash = (state = {}, action) => {
+export const hash: SectoresHashReducer = (state = {}, action) => {
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR:

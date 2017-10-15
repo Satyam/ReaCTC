@@ -1,3 +1,4 @@
+// @flow
 /* eslint-env browser */
 import ServerError from '_utils/serverError';
 // import dbg from 'debug';
@@ -8,48 +9,37 @@ import plainJoin from '_utils/plainJoin';
 
 const clients = {};
 
-export default (base, host = `${HOST}:${PORT}`) => {
+export default (
+  base: string,
+  host: string = `${HOST}:${PORT}`
+): {
+  create: Promise<Object>,
+  read: Promise<Object>,
+  update: Promise<Object>,
+  delete: Promise<Object>,
+} => {
   const key = plainJoin(host, base);
   if (clients[key]) return clients[key];
-  const restClient = method => (path = '/', body) => {
+  const restClient = method => async (path = '/', body) => {
     if (parseInt(localStorage.getItem('lastAccess'), 10) + SESSION_TIMEOUT < Date.now()) {
       localStorage.removeItem('authorization');
     } else {
-      localStorage.setItem('lastAccess', Date.now());
+      localStorage.setItem('lastAccess', String(Date.now()));
     }
-    return fetch(plainJoin(host, REST_API_PATH, base, path), {
+    const response: Response = await fetch(plainJoin(host, REST_API_PATH, base, path), {
       method,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('authorization'),
+        Authorization: localStorage.getItem('authorization') || '',
       },
       credentials: 'include',
       body: body && JSON.stringify(body),
-    })
-      .then(
-        // prettier-ignore
-        response => (
-          response.ok
-            ? response
-            : Promise.reject(
-              new ServerError(response.status, response.statusText, method, plainJoin(base, path))
-            )
-        )
-      )
-      .then(response => response.json());
-    // ----- when debugging
-    // .then(
-    //   (response) => {
-    //     debug(`${method} ${plainJoin(base, path)}: ${JSON.stringify(response, null, 2)}`);
-    //     return response;
-    //   },
-    //   (error) => {
-    //     debug(`${method} ${plainJoin(base, path)}: ${JSON.stringify(error, null, 2)}`);
-    //     return Promise.reject(error);
-    //   }
-    // )
-    // --
+    });
+    if (!response.ok) {
+      throw new ServerError(response.status, response.statusText, method, plainJoin(base, path));
+    }
+    return response.json();
   };
   clients[key] = {
     create: restClient('post'),

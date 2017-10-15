@@ -5,18 +5,8 @@ export const REQUEST_SENT = 'Stage: request sent';
 export const REPLY_RECEIVED = 'Stage: reply received';
 export const FAILURE_RECEIVED = 'Stage: failure received';
 
-type Action = {
-  +type: string,
-};
-
-type PromiseAction = {
-  +type: string,
-  promise: ?Promise<any>,
-};
-
-type Next = (action: Action) => any;
-export default function promiseMiddleware() {
-  return (next: Next) => (action: PromiseAction) => {
+export default function promiseMiddleware(): Middleware<any, PromiseAction> {
+  return next => (action) => {
     if (action.promise && typeof action.promise.then === 'function') {
       const promise = action.promise;
       const act = omit(action, 'promise');

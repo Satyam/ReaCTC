@@ -1,13 +1,16 @@
+// @flow
 import update from 'immutability-helper';
 import indexBy from '_utils/indexBy';
 
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { GET_SECTOR } from '_store/constants';
-import { SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
 
-export default (state = {}, action) => {
-  if (action.stage && action.stage !== REPLY_RECEIVED) return state;
+import { SET_CAMBIO, SET_CAMBIO_MANUAL } from './constants';
+import type { CeldasReducer } from './flowtypes';
+
+const reducer: CeldasReducer = (state = {}, action) => {
+  if (action && action.stage && action.stage !== REPLY_RECEIVED) return state;
   const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR: {
@@ -22,6 +25,9 @@ export default (state = {}, action) => {
         [payload.idCelda]: { manual: { $set: payload.manual } },
       });
     default:
+      (action: empty);
       return state;
   }
 };
+
+export default reducer;

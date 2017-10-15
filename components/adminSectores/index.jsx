@@ -49,19 +49,18 @@ const icons = {
   error: 'error',
 };
 
-type InputFileEvent = UIEvent & { target: HTMLInputElement & { files: string[] } };
-
-export default class AdminSectoresComponent extends Component {
-  props: {
+export default class AdminSectoresComponent extends Component<
+  {
     sectores: SectorListEntry[],
     status: AdminStatusItem[],
     onDeleteSectores: (IdType[]) => void,
     onUploadSector: string => void,
     onClearStatusAdmin: void => void,
-  };
-  state: {
+  },
+  {
     delList: IdType[],
-  };
+  }
+> {
   constructor(...args: Array<any>) {
     super(...args);
     this.state = { delList: [] };
@@ -74,9 +73,9 @@ export default class AdminSectoresComponent extends Component {
     this.props.onDeleteSectores(this.state.delList);
     this.setState({ delList: [] });
   };
-  onUploadHandler = (ev: InputFileEvent) => {
+  onUploadHandler = (ev: SyntheticInputEvent<>) => {
     ev.stopPropagation();
-    const file: string = ev.target.files[0];
+    const file: string = ev.target.files.item[0];
     if (file) {
       this.props.onUploadSector(file);
     }
@@ -97,14 +96,14 @@ export default class AdminSectoresComponent extends Component {
         </Helmet>
         <div className={styles.form}>
           <List className={styles.list}>
-            {sectores.map(sector =>
-              (<Sector
+            {sectores.map(sector => (
+              <Sector
                 key={sector.idSector}
                 sector={sector}
                 checked={delList.indexOf(sector.idSector) > -1}
                 onChange={this.onChangeHandler}
-              />)
-            )}
+              />
+            ))}
           </List>
           <Navigation className={styles.buttons}>
             <BrowseButton
@@ -125,7 +124,7 @@ export default class AdminSectoresComponent extends Component {
             />
           </Navigation>
         </div>
-        {(status.length || null) &&
+        {(status.length || null) && (
           <div>
             <Table selectable={false}>
               <TableHead>
@@ -133,22 +132,19 @@ export default class AdminSectoresComponent extends Component {
                 <TableCell>Dónde</TableCell>
                 <TableCell>Mensaje</TableCell>
               </TableHead>
-              {status.map(row =>
-                (<TableRow className={styles[row.nivel]}>
+              {status.map(row => (
+                <TableRow className={styles[row.nivel]}>
                   <TableCell>
                     <FontIcon value={icons[row.nivel]} />
                   </TableCell>
-                  <TableCell>
-                    {row.entity}
-                  </TableCell>
-                  <TableCell>
-                    {row.message}
-                  </TableCell>
-                </TableRow>)
-              )}
+                  <TableCell>{row.entity}</TableCell>
+                  <TableCell>{row.message}</TableCell>
+                </TableRow>
+              ))}
             </Table>
             <Button label="Limpiar" icon="delete" raised onClick={this.onClearStatusHandler} />
-          </div>}
+          </div>
+        )}
       </div>
     );
   }
