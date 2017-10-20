@@ -9,7 +9,7 @@ Array [
       "credentials": "include",
       "headers": Object {
         "Accept": "application/json",
-        "Authorization": null,
+        "Authorization": "",
         "Content-Type": "application/json",
       },
       "method": "get",
@@ -22,7 +22,7 @@ Array [
       "credentials": "include",
       "headers": Object {
         "Accept": "application/json",
-        "Authorization": null,
+        "Authorization": "",
         "Content-Type": "application/json",
       },
       "method": "get",
@@ -66,7 +66,7 @@ Array [
       "credentials": "include",
       "headers": Object {
         "Accept": "application/json",
-        "Authorization": null,
+        "Authorization": "",
         "Content-Type": "application/json",
       },
       "method": "delete",
@@ -112,27 +112,7 @@ Array [
 ]
 `;
 
-exports[`storeInitializer - data 1`] = `
-Object {
-  "payload": Object {
-    "list": Array [
-      Object {
-        "descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina",
-        "descrCorta": "Constitución",
-        "idSector": "constitucion",
-      },
-      Object {
-        "descr": "Mentira, apenas una línea",
-        "descrCorta": "Retiro",
-        "idSector": "retiro",
-      },
-    ],
-  },
-  "stage": "Stage: reply received",
-  "type": "sectores / list sectores",
-  "wsMode": false,
-}
-`;
+exports[`storeInitializer - data 1`] = `undefined`;
 
 exports[`storeInitializer - fetchMock calls 1`] = `
 Array [
@@ -143,7 +123,7 @@ Array [
       "credentials": "include",
       "headers": Object {
         "Accept": "application/json",
-        "Authorization": null,
+        "Authorization": "",
         "Content-Type": "application/json",
       },
       "method": "get",
