@@ -18,13 +18,11 @@ import type {
   ListSectoresAction,
   AddStatusAdminAction,
   ClearStatusAdminAction,
-  DeleteSectoresAction,
-  AddSectorAction,
 } from './flowtypes';
 
 const api = restAPI(NAME);
 
-export function getSector(idSector: IdType): AsyncActionCreator<GetSectorAction> {
+export function getSector(idSector: IdType): AsyncActionCreator<GetSectorAction | void> {
   return async (dispatch, getState) => {
     if (selSectorRequested(getState(), idSector)) {
       return;
@@ -40,7 +38,7 @@ export function getSector(idSector: IdType): AsyncActionCreator<GetSectorAction>
   };
 }
 
-export function listSectores(): AsyncActionCreator<ListSectoresAction> {
+export function listSectores(): AsyncActionCreator<ListSectoresAction | void> {
   return async (dispatch, getState) => {
     if (selSectoresRequested(getState())) {
       return;
@@ -74,7 +72,7 @@ export function clearStatusAdmin(): ClearStatusAdminAction {
   };
 }
 
-export function deleteSectores(idSectores: IdType[]): AsyncActionCreator<DeleteSectoresAction> {
+export function deleteSectores(idSectores: IdType[]): AsyncActionCreator<ListSectoresAction> {
   return async (dispatch) => {
     await dispatch({
       type: DELETE_SECTOR,
@@ -90,71 +88,75 @@ export function deleteSectores(idSectores: IdType[]): AsyncActionCreator<DeleteS
 
 const identifier = /^\w+$/;
 
-export function addSector(file: File): AsyncActionCreator<AddSectorAction> {
-  return dispatch =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
+function fileRead(file: File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = ev => resolve(ev.currentTarget.result);
+    reader.onerror = ev => reject(new Error(`Error ${ev.toString()} reading file ${file.name}`));
+    reader.readAsText(file);
+  });
+}
 
-      reader.onload = async (ev) => {
-        let sCfg: ?SectorType;
+function doAddSector(name: string, sectorConfig: SectorType) {
+  return async (dispatch) => {
+    await dispatch({
+      type: ADD_SECTOR,
+      promise: async () => {
         try {
-          sCfg = JSON.parse(ev.currentTarget.result);
+          await api.create('/', sectorConfig);
         } catch (err) {
-          await dispatch(
-            addStatusAdmin('error', file.name, `archivo no contiene JSON válido ${err}`)
-          );
-          reject(`archivo ${file.name} no contiene JSON válido ${err}`);
-        }
-        // this split of the conditions to check sCfg is for the sake of flow
-        // that needs to statically ensure sCfg is an object before checking
-        // its properties
-        if (sCfg && typeof sCfg === 'object') {
-          if (
-            typeof sCfg.idSector === 'string' &&
-            identifier.test(sCfg.idSector) &&
-            typeof sCfg.descr === 'string' &&
-            typeof sCfg.descrCorta === 'string' &&
-            typeof sCfg.alto === 'number' &&
-            sCfg.alto >= 1 &&
-            typeof sCfg.ancho === 'number' &&
-            sCfg.ancho >= 1 &&
-            Array.isArray(sCfg.celdas) &&
-            sCfg.celdas.length >= 1
-          ) {
-            await dispatch({
-              type: ADD_SECTOR,
-              promise: async () => {
-                try {
-                  await api.create('/', sCfg);
-                  await dispatch(
-                    addStatusAdmin('normal', file.name, `Agregado ${sCfg.descrCorta}`)
-                  );
-                } catch (err) {
-                  if (err.code === 409) {
-                    await dispatch(
-                      addStatusAdmin(
-                        'warn',
-                        file.name,
-                        `{idSector: ${sCfg.idSector}} duplicado en ${sCfg.descrCorta}`
-                      )
-                    );
-                  }
-                  reject(err);
-                  throw new Error(err);
-                }
-              },
-            });
-            await dispatch(listSectores());
-            resolve();
+          if (err.code === 409) {
+            await dispatch(
+              addStatusAdmin(
+                'warn',
+                name,
+                `{idSector: ${String(
+                  sectorConfig.idSector
+                )}} duplicado en ${sectorConfig.descrCorta}`
+              )
+            );
           }
+          throw new Error(err);
         }
-        return dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
-      };
-      reader.onerror = async (ev) => {
-        await dispatch(addStatusAdmin('error', file.name, ev.toString()));
-        reject(ev);
-      };
-
-      reader.readAsText(file);
+      },
     });
+  };
+}
+
+export function addSector(file: File): AsyncActionCreator<ListSectoresAction> {
+  return async (dispatch) => {
+    const content = await fileRead(file);
+    let sectorConfig: SectorType;
+    try {
+      sectorConfig = JSON.parse(content);
+    } catch (err) {
+      await dispatch(addStatusAdmin('error', file.name, `archivo no contiene JSON válido ${err}`));
+      throw new Error(`archivo ${file.name} no contiene JSON válido ${err}`);
+    }
+    // this split of the conditions to check sectorConfig is for the sake of flow
+    // that needs to statically ensure sectorConfig is an object before checking
+    // its properties
+    if (sectorConfig && typeof sectorConfig === 'object') {
+      if (
+        typeof sectorConfig.idSector === 'string' &&
+        identifier.test(sectorConfig.idSector) &&
+        typeof sectorConfig.descr === 'string' &&
+        typeof sectorConfig.descrCorta === 'string' &&
+        typeof sectorConfig.alto === 'number' &&
+        sectorConfig.alto >= 1 &&
+        typeof sectorConfig.ancho === 'number' &&
+        sectorConfig.ancho >= 1 &&
+        Array.isArray(sectorConfig.celdas) &&
+        sectorConfig.celdas.length >= 1
+      ) {
+        await dispatch(doAddSector(file.name, sectorConfig));
+        await dispatch(addStatusAdmin('normal', file.name, `Agregado ${sectorConfig.descrCorta}`));
+      } else {
+        await dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
+      }
+    } else {
+      await dispatch(addStatusAdmin('error', file.name, 'configuración inválida o vacía'));
+    }
+    await dispatch(listSectores());
+  };
 }

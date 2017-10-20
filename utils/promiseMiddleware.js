@@ -5,7 +5,7 @@ export const REQUEST_SENT = 'Stage: request sent';
 export const REPLY_RECEIVED = 'Stage: reply received';
 export const FAILURE_RECEIVED = 'Stage: failure received';
 
-export default function promiseMiddleware(): Middleware<any, PromiseAction> {
+export default function promiseMiddleware(): Middleware<any, PromiseAction<string>> {
   return next => (action) => {
     if (action.promise && typeof action.promise.then === 'function') {
       const promise = action.promise;

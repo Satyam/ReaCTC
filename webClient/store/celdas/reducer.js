@@ -25,7 +25,6 @@ const reducer: CeldasReducer = (state = {}, action) => {
         [payload.idCelda]: { manual: { $set: payload.manual } },
       });
     default:
-      (action: empty);
       return state;
   }
 };

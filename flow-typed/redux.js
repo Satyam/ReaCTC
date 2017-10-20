@@ -3,29 +3,36 @@ declare type stageRequestSent = 'Stage: request sent';
 declare type stageReplyReceived = 'Stage: reply received';
 declare type stageFailureReceived = 'Stage: failure received';
 
-declare type PromiseAction = {
-    +type: string,
+declare type PromiseAction<T> = {
+    +type: T,
     promise: Promise<any>,
-    stage?: stageRequestSent | stageReplyReceived
+    stage?: stageRequestSent
   }
   | {
-    +type: string,
+    +type: T,
+    stage: stageReplyReceived,
+  }
+  | {
+    +type: T,
     stage: stageFailureReceived,
     error: any,
   }
 
 
-declare type SocketsAction = {
-    +type: string,
+declare type SocketsAction<T> = {
+    +type: T,
     wsMode: 'me' | 'all' | 'others',
-    stage?: stageRequestSent | stageReplyReceived,
+    stage?: stageRequestSent,
   }
   | {
-    +type: string,
-    wsMode: 'me' | 'all' | 'others',
+    +type: T,
+    stage: stageReplyReceived,
+  }
+  | {
+    +type: T,
     stage: stageFailureReceived,
     error: any,
   }
 
 
-declare type AsyncAction = PromiseAction | SocketsAction | (PromiseAction & SocketsAction);
+declare type AsyncAction<T> = PromiseAction<T> | SocketsAction<T> | (PromiseAction<T> & SocketsAction<T>);

@@ -11,6 +11,6 @@ export type Action = SectoresAction | CeldasAction;
 
 export type GetState = () => State;
 
-export type AsyncActionCreator<T> = (dispatch: Dispatch<Action>, getState: GetState) => Promise<T>;
+export type AsyncActionCreator<R> = (dispatch: Dispatch<Action>, getState: GetState) => Promise<R>;
 
-export type Reducer<S = State, A = Action> = (state: S, action: A | empty) => S;
+export type Reducer<S = State, A = Action> = (state: S | empty, action: A | empty) => S;

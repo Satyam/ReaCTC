@@ -5,7 +5,7 @@ import { REPLY_RECEIVED, REQUEST_SENT, FAILURE_RECEIVED } from '_utils/promiseMi
 import indexBy from '_utils/indexBy';
 
 import { GET_SECTOR, LIST_SECTORES, ADD_STATUS_ADMIN, CLEAR_STATUS_ADMIN } from './constants';
-import type { AdminStatusReducer, SectoresListReducer } from './flowtypes';
+import type { AdminStatusReducer, SectoresListReducer, SectoresHashReducer } from './flowtypes';
 
 export const adminStatus: AdminStatusReducer = (state = [], action) => {
   switch (action.type) {

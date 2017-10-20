@@ -13,14 +13,14 @@ export default (
   base: string,
   host: string = `${HOST}:${PORT}`
 ): {
-  create: Promise<Object>,
-  read: Promise<Object>,
-  update: Promise<Object>,
-  delete: Promise<Object>,
+  create: (path: ?string, body: Object) => Promise<Object>,
+  read: (path: ?string) => Promise<Object>,
+  update: (path: ?string, body: Object) => Promise<Object>,
+  delete: (path: ?string) => Promise<Object>,
 } => {
   const key = plainJoin(host, base);
   if (clients[key]) return clients[key];
-  const restClient = method => async (path = '/', body) => {
+  const restClient = method => async (path: ?string = '/', body: any): Promise<Object> => {
     if (parseInt(localStorage.getItem('lastAccess'), 10) + SESSION_TIMEOUT < Date.now()) {
       localStorage.removeItem('authorization');
     } else {
