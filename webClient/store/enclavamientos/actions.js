@@ -20,41 +20,41 @@ export function clearAllPending() {
 }
 
 export function setEnclavamientos(idCelda) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const celda = selCelda(getState(), idCelda);
-    return celda.manual
-      ? Promise.resolve()
-      : Promise.all(
-        celda.enclavamientos.map((idEnclavamiento) => {
-          const enclavamiento = selEnclavamientos(getState(), idEnclavamiento);
-          switch (enclavamiento.tipo) {
-            case 'apareados':
-              return dispatch(
-                /* eslint-disable no-use-before-define */
-                doSetCambio(enclavamiento.celda, enclavamiento[celda.posicion])
-                /* eslint-enable no-use-before-define */
-              );
-            case 'senalCambio': {
-              const caso = enclavamiento[celda.posicion];
-              const idSenal = enclavamiento.senal;
-              return Promise.all(
-                map(
-                  caso,
-                  // prettier-ignore
-                  (estado, luz) => (
-                    selSenalIsManual(getState(), idSenal, luz)
-                      ? Promise.resolve()
-                      : dispatch(doSetLuzEstado(idSenal, luz, estado))
-                  )
-                )
-              );
-            }
-            default:
-              return Promise.reject(
-                `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
-              );
+    if (celda.manual) return;
+    await Promise.all(
+      celda.enclavamientos.map(async (idEnclavamiento) => {
+        const enclavamiento = selEnclavamientos(getState(), idEnclavamiento);
+        switch (enclavamiento.tipo) {
+          case 'apareados':
+            await dispatch(
+              /* eslint-disable no-use-before-define */
+              doSetCambio(enclavamiento.celda, enclavamiento[celda.posicion])
+              /* eslint-enable no-use-before-define */
+            );
+            return;
+          case 'senalCambio': {
+            const caso = enclavamiento[celda.posicion];
+            const idSenal = enclavamiento.senal;
+            await Promise.all(
+              map(
+                caso,
+                // prettier-ignore
+                async (estado, luz) => {
+                  if (selSenalIsManual(getState(), idSenal, luz)) return;
+                  await dispatch(doSetLuzEstado(idSenal, luz, estado));
+                }
+              )
+            );
+            return;
           }
-        })
-      );
+          default:
+            throw new Error(
+              `Celda ${idCelda} tiene enclavamiento desconocido ${enclavamiento.tipo}`
+            );
+        }
+      })
+    );
   };
 }
