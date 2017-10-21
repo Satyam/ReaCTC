@@ -17,47 +17,27 @@ export type SectoresState = {
   adminStatus: AdminStatusState,
 };
 
-type GetSectorActionReq = AsyncAction<'sectores / get sector'> & {
-  payload: {
+export type GetSectorAction = AsyncAction<'sectores / get sector',
+  {
     idSector: IdType,
   },
-};
-type GetSectorActionError = AsyncAction<'sectores / get sector'> & {
-  payload: SectorType,
-  stage: stageReplyReceived,
-};
-export type GetSectorAction = GetSectorActionReq | GetSectorActionError;
+  SectorType>;
 
-export type ListSectoresAction = AsyncAction<'sectores / list sectores'> &
-  (
-    | {
-        payload: void,
-      }
-    | {
-        payload: {
-          list: SectorListEntry[],
-        },
-        stage: stageReplyReceived,
-      });
+export type ListSectoresAction = AsyncAction<'sectores / list sectores',
+  void,
+  {
+    list: SectorListEntry[],
+  }>;
+export type AddStatusAdminAction = ActionCreator<'sectores / add status admin', AdminStatusItem>;
 
-export type AddStatusAdminAction = {
-  type: 'sectores / add status admin',
-  payload: AdminStatusItem,
-};
+export type ClearStatusAdminAction = ActionCreator<'sectores / clear status admin'>;
 
-export type ClearStatusAdminAction = {
-  type: 'sectores / clear status admin',
-};
-
-export type DeleteSectoresAction = AsyncAction<'sectores / delete sector'> & {
-  payload: {
+export type DeleteSectoresAction = AsyncAction<'sectores / delete sector',
+  {
     idSectores: IdType[],
-  },
-};
+  }>;
 
-export type AddSectorAction = AsyncAction<'sectores / add sector'> & {
-  payload: SectorType,
-};
+export type AddSectorAction = AsyncAction<'sectores / add sector', SectorType>;
 
 export type SectoresAction =
   | AddSectorAction
