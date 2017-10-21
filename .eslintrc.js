@@ -2,7 +2,13 @@ const config = require('./config.js');
 const mapValues = require('lodash/mapValues');
 
 module.exports = {
-  extends: ['airbnb', 'plugin:flowtype/recommended'],
+  extends: [
+    'airbnb',
+    'plugin:flowtype/recommended',
+    'prettier',
+    'prettier/flowtype',
+    'prettier/react',
+  ],
   plugins: ['flowtype'],
   env: {
     node: true,
@@ -26,28 +32,12 @@ module.exports = {
     mapValues(config, () => false)
   ),
   rules: {
-    'function-paren-newline': 'off',
-    'object-curly-newline': ['error', { consistent: true }],
     'prefer-destructuring': 'off',
-    // See: https://github.com/facebookincubator/create-react-app/issues/2631#issuecomment-312894470
-    'jsx-a11y/href-no-hash': 'off',
-    'jsx-a11y/anchor-is-valid': ['warn', { aspects: ['invalidHref'] }],
-    // Up to here
     'no-console': 0,
     'import/no-extraneous-dependencies': [
       2,
       {
         devDependencies: true,
-      },
-    ],
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'always-multiline',
-        objects: 'always-multiline',
-        imports: 'always-multiline',
-        exports: 'always-multiline',
-        functions: 'ignore',
       },
     ],
     'react/require-default-props': 0,
