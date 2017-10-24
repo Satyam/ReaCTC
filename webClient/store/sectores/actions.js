@@ -22,7 +22,9 @@ import type {
 
 const api = restAPI(NAME);
 
-export function getSector(idSector: IdType): AsyncActionCreator<GetSectorAction | void> {
+export function getSector(
+  idSector: IdType,
+): AsyncActionCreator<GetSectorAction | void> {
   return async (dispatch, getState) => {
     if (selSectorRequested(getState(), idSector)) {
       return;
@@ -54,7 +56,7 @@ export function listSectores(): AsyncActionCreator<ListSectoresAction | void> {
 export function addStatusAdmin(
   nivel: AdminStatusNivel,
   entity: string,
-  message: string
+  message: string,
 ): AddStatusAdminAction {
   return {
     type: ADD_STATUS_ADMIN,
@@ -72,8 +74,10 @@ export function clearStatusAdmin(): ClearStatusAdminAction {
   };
 }
 
-export function deleteSectores(idSectores: IdType[]): AsyncActionCreator<ListSectoresAction> {
-  return async (dispatch) => {
+export function deleteSectores(
+  idSectores: IdType[],
+): AsyncActionCreator<ListSectoresAction> {
+  return async dispatch => {
     await dispatch({
       type: DELETE_SECTOR,
       promise: api.delete(idSectores.join(',')),
@@ -92,13 +96,14 @@ function fileRead(file: File) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = ev => resolve(ev.currentTarget.result);
-    reader.onerror = ev => reject(new Error(`Error ${ev.toString()} reading file ${file.name}`));
+    reader.onerror = ev =>
+      reject(new Error(`Error ${ev.toString()} reading file ${file.name}`));
     reader.readAsText(file);
   });
 }
 
 function doAddSector(name: string, sectorConfig: SectorType) {
-  return async (dispatch) => {
+  return async dispatch => {
     await dispatch({
       type: ADD_SECTOR,
       promise: async () => {
@@ -111,9 +116,9 @@ function doAddSector(name: string, sectorConfig: SectorType) {
                 'warn',
                 name,
                 `{idSector: ${String(
-                  sectorConfig.idSector
-                )}} duplicado en ${sectorConfig.descrCorta}`
-              )
+                  sectorConfig.idSector,
+                )}} duplicado en ${sectorConfig.descrCorta}`,
+              ),
             );
           }
           throw new Error(err);
@@ -124,13 +129,19 @@ function doAddSector(name: string, sectorConfig: SectorType) {
 }
 
 export function addSector(file: File): AsyncActionCreator<ListSectoresAction> {
-  return async (dispatch) => {
+  return async dispatch => {
     const content = await fileRead(file);
     let sectorConfig: SectorType;
     try {
       sectorConfig = JSON.parse(content);
     } catch (err) {
-      await dispatch(addStatusAdmin('error', file.name, `archivo no contiene JSON válido ${err}`));
+      await dispatch(
+        addStatusAdmin(
+          'error',
+          file.name,
+          `archivo no contiene JSON válido ${err}`,
+        ),
+      );
       throw new Error(`archivo ${file.name} no contiene JSON válido ${err}`);
     }
     // this split of the conditions to check sectorConfig is for the sake of flow
@@ -150,12 +161,22 @@ export function addSector(file: File): AsyncActionCreator<ListSectoresAction> {
         sectorConfig.celdas.length >= 1
       ) {
         await dispatch(doAddSector(file.name, sectorConfig));
-        await dispatch(addStatusAdmin('normal', file.name, `Agregado ${sectorConfig.descrCorta}`));
+        await dispatch(
+          addStatusAdmin(
+            'normal',
+            file.name,
+            `Agregado ${sectorConfig.descrCorta}`,
+          ),
+        );
       } else {
-        await dispatch(addStatusAdmin('error', file.name, 'faltan campos obligatorios'));
+        await dispatch(
+          addStatusAdmin('error', file.name, 'faltan campos obligatorios'),
+        );
       }
     } else {
-      await dispatch(addStatusAdmin('error', file.name, 'configuración inválida o vacía'));
+      await dispatch(
+        addStatusAdmin('error', file.name, 'configuración inválida o vacía'),
+      );
     }
     await dispatch(listSectores());
   };

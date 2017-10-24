@@ -1,5 +1,3 @@
-import update from 'immutability-helper';
-
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { ADD_MENSAJE } from './constants';
@@ -9,7 +7,7 @@ export default (state = [], action) => {
   const payload = action.payload;
   switch (action.type) {
     case ADD_MENSAJE:
-      return update(state, { $push: payload });
+      return [...state, ...payload];
     default:
       return state;
   }

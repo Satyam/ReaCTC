@@ -59,7 +59,7 @@ export default class AdminSectoresComponent extends Component<
   },
   {
     delList: IdType[],
-  }
+  },
 > {
   constructor(...args: Array<any>) {
     super(...args);
@@ -67,7 +67,9 @@ export default class AdminSectoresComponent extends Component<
   }
   onChangeHandler = (idSector: string, checked: boolean) => {
     const list = this.state.delList;
-    this.setState({ delList: checked ? list.concat(idSector) : without(list, idSector) });
+    this.setState({
+      delList: checked ? list.concat(idSector) : without(list, idSector),
+    });
   };
   onDeleteHandler = () => {
     this.props.onDeleteSectores(this.state.delList);
@@ -100,7 +102,7 @@ export default class AdminSectoresComponent extends Component<
               <Sector
                 key={sector.idSector}
                 sector={sector}
-                checked={delList.indexOf(sector.idSector) > -1}
+                checked={delList.includes(sector.idSector)}
                 onChange={this.onChangeHandler}
               />
             ))}
@@ -142,7 +144,12 @@ export default class AdminSectoresComponent extends Component<
                 </TableRow>
               ))}
             </Table>
-            <Button label="Limpiar" icon="delete" raised onClick={this.onClearStatusHandler} />
+            <Button
+              label="Limpiar"
+              icon="delete"
+              raised
+              onClick={this.onClearStatusHandler}
+            />
           </div>
         )}
       </div>
@@ -157,7 +164,7 @@ AdminSectoresComponent.propTypes = {
       type: PropTypes.string,
       entity: PropTypes.string,
       message: PropTypes.string,
-    })
+    }),
   ),
   onDeleteSectores: PropTypes.func,
   onUploadSector: PropTypes.func,

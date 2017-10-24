@@ -5,5 +5,5 @@ export function selEnclavamientos(state, enclavamiento) {
 }
 
 export function selIsPending(state, idSector, coords) {
-  return state[NAME].pending.indexOf(`${idSector}:${coords}`) !== -1;
+  return state[NAME].pending.includes(`${idSector}:${coords}`);
 }

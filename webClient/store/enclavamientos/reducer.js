@@ -1,4 +1,3 @@
-import update from 'immutability-helper';
 import indexBy from '_utils/indexBy';
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
@@ -10,23 +9,33 @@ export default (
     hash: {},
     pending: [],
   },
-  action
+  action,
 ) => {
   if (action.stage && action.stage !== REPLY_RECEIVED) return state;
-  const payload = action.payload;
   switch (action.type) {
     case GET_SECTOR: {
-      const enclavamientos = payload.enclavamientos;
-      return enclavamientos
-        ? update(state, {
-          hash: { $merge: indexBy(enclavamientos, 'idEnclavamiento') },
-        })
-        : state;
+      const { enclavamientos } = action.payload;
+      if (!enclavamientos) return state;
+      return {
+        ...state,
+        hash: {
+          ...state.hash,
+          ...indexBy(enclavamientos, 'idEnclavamiento'),
+        },
+      };
     }
-    case SET_PENDING:
-      return update(state, { pending: { $push: [payload.idCelda] } });
+    case SET_PENDING: {
+      const { idCelda } = action.payload;
+      return {
+        ...state,
+        pending: [...state.pending, idCelda],
+      };
+    }
     case CLEAR_ALL_PENDING:
-      return update(state, { pending: { $set: [] } });
+      return {
+        ...state,
+        pending: [],
+      };
     default:
       return state;
   }

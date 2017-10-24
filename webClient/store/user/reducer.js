@@ -1,4 +1,3 @@
-// import update from 'immutability-helper';
 import pick from 'lodash/pick';
 
 import { REPLY_RECEIVED, REQUEST_SENT } from '_utils/promiseMiddleware';

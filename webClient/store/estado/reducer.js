@@ -1,5 +1,3 @@
-import update from 'immutability-helper';
-
 import { REPLY_RECEIVED } from '_utils/promiseMiddleware';
 
 import { CLICK_SENAL, CLICK_CELDA } from '_store/constants';
@@ -11,11 +9,20 @@ export default (state = {}, action) => {
   const payload = action.payload;
   switch (action.type) {
     case CLOSE_ESTADO:
-      return update(state, { tipo: { $set: null } });
+      return {
+        ...state,
+        tipo: null,
+      };
     case CLICK_CELDA:
-      return update(state, { $merge: payload });
+      return {
+        ...state,
+        ...payload,
+      };
     case CLICK_SENAL:
-      return update(state, { $merge: payload });
+      return {
+        ...state,
+        ...payload,
+      };
     default:
       return state;
   }
