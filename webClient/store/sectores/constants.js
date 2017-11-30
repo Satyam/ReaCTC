@@ -1,3 +1,4 @@
+// @flow
 export const NAME = 'sectores';
 
 export const LIST_SECTORES = `${NAME} / list sectores`;

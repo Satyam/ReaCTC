@@ -8,7 +8,7 @@ const root = process.cwd();
 const absPath = (relative = '') => join(root, relative);
 
 module.exports = version =>
-  ['webClient', 'firebase', 'webServer', 'wsClient', 'preact'].map((bundle) => {
+  ['webClient', 'firebase', 'webServer', 'wsClient', 'preact'].map(bundle => {
     const aliases = {
       _webClient: absPath('webClient'),
       _firebase: absPath('firebase'),
@@ -19,7 +19,7 @@ module.exports = version =>
           webServer: 'webClient/store',
           wsClient: 'webClient/store',
           preact: 'firebase/store',
-        }[bundle]
+        }[bundle],
       ),
       _components: absPath('components'),
       _containers: absPath(
@@ -28,7 +28,7 @@ module.exports = version =>
           firebase: 'firebase/containers',
           wsClient: 'webClient/containers',
           preact: 'firebase/containers',
-        }[bundle]
+        }[bundle],
       ),
       _utils: absPath('utils'),
       _test: absPath('test'),
@@ -47,8 +47,8 @@ module.exports = version =>
             ROOT_DIR: JSON.stringify(root),
             BUNDLE: JSON.stringify(bundle),
           },
-          mapValues(config, JSON.stringify)
-        )
+          mapValues(config, JSON.stringify),
+        ),
       ),
     ];
     return {
@@ -62,7 +62,7 @@ module.exports = version =>
               firebase: 'firebase/index.jsx',
               wsClient: 'webClient/index.jsx',
               preact: 'firebase/index.jsx',
-            }[bundle]
+            }[bundle],
           ),
         ],
       },

@@ -17,7 +17,7 @@ module.exports = {
       ROOT_DIR: '/',
       BUNDLE: 'webClient',
     },
-    config
+    config,
   ),
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['html', 'text'],

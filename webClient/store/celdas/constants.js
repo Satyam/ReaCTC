@@ -1,3 +1,4 @@
+// @flow
 export const NAME = 'celdas';
 
 export const CLICK_CELDA = `${NAME} / click celda`;
