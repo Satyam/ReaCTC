@@ -16,7 +16,9 @@ import firebaseShape from './shape';
 
   * `firebaseDataMap`: a function that receives the properties from the components
     higher up in the hierarchy and returns a mapping object whose keys are the
-    names of the properties to be produced.
+    names of the properties to be produced. The special `$` property name 
+    can be used to signal that the values can bemerged directly into the 
+    properties using their own names.
     The mapping object values can be either:
 
     * a string representing the path to the value to be retrieved from Firebase.
@@ -46,7 +48,7 @@ const firebaseDataMap = (props) => ({
 export default firebaseConnect(firebaseDataMap)(BaseComponent);
 ```
 */
-const firebaseConnect = firebaseDataMap => (BaseComponent) => {
+const firebaseConnect = firebaseDataMap => BaseComponent => {
   const FirebaseConnect = class extends Component {
     constructor(props, context) {
       super(props, context);
@@ -61,8 +63,10 @@ const firebaseConnect = firebaseDataMap => (BaseComponent) => {
         this.subscriptions = map(dataMap, (path, prop) => {
           switch (typeof path) {
             case 'string': {
-              const callback = (snapshot) => {
-                this.setState(prop === '$' ? snapshot.val() : { [prop]: snapshot.val() });
+              const callback = snapshot => {
+                this.setState(
+                  prop === '$' ? snapshot.val() : { [prop]: snapshot.val() },
+                );
               };
               database.ref(path).on('value', callback);
               return {
@@ -77,7 +81,7 @@ const firebaseConnect = firebaseDataMap => (BaseComponent) => {
                 this.setState(
                   prop === '$'
                     ? path.fn(snapshot.val(), key)
-                    : { [prop]: path.fn(snapshot.val(), key) }
+                    : { [prop]: path.fn(snapshot.val(), key) },
                 );
               };
               database.ref(path.path).on(path.eventType || 'value', callback);
@@ -95,14 +99,17 @@ const firebaseConnect = firebaseDataMap => (BaseComponent) => {
     }
     componentWillUnmount() {
       const database = this.firebase.database();
-      this.subscriptions.forEach((subs) => {
+      this.subscriptions.forEach(subs => {
         if (!subs) return;
         database.ref(subs.path).off(subs.eventType, subs.callback);
       });
     }
 
     render() {
-      return React.createElement(BaseComponent, Object.assign({}, this.props, this.state));
+      return React.createElement(
+        BaseComponent,
+        Object.assign({}, this.props, this.state),
+      );
     }
   };
   FirebaseConnect.contextTypes = {
@@ -110,7 +117,9 @@ const firebaseConnect = firebaseDataMap => (BaseComponent) => {
   };
 
   if (process.env.NODE_ENV !== 'production') {
-    return setDisplayName(wrapDisplayName(BaseComponent, 'firebaseConnect'))(FirebaseConnect);
+    return setDisplayName(wrapDisplayName(BaseComponent, 'firebaseConnect'))(
+      FirebaseConnect,
+    );
   }
   return FirebaseConnect;
 };
